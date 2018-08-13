@@ -29,11 +29,23 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ## Outline:
 
-### Paleoclimate
+### Biology as a Data Science
 
-### aDNA -- Plant community metagenomics
+### Command line competency
 
-### Distribution modeling
+### R/Python
+
+### Working with DNA sequence data
+
+### Inferring Evolution
+
+### Genomes
+
+### Metagenomics
+
+### Ecological Modeling
+
+
 
 
 
