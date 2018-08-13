@@ -1,0 +1,5 @@
+Fastq-tools
+
+https://homes.cs.washington.edu/~dcjones/fastq-tools/
+
+##Includes a handy tool fastq-match that performs local alignment using Smith-Waterman

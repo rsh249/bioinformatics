@@ -1,0 +1,7 @@
+
+#R for retrieving [orthologous] sequences from Genbank
+https://github.com/ropensci/phylotaR
+
+Cancer sequencing -- cBioPortal R api
+http://www.cbioportal.org/cgds_r.jsp
+
