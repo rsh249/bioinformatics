@@ -4,3 +4,7 @@ https://rss.onlinelibrary.wiley.com/doi/10.1111/j.1740-9713.2018.01169.x #Histor
 
 #Ancient human pop-gen (Data available and methods OK).
 https://www.nature.com/articles/ncomms6257
+
+
+#Neandertal Denisovan Hybridization
+https://www.scientificamerican.com/article/when-a-neandertal-fell-for-a-denisovan-what-happened-was-only-human/
