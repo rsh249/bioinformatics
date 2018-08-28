@@ -1,4 +1,4 @@
-<html>
+﻿<html>
   <head>
     {% seo %}
   </head>
@@ -26,6 +26,9 @@ After having completed Introduction to Bioinformatics you will be able to:
 + Run bioinformatics programs from the Unix command line to perform analysis of DNA sequence data.
 + Understand the importance of reproducibility and open access for data and computer code in bioinformatics.
 
+## Stay Connected
+In addition to this site and the college eLearn page we will be keeping a course dialogue on Slack at: 
++ https://bio200-bioinformatics.slack.com/threads/
 
 ## Outline:
 
