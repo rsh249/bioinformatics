@@ -6,6 +6,8 @@ output:
   ioslides_presentation:
     widescreen: true
     smaller: true
+    transition: faster
+    
 ---
 
 ```{r setup, include=FALSE}
@@ -18,9 +20,9 @@ The growth of data generation and collection is far outpacing the ability to pro
 
 - Nebulous definitions of "Data Science" and how it differs (or not) from statistics and computational sciences.
 - Types and volume of data in Biology
-- Survey of
 
 ## Defining Data Science
 
-**Data science Venn diagram here
+  ![Stolen from Drew Conway http://drewconway.com/zia/2013/3/26/the-data-science-venn-diagram](images/Data_Science_VD.png)
+
 
