@@ -1,0 +1,26 @@
+---
+title: "Biology as a Data Science"
+author: "Prof. Harbert"
+date: "August 29, 2018"
+output:
+  ioslides_presentation:
+    widescreen: true
+    smaller: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Biology as a Data Science
+
+The growth of data generation and collection is far outpacing the ability to process data in many fields. Today we will discuss what makes up "Data Science" and how biology and bioinformatics fits in the context of:
+
+- Nebulous definitions of "Data Science" and how it differs (or not) from statistics and computational sciences.
+- Types and volume of data in Biology
+- Survey of
+
+## Defining Data Science
+
+**Data science Venn diagram here
+
