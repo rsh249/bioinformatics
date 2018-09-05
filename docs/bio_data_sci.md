@@ -31,9 +31,7 @@ The growth of data generation and collection is far outpacing the ability to pro
 presumably by someone who has never visited a fire station. Nonetheless, data science is a hot and growing field...But what is data science? According to a Venn diagram that is somewhat famous in the industry, data science lies at the intersection of hacking skills [computer science], math and statistical knowledge, and substantive [subject] expertise."
 -- [From Data Science From Scratch](http://shop.oreilly.com/product/0636920033400.do)
 
-```{r echo=FALSE, out.width='30%', fig.align='center'}
-knitr::include_graphics('./images/Data_Science_VD.png')
-```
+<img src="./images/Data_Science_VD.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="30%" style="display: block; margin: auto;" />
 
 
 
@@ -99,18 +97,14 @@ The top data producer in biology is clearly DNA sequencing:
 [Big Data: Astronomical or Genomical](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002195)
 
 
-```{r echo=FALSE, out.width='70%', fig.align='center'}
-knitr::include_graphics('./images/journal.pbio.1002195.g001.png')
-```
+<img src="./images/journal.pbio.1002195.g001.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="70%" style="display: block; margin: auto;" />
 
 
 ---
 
 
 ## Genomics, Astronomy, Twitter, Youtube comparison:
-```{r echo=FALSE, out.width='90%', fig.align='center'}
-knitr::include_graphics('./images/journal.pbio.1002195.t001.png')
-```
+<img src="./images/journal.pbio.1002195.t001.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;" />
 
 
 ---
@@ -139,9 +133,7 @@ The alphabet of the genome has 4 letters (ACGT).
 "The problem is the growing gap between the accumulation of big data and researchers' knowledge about how to
 use it effectively."
 
-```{r echo=FALSE, out.width='40%', fig.align='center'}
-knitr::include_graphics('./images/journal.pcbi.1005755.g002.png')
-```
+<img src="./images/journal.pcbi.1005755.g002.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="40%" style="display: block; margin: auto;" />
 
 ---
 
@@ -161,9 +153,7 @@ Phenotypic Data
 + Next-gen imaging (CT scanning, fluorescent microscopy)
 + e.g. [Plant Image Analysis](http://www.plant-image-analysis.org/) and [High-throughput plant phenotyping](https://pubag.nal.usda.gov/download/60481/PDF)
 
-```{r echo=FALSE, out.width='50%', fig.align='center'}
-knitr::include_graphics('./images/plantcv_001.jpg')
-```
+<img src="./images/plantcv_001.jpg" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="50%" style="display: block; margin: auto;" />
 
 
 Ecological Data Aggregation
