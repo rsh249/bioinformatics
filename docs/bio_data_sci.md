@@ -97,14 +97,14 @@ The top data producer in biology is clearly DNA sequencing:
 [Big Data: Astronomical or Genomical](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002195)
 
 
-<img src="./images/journal.pbio.1002195.g001.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="70%" style="display: block; margin: auto;" />
+<img src="./images/journal.pbio.1002195.g001.PNG" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="70%" style="display: block; margin: auto;" />
 
 
 ---
 
 
 ## Genomics, Astronomy, Twitter, Youtube comparison:
-<img src="./images/journal.pbio.1002195.t001.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;" />
+<img src="./images/journal.pbio.1002195.t001.PNG" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="90%" style="display: block; margin: auto;" />
 
 
 ---
@@ -133,7 +133,7 @@ The alphabet of the genome has 4 letters (ACGT).
 "The problem is the growing gap between the accumulation of big data and researchers' knowledge about how to
 use it effectively."
 
-<img src="./images/journal.pcbi.1005755.g002.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="40%" style="display: block; margin: auto;" />
+<img src="./images/journal.pcbi.1005755.g002.PNG" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="40%" style="display: block; margin: auto;" />
 
 ---
 

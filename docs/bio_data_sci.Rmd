@@ -100,7 +100,7 @@ The top data producer in biology is clearly DNA sequencing:
 
 
 ```{r echo=FALSE, out.width='70%', fig.align='center'}
-knitr::include_graphics('./images/journal.pbio.1002195.g001.png')
+knitr::include_graphics('./images/journal.pbio.1002195.g001.PNG')
 ```
 
 
@@ -109,7 +109,7 @@ knitr::include_graphics('./images/journal.pbio.1002195.g001.png')
 
 ## Genomics, Astronomy, Twitter, Youtube comparison:
 ```{r echo=FALSE, out.width='90%', fig.align='center'}
-knitr::include_graphics('./images/journal.pbio.1002195.t001.png')
+knitr::include_graphics('./images/journal.pbio.1002195.t001.PNG')
 ```
 
 
@@ -140,7 +140,7 @@ The alphabet of the genome has 4 letters (ACGT).
 use it effectively."
 
 ```{r echo=FALSE, out.width='40%', fig.align='center'}
-knitr::include_graphics('./images/journal.pcbi.1005755.g002.png')
+knitr::include_graphics('./images/journal.pcbi.1005755.g002.PNG')
 ```
 
 ---
