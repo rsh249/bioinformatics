@@ -31,7 +31,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ## Outline:
 
-### <a href='./bio_data_sci.html'> Biology as a Data Science <\a href>
+### <a href='./bio_data_sci.html'> Biology as a Data Science <\a>
 
 ### Command line competency
 
