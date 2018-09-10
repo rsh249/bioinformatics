@@ -37,8 +37,6 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Command line competency
 
-### Python
-
 ### Working with DNA sequence data
 
 ### Inferring Evolution
@@ -48,6 +46,8 @@ In addition to this site and the college eLearn page we will be keeping a course
 ### Metagenomics
 
 ### Ecological Modeling
+
+### Catching up with Python
 
 
 
