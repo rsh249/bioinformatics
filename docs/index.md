@@ -31,11 +31,13 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ## Outline:
 
-### <a href='./bio_data_sci.html'> Biology as a Data Science
+### Day 2: <a href='./bio_data_sci.html'> Biology as a Data Science
+
+### Day 3: <a href='./R_basics.html'> Introduction to R (part 1/n)
 
 ### Command line competency
 
-### R/Python
+### Python
 
 ### Working with DNA sequence data
 

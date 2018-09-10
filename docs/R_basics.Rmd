@@ -1,0 +1,217 @@
+---
+title: "R Basics"
+author: "Prof. Harbert"
+date: "9/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Basics
+
+
+## Interactive R
+
+R is very handy for it's interactive command line interface. Later we will also explore how to make R reusable with scripts, but for now we will focus on typing at the command prompt to get comfortable. 
+
+To get started type: 'R' at your command line.
+
+What version of R do you have?
+
+
+```{r fig.width=7, fig.align='center', echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("./images/Rprompt.png")
+grid.raster(img)
+```
+Or
+```{r}
+version
+```
+
+We can now get started with the R command promp open.
+
+```{r}
+x=2
+print(x) ##Print method
+class(x)
+
+x=seq(1:10) # Create a vector
+class(x)
+print(x)
+print(x[1]) # First index of vector
+print(x[1:5])
+
+y = matrix(nrow=5, ncol=5) # create a 5x5 matrix
+print(y)
+class(y)
+y[1,1] = 5
+print(y)
+y[,1]= x[1:5]
+print(y)
+class(y[,1])
+
+y = cbind(seq(1:5), 
+seq(1:5),
+seq(1:5),
+seq(1:5),
+seq(1:5))
+
+class(y)
+
+
+```
+
+## Data input/output
+
+### Getting data and setting working directory:
+
+Throughout this semester we will be using small shared data files I am storing on our course development GitHub repository. Go to https://github.com/rsh249/bioinformatics.git and Download the repository. Unpack it somewhere accessible to you (i.e., your Documents or Desktop folders). Then:
+
+```{r, echo = TRUE, eval=FALSE}
+setwd('/path/to/repository')
+```
+
+
+### Read table/tab/csv/txt text files:
+read.table()
+read.csv()
+read.delim()
+
+```{r, eval=FALSE}
+cars = read.table('./data/mtcars.csv', header=T, sep = ',') # Read a comma separated values file
+head(cars)
+
+cars = read.csv('./data/mtcars.csv')
+cars = read.csv2('./data/mtcars.csv') ## Interesting behavior here, will be somewhat faster
+
+cars = read.delim('./data/mtcars.csv', sep=',')
+
+
+```
+
+### Basic plotting
+
+One of R's biggest advantages is the ability to create high quality graphics in nearly any format or style. Today we will be working with the basic plotting features but later we will take a look at the [ggplot library](https://ggplot2.tidyverse.org/). ggplot is the current leader in graphics for R.
+```{r, echo=FALSE}
+cars=read.csv('../data/mtcars.csv')
+```
+```{r}
+head(cars)
+plot(cars)
+```
+
+## Loops
+
+Repeating tasks using loops
+
+```{r}
+for(i in 1:10) {
+print(i)
+}
+
+```
+
+Catch loop output in a vector or list
+```{r}
+li = vector()
+for(i in 1:10){
+li[[i]]=log(i)
+}
+```
+
+## apply family functions
+
+The Apply functions in R provide efficient repetition that usually out-performs for loops.
+
+```{r}
+
+print(y) #our matrix from earlier
+y = as.data.frame(y)
+li1 = apply(y, 1, sum) # row-wise
+li2 = apply(y, 2, sum) # column-wise
+
+li2 = lapply(y[,1], log) #returns list
+li2 = sapply(y[,1], log) #returns vector
+
+#replicate an operation, a wrapper for sapply
+rep = replicate(10, log(y[,1]))
+
+
+```
+
+# Something Fun:
+
+
+### ggmaps
+
+A subset of R packages known as the tidyverse provides loads of useful tools. Here's how to use some of those to make cool looking maps from Google maps data. This is a great example of the power of R's community. I would have no idea where to start to make maps like these from scratch. But we do not have to start from nothing because functions like these exist. This is the "cookbook" approach (just follow the instructions) and it can be highly effective.
+
+
+```{r}
+
+library(tidyverse)
+library(mapdata)
+library(maps)
+library(ggmap)
+library(magrittr)
+
+
+```
+
+If any of these fail try and install package 'tidverse'
+
+One of the best parts of these tools is the built in access to Google maps aerial imagery.
+
+```{r} 
+
+loc = cbind(-73.973917, 40.781799)
+loc = as.data.frame(loc)
+colnames(loc) = c('lon', 'lat')
+bkmap <- get_map(location = loc, maptype = "satellite", source = "google", zoom =14)
+ggmap(bkmap) + 
+geom_point(data = loc, 
+ color = "red",
+ size =4)
+
+
+
+bkmap3 <- get_map(location = loc, maptype = "terrain", source = "google", zoom = 12)
+
+
+ggmap(bkmap3) + 
+geom_point(data = loc, 
+ color = "red",
+ size =4)
+
+
+bkmap4 <- get_map(location = loc, maptype = "toner-lite", source = "google", zoom = 10)
+
+
+ggmap(bkmap4) + 
+geom_point(data = loc, 
+ color = "red",
+ size =4)
+
+
+
+
+```
+
+# Homework Assignment
+
+
+1) Create a map like one of these with your hometown at the center of it and post it to [#maps](https://bio200-bioinformatics.slack.com/messages/CCQF37AJF)
+
+
+2) Working in groups of 2-4 design a small data collection project that you can carry out in nicer weather. Go outside and observe something in nature that you can take quantitative measurements on. Record ~20 measurements per member. Agree on the type of observation and measurement ahead of time and bring the data to class on Wednesday for more plotting in R. Consider recording a categorical value too (i.e., measure leaf length for 2 types of plants; count flower petal number for 4 types of flowers; count number of students standing in line at DD vs Starbucks).
+
+
+
+
+
+
+
