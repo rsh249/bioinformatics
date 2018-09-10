@@ -104,6 +104,25 @@ head(cars)
 plot(cars)
 ```
 
+OK. That was not so great. Let's try somethnig more useful for visualizing these data. We can tell plot() which columns we want to create a scatterplot for:
+
+```{r}
+colnames(cars)
+plot(cars[,'cyl'], cars[,'mpg'])
+```
+
+OR we can create other types of plots by calling other functions. e.g., a histogram of boxplot:
+
+```{r}
+hist(cars[,'mpg'])
+
+```
+
+
+```{r}
+boxplot(cars[,'hp'])
+```
+
 ## Loops
 
 Repeating tasks using loops
