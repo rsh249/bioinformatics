@@ -33,7 +33,11 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 2: <a href='./bio_data_sci.html'> Biology as a Data Science
 
-### Day 3: <a href='./R_basics.html'> Introduction to R (part 1/n)
+### Day 3: "Big-Data" in Biology Homework <a href='https://bio200-bioinformatics.slack.com/messages/CCMH74VNY'> #topics
+
+### Day 4: <a href='./R_basics.html'> Introduction to R (part 1/n)
+
+### Day 5: Intro to Computing (Coming Soon)
 
 ### Command line competency
 
