@@ -37,7 +37,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 4: <a href='./R_basics.html'> Introduction to R (part 1/n)
 
-### Day 5: Intro to Computing (Coming Soon)
+### Day 5: <a href='./parallel.html'> Intro to Computing 
 
 ### Command line competency
 
