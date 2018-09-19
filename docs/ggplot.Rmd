@@ -1,0 +1,62 @@
+---
+title: "ggplot"
+author: "Prof. Harbert"
+date: "September 19, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## ggplot
+
+The ggplot library is part of the 'tidyverse'. While not the only way to make great graphics in R, ggplot is the leading data visualization software in R.
+
+More: https://ggplot2.tidyverse.org/ 
+
+
+```{r}
+# install.packages("tidyverse") # if not yet installed
+
+library(tidyverse)
+```
+
+```{r}
+
+
+demo <- read.delim("../data/demo.tab") 
+
+# examine
+head(demo) # view the first 6 rows
+head(demo, n = 10) # view the first n rows
+str(demo) # describe the STRucture of the data.frame
+
+
+# generate summary statistics
+summary(demo$x)
+
+# SCATTERPLOTS
+# view SNP frequencies
+ggplot(data = demo) +
+  geom_point(mapping = aes(x = position, y = frequency))
+
+# change x and y axis titles
+ggplot(data = demo) +
+  geom_point(mapping = aes(x = position, y = frequency)) +
+  xlab("Genome Position") + ylab("SNP Frequency")
+
+# use transparency to better visualize clusters of points
+ggplot(data = demo) +
+  geom_point(mapping = aes(x = position, y = frequency), alpha = 0.5) +
+  xlab("Genome Position") + ylab("SNP Frequency")
+
+# Facetting -- multiple plots
+
+ggplot(data = filter(demo, host_type == 'host')) +
+  geom_point(mapping = aes(x = position, y = frequency)) +
+  xlab("Genome Position") + ylab("SNP Frequency") +
+  facet_wrap(~ host)
+
+
+```
