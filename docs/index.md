@@ -39,7 +39,11 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 5: <a href='./parallel.html'> Intro to Computing 
 
-### Command line competency
+### Day 6: <a href='./ggplot.html'> Graphics in R
+
+### Day 7: DNA Sequencing Tech
+
+### Day 8: Unix command line tools
 
 ### Working with DNA sequence data
 

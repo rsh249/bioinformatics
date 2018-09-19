@@ -15,6 +15,7 @@ The ggplot library is part of the 'tidyverse'. While not the only way to make gr
 
 More: https://ggplot2.tidyverse.org/ 
 
+And a great cheat-sheet: https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf 
 
 ```{r}
 # install.packages("tidyverse") # if not yet installed
@@ -25,7 +26,7 @@ library(tidyverse)
 ```{r}
 
 
-demo <- read.delim("../data/demo.tab") 
+demo <- read.delim("https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/demo.tab") 
 
 # examine
 head(demo) # view the first 6 rows
@@ -37,26 +38,165 @@ str(demo) # describe the STRucture of the data.frame
 summary(demo$x)
 
 # SCATTERPLOTS
-# view SNP frequencies
 ggplot(data = demo) +
-  geom_point(mapping = aes(x = position, y = frequency))
+  geom_point(mapping = aes(x = x, y = y))
 
 # change x and y axis titles
 ggplot(data = demo) +
-  geom_point(mapping = aes(x = position, y = frequency)) +
-  xlab("Genome Position") + ylab("SNP Frequency")
+  geom_point(mapping = aes(x = x, y = y)) +
+  xlab("time") + ylab("Temperature (C)")
 
 # use transparency to better visualize clusters of points
+# with the "alpha" parameter
+
 ggplot(data = demo) +
-  geom_point(mapping = aes(x = position, y = frequency), alpha = 0.5) +
-  xlab("Genome Position") + ylab("SNP Frequency")
+  geom_point(mapping = aes(x = x, y = y,alpha =0.5)) +
+  xlab("time") + ylab("Temperature (C)")
+
+
+#or color by a group column
+ggplot(data = demo) +
+  geom_point(mapping = aes(x = x, y = y, col=gp)) +
+  xlab("time") + ylab("Temperature (C)")
+```
+
+# Aesthetics:
+
+Depending on the graphics you are building you can define the aes() function in the ggplot() function OR (as above) in the the geom function call:
+
+```{r}
+ggplot(data = demo, aes(x=x, y=y, col=gp)) +
+  geom_point() + xlab("time") + ylab("Temperature (C)")
+```
+
+# Saving plot objects:
+You can save a basic plot object by assigning it to an R object:
+
+```{r}
+base = ggplot(data = demo, aes(x=x, y=y, col=gp)) +
+  geom_point() + xlab("time") + ylab("Temperature (C)")
+```
+
+This object ('base' in this example) can then be reused and modified. We will cover several modifications below.
 
 # Facetting -- multiple plots
 
-ggplot(data = filter(demo, host_type == 'host')) +
-  geom_point(mapping = aes(x = position, y = frequency)) +
-  xlab("Genome Position") + ylab("SNP Frequency") +
-  facet_wrap(~ host)
+In ggplot the facet (facet_wrap, facet_grid) functions will make a multipanel plot with subplots sorted by a grouping factor.
 
+```{r}
+base +
+  facet_wrap(~ gp)
 
 ```
+
+# Style, Colors, and Themes
+
+The basic ggplot formatting is OK, but we can do better with a few stylistic tweaks.
+
+## Themes
+
+One of the easiest is to attach a theme function to the end of your ggplot call. These can be viewed with: ?theme_bw()
+
+
+e.g., theme_bw()
+```{r}
+base +
+  facet_wrap(~ gp) +
+  theme_bw()
+
+```
+
+e.g., theme_minimal()
+```{r}
+base +
+  facet_wrap(~ gp) +
+  theme_minimal()
+
+```
+
+I like this version so I'm going to save it as another R object that keeps this formatting. 
+
+```{r}
+minimal = base + 
+  facet_wrap(~ gp) +
+  theme_minimal()
+```
+
+## Color palettes
+
+With R Color Brewer 
+
+```{r}
+
+library(RColorBrewer)
+display.brewer.all()
+
+```
+
+
+And if we want to call one of these in ggplot. Use + scale_color_brewer('palette name')
+
+e.g., with 'Dark2' 
+```{r}
+
+minimal + 
+  scale_color_brewer(palette="Dark2")
+
+```
+
+## Manual colors and outside palettes:
+
+The ggplot scale_color_manual() lets you pass any other vector of colors to your ggplot call. This lets you define colors: (WARNING: these can be really bad!) 
+
+```{r}
+minimal + scale_color_manual(values=c('blue', 'orange', 'green'))
+```
+
+
+
+Or grab colors from outside libraries: e.g., the wesanderson library:
+
+```{r}
+library(wesanderson) #colors from Wes Anderson Movies
+minimal + scale_color_manual(values=wes_palette(n=3, name = "GrandBudapest1"))
+```
+
+More on colors and coloring functions can be found here:
+
+http://www.sthda.com/english/wiki/ggplot2-colors-how-to-change-colors-automatically-and-manually
+
+
+# Other plot types:
+
+## Boxplots 
+```{r}
+ggplot(data = demo, aes(x = sub, y = y)) +
+  geom_boxplot()
+```
+
+## Barplots 
+```{r}
+ggplot(data = demo, aes(sub)) +
+  geom_bar()
+```
+
+## Histograms
+```{r}
+ggplot(data=demo, aes(y)) + geom_histogram(binwidth = 5, col ='white')
+
+ggplot(data=demo, aes(y)) + geom_histogram(binwidth = 5, col ='white') + facet_wrap(~gp)
+```
+
+
+And many, many, more:
+
+https://r4stats.com/examples/graphics-ggplot2/
+
+
+# Homework:
+
+Using ggplot (and all of the tips and resources here), make one or more graphic representations of your group's data and post it to [#ggplot](https://bio200-bioinformatics.slack.com/messages/CCY83KSS2).
+
+
+
+
