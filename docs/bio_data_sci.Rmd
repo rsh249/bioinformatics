@@ -1,5 +1,5 @@
 ---
-title    : Biology as a Data Science
+title    : DNA Sequencing
 subtitle : BIO200A Introduction to Bioinformatics
 author   : Prof. Harbert
 mode     : selfcontained # {standalone, draft}
