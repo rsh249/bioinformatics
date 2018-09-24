@@ -162,7 +162,14 @@ Library prep and Illumina Seq: http://rmpiro.net/teaching/pub/lectures/fu-genomi
 Review of sequencing platforms (2017):
 https://www.omicsonline.org/open-access/generations-of-sequencing-technologies-from-first-to-next-generation-0974-8369-1000395.php?aid=87862
 
- 
 
+
+---
+
+## Homework
+
+Research one or more sequencing technology and contribute to the file shared earlier on OneDrive.
+
+[Home](https://rsh249.github.io/bioinformatics)
 
 ---
