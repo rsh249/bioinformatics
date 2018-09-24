@@ -105,7 +105,7 @@ How many runs at 500bp per read and (let's assume) 384 reads per run would it ta
 
 
 ```{r echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics('./images/hgp_timeline.JPG')
+knitr::include_graphics('./images/hgp_timeline.jpg')
 ```
 
 [Source CC-by-2.0](https://www.flickr.com/photos/genomegov/26964377742/)

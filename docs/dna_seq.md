@@ -98,7 +98,7 @@ How many runs at 500bp per read and (let's assume) 384 reads per run would it ta
 ## Human Genome Project
 
 
-<img src="./images/hgp_timeline.JPG" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" style="display: block; margin: auto;" />
+<img src="./images/hgp_timeline.jpg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" style="display: block; margin: auto;" />
 
 [Source CC-by-2.0](https://www.flickr.com/photos/genomegov/26964377742/)
 
