@@ -43,7 +43,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 7: <a href='./dna_seq.html'> DNA Sequencing Tech
 
-### Day 8: Unix command line tools (Coming Soon)
+### Day 8: <a href='./unix_shell.html'> Unix command line tools
 
 # Working with DNA sequence data
 

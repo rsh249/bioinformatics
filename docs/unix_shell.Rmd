@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # The Unix Shell: A fundamental tool for bioinformatics
 
 Outline:
+
 + What is the Unix shell? (What's Unix? What's a shell?)
 + Read Evaluate Print Loop (REPL)
 + Why do we need to know this?
@@ -34,7 +35,11 @@ The command-line looks something like this:
 username@machine /path/to/where/you/are $
 ```
 
-And we inderact with the shell by typing a command after the $:
+```{r echo=FALSE, out.width='90%', fig.align='center'}
+knitr::include_graphics('./images/shell.png')
+```
+
+And we interact with the shell by typing a command after the $:
 
 ```{bash, eval = FALSE}
 pwd
@@ -43,8 +48,6 @@ pwd
 What did that do?
 
 ## Finding out about your file system: ls, pwd, cd
-
-What is a file-system?
 
 ls -- List what is in your current directory.
 
@@ -103,7 +106,7 @@ cd
 
 Let's make a new folder in our current directory to play in:
 
-mkdir - make directory
+### mkdir - make directory
 ```{bash, eval=F}
 mkdir data
 cd data
@@ -114,10 +117,15 @@ ls -l
 
 
 There is nothing there because we just created that directory. To make a new file we can use:
-touch
+
+### touch
+
 ```{bash, eval=F}
 touch textfile
 ```
+
+
+### nano 
 
 OR a text editor 'nano'. Be sure to put some text into the nano editor and save before closing.
 
@@ -127,12 +135,17 @@ nano newfile
 
 Use Ctrl+X to close nano and follow the prompts at the bottom of your terminal if needed.
 
+### cp
+
 Let's say we want to make a backup of newfile. We can use 'cp':
 
 ```{bash, eval =F}
 #Copy with cp
 cp newfile backup
 ```
+
+### cat head
+
 We can do some simple viewing of files with commands 'cat' and 'head'. These behave just like head() and cat() in R.
 
 ```{bash, eval=F}
@@ -141,11 +154,15 @@ head newfile
 
 ```
 
+### wc
+
 And gather basic file statistics with 'wc':
 
-```{bash, eval=T}
+```{bash, eval=F}
 wc -l newfile
 ```
+
+### mv, rm, rmdir
 
 Or maybe we want to move a file to a new place
 
@@ -191,6 +208,8 @@ ls -lh
 
 Does this text look familiar? How can we figure out what we have? Why has your instructor made this so difficult?
 
+### grep
+
 A command you all NEED to know that helps search through big files is 'grep'. Once again R has a grep() function that works on similar principles. Unix grep is one of the most used tools in bioinformatics data exploration.
 
 ```{bash, eval=F}
@@ -222,6 +241,9 @@ hmm... What do we have?
 
 We have a scrambled text file that is a collection of Shakespeare plays. Can we sort this file out and make it readable again? YES! Better living through the power of Unix!
 
+
+### sort
+
 The 'sort' command does (sometimes) exactly what it sounds like. This file that we have looks like it has line numbers at the start of every line. Let's see if that is the case:
 
 **the ">" here redirects the output into a new file. This is REALLY USEFUL.
@@ -233,10 +255,93 @@ head sort.txt
 
 Not quite. Check sort --help and see if you can fix it!
 
+### awk
+
+Now let's look at a tabular data file and why we need "awk" in addition to grep.
+
+```{bash, eval =F}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/ebd_trim3.csv > ebird.csv
+
+head ebird.csv
+```
+
+This is a small chunk of the eBird database. How big is this file?
+
+```{bash, eval=F}
+wc -l ebird.csv
+ls -lh ebird.csv
+
+```
+
+Searching this file with grep works OK ....
+
+```{bash, eval=F}
+grep -i 'mallard' ebird.csv
+```
+
+Downsides: 
+1) grep looks anywhere in the line, not just the column where the common name resides.
+2) There are too many columns to read anything easily.
+
+This is where awk is really useful. Could you read this into R, sure. But remember that this is a tiny example. If you had a table that was even 10% of the entire eBird database you would not be able to read that into the RAM available on your laptop. 'awk' can deal with very large files in a much more efficient way and is really useful for exploring data and retreiving the parts you want.
+
+Example: Use awk to print just specific columns. 
+Aside: The pipe "|" symbol passes the output of one command to the next command typed. We will do more with this.
+
+```{bash, eval =F}
+grep -i 'osprey' ebird.csv | awk '{print $1, $2, $3}'
+```
+
+But what columns to we really want?
+
+```{bash, eval=F}
+head -1 ebird.csv
+```
+
+Let's look at only #1 (ID), #5 (common name), and #6 (latin name)
+
+```{bash, eval =F}
+grep -i 'osprey' ebird.csv | awk '{print $1, $5, $6}'
+```
+
+Is that what we wanted? Not quite, the defualt field delimeter in grep is any white space (space, tab, and a few other variants). The delimeter in this file is a tab character(\t).
+
+We can tell awk that with the -F parameter
+
+```{bash, eval=F}
+grep -i 'osprey' ebird.csv | awk -F'\t' '{print $1, $5, $6}'
+```
+
+Now we can see that our grep command is not actually finding all Osprey records. It is fingind the word Osprey somewhere else in the line for some other bird records.
+
+We can fix that with awk by supplying an "if" statement
+
+```{bash, eval=F}
+awk -F '\t' '$5=="Osprey" {print $1, $5, $6}' ebird.csv
+```
+
+Challenge: Can you write an awk command to grab the ID, names, and latitude and longitude and put that in it's own file?
+
+### sort | uniq
+
+A useful pair of tools is 'sort' and 'uniq'. These do what they say: sort a list and find unique elements. 'uniq' is a fast algorithm but only removes duplicates in series so you should always uses sort and then uniq.
+
+Example:
+```{bash, eval=F}
+awk -F '\t' '{print $17}' ebird.csv  #counties in our eBird slice.
+awk -F '\t' '{print $17}' ebird.csv | sort 
+awk -F '\t' '{print $17}' ebird.csv | sort | uniq
 
 
+```
 
+And to see that we need sort with our uniq just count the output:
+```{bash, eval =F}
 
+awk -F '\t' '{print $17}' ebird.csv | sort | uniq | wc -l
+awk -F '\t' '{print $17}' ebird.csv | uniq | wc -l
+
+```
 
 
 

@@ -131,14 +131,214 @@ $(document).ready(function () {
 
 <div id="the-unix-shell-a-fundamental-tool-for-bioinformatics" class="section level1">
 <h1>The Unix Shell: A fundamental tool for bioinformatics</h1>
-<p>Outline: + What is the Unix shell? (What’s Unix? What’s a shell?) + Read Evaluate Print Loop (REPL) + Why do we need to know this? + Interacting with the shell + Moving in and viewing your filesystem + Files (create, edit, delete) + Parsing (search and bulk edit files - read, search, sort, and rearrange files)</p>
+<p>Outline:</p>
+<ul>
+<li>What is the Unix shell? (What’s Unix? What’s a shell?)</li>
+<li>Read Evaluate Print Loop (REPL)</li>
+<li>Why do we need to know this?</li>
+<li>Interacting with the shell</li>
+<li>Moving in and viewing your filesystem</li>
+<li>Files (create, edit, delete)</li>
+<li>Parsing (search and bulk edit files - read, search, sort, and rearrange files)</li>
+<li>Advanced topics: Scripting, loops, functions (*Probably for later)</li>
+</ul>
 <div id="what-is-the-unix-shell" class="section level2">
 <h2>What is the Unix Shell?</h2>
 <p>The shell provides an environment to interact with your computer on a more fundamental level than we are used to. It does this by implementing a simple “language” that we can learn to communicate with our machines through a command-line interface.</p>
 <p>The command-line runs a Read-Evaluate-Print-Loop operation that is the core of everything we do there. This is essentially what the RStudio Console window does for us in the context of R.</p>
 <p>The command-line looks something like this:</p>
 <pre class="bash"><code>username@machine /path/to/where/you/are $</code></pre>
+<p><img src="data:image/png;base64,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" width="90%" style="display: block; margin: auto;" /></p>
+<p>And we interact with the shell by typing a command after the $:</p>
+<pre class="bash"><code>pwd</code></pre>
+<p>What did that do?</p>
 </div>
+<div id="finding-out-about-your-file-system-ls-pwd-cd" class="section level2">
+<h2>Finding out about your file system: ls, pwd, cd</h2>
+<p>ls – List what is in your current directory.</p>
+<pre class="bash"><code>ls
+
+ls -a
+
+ls -l
+ls -lh</code></pre>
+<div id="a-brief-note-about-getting-help" class="section level3">
+<h3>A brief note about getting help:</h3>
+<p>All command line programs/commands should** have a help file associated with them. We can view those in one of two ways:</p>
+<pre class="bash"><code>ls --help
+
+man ls
+</code></pre>
+<p>pwd – print working directory</p>
+<pre class="bash"><code>pwd
+</code></pre>
+<p>cd – change working directory</p>
+<pre class="bash"><code># cd into one of the directories you see when you type
+ls -F
+
+cd Desktop
+
+# to go up a level (Back usually)
+
+cd ..
+
+# To navigate to your home directory
+
+cd ~
+#or
+cd
+</code></pre>
+</div>
+</div>
+<div id="files---create-edit-delete-files-and-directories-mkdir-nano-touch-cp-mv-rm-rmdir-cat-head-less" class="section level2">
+<h2>Files - Create, edit, delete files and directories: mkdir, nano, touch, cp, mv, rm, rmdir, cat, head, less</h2>
+<p>Let’s make a new folder in our current directory to play in:</p>
+<div id="mkdir---make-directory" class="section level3">
+<h3>mkdir - make directory</h3>
+<pre class="bash"><code>mkdir data
+cd data
+
+ls -l
+</code></pre>
+<p>There is nothing there because we just created that directory. To make a new file we can use:</p>
+</div>
+<div id="touch" class="section level3">
+<h3>touch</h3>
+<pre class="bash"><code>touch textfile</code></pre>
+</div>
+<div id="nano" class="section level3">
+<h3>nano</h3>
+<p>OR a text editor ‘nano’. Be sure to put some text into the nano editor and save before closing.</p>
+<pre class="bash"><code>nano newfile</code></pre>
+<p>Use Ctrl+X to close nano and follow the prompts at the bottom of your terminal if needed.</p>
+</div>
+<div id="cp" class="section level3">
+<h3>cp</h3>
+<p>Let’s say we want to make a backup of newfile. We can use ‘cp’:</p>
+<pre class="bash"><code>#Copy with cp
+cp newfile backup</code></pre>
+</div>
+<div id="cat-head" class="section level3">
+<h3>cat head</h3>
+<p>We can do some simple viewing of files with commands ‘cat’ and ‘head’. These behave just like head() and cat() in R.</p>
+<pre class="bash"><code>cat newfile
+head newfile
+</code></pre>
+</div>
+<div id="wc" class="section level3">
+<h3>wc</h3>
+<p>And gather basic file statistics with ‘wc’:</p>
+<pre class="bash"><code>wc -l newfile</code></pre>
+</div>
+<div id="mv-rm-rmdir" class="section level3">
+<h3>mv, rm, rmdir</h3>
+<p>Or maybe we want to move a file to a new place</p>
+<pre class="bash"><code>
+mkdir backdir
+mv backup backdir
+</code></pre>
+<p>All of that was junk so let’s clean up after ourselves by removing the files we made with ‘rm’ and then the backdir directory with ‘rmdir’</p>
+<pre class="bash"><code>rm textfile
+rm newfile
+rm backdir/backup
+rmdir backdir</code></pre>
+<p>NOTE: ‘rm’ is FOREVER. Be very sure you understand how rm behaves before pressing ENTER.</p>
+<p>One dangerous error</p>
+</div>
+</div>
+<div id="searching-and-manipulating-text-files-grep-awk-shuf-sort-uniq" class="section level2">
+<h2>Searching and manipulating text files: grep, awk, shuf, sort, uniq</h2>
+<p>Let’s first grab an example data file using a new command ‘curl’:</p>
+<pre class="bash"><code>curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/test.txt &gt; test.txt
+</code></pre>
+<p>And we can do some basic exploration: (one command at a time!)</p>
+<pre class="bash"><code>wc -l test.txt
+head test.txt
+head -20 test.txt
+less test.txt #end with 'q'
+cat test.txt 
+ls -lh</code></pre>
+<p>Does this text look familiar? How can we figure out what we have? Why has your instructor made this so difficult?</p>
+<div id="grep" class="section level3">
+<h3>grep</h3>
+<p>A command you all NEED to know that helps search through big files is ‘grep’. Once again R has a grep() function that works on similar principles. Unix grep is one of the most used tools in bioinformatics data exploration.</p>
+<pre class="bash"><code>grep --help
+grep &quot;the&quot; test.txt #print all lines with the word &quot;the&quot;
+grep -c &quot;the&quot; test.txt # count lines matching &quot;the&quot;
+grep -cw &quot;the&quot; test.txt # why is this different?
+</code></pre>
+<p>Things can get more complicated with <a href="https://www.cyberciti.biz/faq/grep-regular-expressions/">Regular Expressions</a> but for now (until we start working with FASTA and fastq files) we will deal only in whole strings of characters.</p>
+<p>It looks like this file has some old English phrases in it. Maybe it’s Shakespeare. But which one? Let’s try to grep out some key words that could help us figure it out:</p>
+<pre class="bash"><code>grep -i &quot;romeo&quot; test.txt</code></pre>
+<p>Nope….</p>
+<pre class="bash"><code>grep -i &quot;othello&quot; test.txt
+grep -i &quot;henry&quot; test.txt
+grep -i &quot;lear&quot; test.txt
+grep -i &quot;petruchio&quot; test.txt</code></pre>
+<p>hmm… What do we have?</p>
+<p>We have a scrambled text file that is a collection of Shakespeare plays. Can we sort this file out and make it readable again? YES! Better living through the power of Unix!</p>
+</div>
+<div id="sort" class="section level3">
+<h3>sort</h3>
+<p>The ‘sort’ command does (sometimes) exactly what it sounds like. This file that we have looks like it has line numbers at the start of every line. Let’s see if that is the case:</p>
+<p>**the “&gt;” here redirects the output into a new file. This is REALLY USEFUL.</p>
+<pre class="bash"><code>sort test.txt &gt; sort.txt
+head sort.txt</code></pre>
+<pre><code>## test.txtThe system cannot find the file specified.</code></pre>
+<p>Not quite. Check sort –help and see if you can fix it!</p>
+</div>
+<div id="awk" class="section level3">
+<h3>awk</h3>
+<p>Now let’s look at a tabular data file and why we need “awk” in addition to grep.</p>
+<pre class="bash"><code>curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/ebd_trim3.csv &gt; ebird.csv
+
+head ebird.csv</code></pre>
+<p>This is a small chunk of the eBird database. How big is this file?</p>
+<pre class="bash"><code>wc -l ebird.csv
+ls -lh ebird.csv
+</code></pre>
+<p>Searching this file with grep works OK ….</p>
+<pre class="bash"><code>grep -i 'mallard' ebird.csv</code></pre>
+<p>Downsides: 1) grep looks anywhere in the line, not just the column where the common name resides. 2) There are too many columns to read anything easily.</p>
+<p>This is where awk is really useful. Could you read this into R, sure. But remember that this is a tiny example. If you had a table that was even 10% of the entire eBird database you would not be able to read that into the RAM available on your laptop. ‘awk’ can deal with very large files in a much more efficient way and is really useful for exploring data and retreiving the parts you want.</p>
+<p>Example: Use awk to print just specific columns. Aside: The pipe “|” symbol passes the output of one command to the next command typed. We will do more with this.</p>
+<pre class="bash"><code>grep -i 'osprey' ebird.csv | awk '{print $1, $2, $3}'</code></pre>
+<p>But what columns to we really want?</p>
+<pre class="bash"><code>head -1 ebird.csv</code></pre>
+<p>Let’s look at only #1 (ID), #5 (common name), and #6 (latin name)</p>
+<pre class="bash"><code>grep -i 'osprey' ebird.csv | awk '{print $1, $5, $6}'</code></pre>
+<p>Is that what we wanted? Not quite, the defualt field delimeter in grep is any white space (space, tab, and a few other variants). The delimeter in this file is a tab character().</p>
+<p>We can tell awk that with the -F parameter</p>
+<pre class="bash"><code>grep -i 'osprey' ebird.csv | awk -F'\t' '{print $1, $5, $6}'</code></pre>
+<p>Now we can see that our grep command is not actually finding all Osprey records. It is fingind the word Osprey somewhere else in the line for some other bird records.</p>
+<p>We can fix that with awk by supplying an “if” statement</p>
+<pre class="bash"><code>awk -F '\t' '$5==&quot;Osprey&quot; {print $1, $5, $6}' ebird.csv</code></pre>
+<p>Challenge: Can you write an awk command to grab the ID, names, and latitude and longitude and put that in it’s own file?</p>
+</div>
+<div id="sort-uniq" class="section level3">
+<h3>sort | uniq</h3>
+<p>A useful pair of tools is ‘sort’ and ‘uniq’. These do what they say: sort a list and find unique elements. ‘uniq’ is a fast algorithm but only removes duplicates in series so you should always uses sort and then uniq.</p>
+<p>Example:</p>
+<pre class="bash"><code>awk -F '\t' '{print $17}' ebird.csv  #counties in our eBird slice.
+awk -F '\t' '{print $17}' ebird.csv | sort 
+awk -F '\t' '{print $17}' ebird.csv | sort | uniq
+</code></pre>
+<p>And to see that we need sort with our uniq just count the output:</p>
+<pre class="bash"><code>
+awk -F '\t' '{print $17}' ebird.csv | sort | uniq | wc -l
+awk -F '\t' '{print $17}' ebird.csv | uniq | wc -l
+</code></pre>
+</div>
+</div>
+</div>
+<div id="for-further-reading-the-gnu-project" class="section level1">
+<h1>For further reading: The GNU project</h1>
+<p><a href="https://www.gnu.org/gnu/thegnuproject.en.html" class="uri">https://www.gnu.org/gnu/thegnuproject.en.html</a></p>
+</div>
+<div id="homework" class="section level1">
+<h1>Homework:</h1>
+<p>Go to: <a href="https://swcarpentry.github.io/shell-novice/" class="uri">https://swcarpentry.github.io/shell-novice/</a></p>
+<p>Work through the tutorial on the Unix Shell from Software Carpentry and create a notes file. Turn in your notes by email before class on Monday. Note that the recommended time to teach this entire tutorial is 4.5 hours. I don’t know how long it will take each of you independently to work through it but I think more than 1 hour should be a minimum.</p>
 </div>
 
 
