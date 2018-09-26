@@ -1,0 +1,37 @@
+---
+title: "The Unix Shell"
+author: "Prof. Harbert"
+date: "September 26, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The Unix Shell: A fundamental tool for bioinformatics
+
+Outline:
++ What is the Unix shell? (What's Unix? What's a shell?)
++ Read Evaluate Print Loop (REPL)
++ Why do we need to know this?
++ Interacting with the shell
++ Moving in and viewing your filesystem
++ Files (create, edit, delete)
++ Parsing (search and bulk edit files - read, search, sort, and rearrange files)
+
+
+## What is the Unix Shell?
+
+The shell provides an environment to interact with your computer on a more fundamental level than we are used to. It does this by implementing a simple "language" that we can learn to communicate with our machines through a command-line interface.
+
+The command-line runs a Read-Evaluate-Print-Loop operation that is the core of everything we do there. This is essentially what the RStudio Console window does for us in the context of R.
+
+The command-line looks something like this:
+
+```{bash, eval=FALSE}
+username@machine /path/to/where/you/are $
+```
+
+
+
