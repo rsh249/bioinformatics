@@ -130,6 +130,12 @@ $(document).ready(function () {
 
 <div id="blast" class="section level1">
 <h1>BLAST</h1>
+<p>Some good resources:</p>
+<ul>
+<li><a href="http://www.metagenomics.wiki/tools/blast" class="uri">http://www.metagenomics.wiki/tools/blast</a></li>
+<li><a href="https://www.ncbi.nlm.nih.gov/books/NBK279684/" class="uri">https://www.ncbi.nlm.nih.gov/books/NBK279684/</a></li>
+<li></li>
+</ul>
 </div>
 <div id="get-data" class="section level1">
 <h1>Get Data</h1>
@@ -162,19 +168,50 @@ tar -xzf blast.tar.gz</code></pre>
 </div>
 <div id="blast-make-database-from-genome-file" class="section level1">
 <h1>BLAST: Make Database from Genome File</h1>
-<p>The first step to running a blast analysis on your machine is to build your database. We will be using the genome file for that purpose.</p>
+<p>The first step to running a blast analysis on your machine is to build your database. We will be using the genome file for that purpose.NOTE FOR MAC USERS: For all commands below leave out the “.exe” in the program file name.</p>
 <pre class="bash"><code>gunzip data/genome.fna.gz
 
 ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/genome.fna -dbtype nucl -title human
 </code></pre>
 <pre class="bash"><code>gunzip data/transcripts.fna.gz
-head -10000 data/transcripts.fna &gt; data/subtranscripts.fna
-
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/subtranscripts.fna -outfmt 6 -max_target_seqs 1 -num_threads 2 -out blastout.tab
+head -40 data/transcripts.fna
 </code></pre>
+<p>Use the Unix command line tools we talked about last time to look through the genome.fna and transcripts.fna files.</p>
+<p>They should both be in FASTA format which looks like this:</p>
+<p>“&gt; NC0000001.1 Descriptive title string<br> ACTCGCGCTCGATCGATCGATCGCTG<br> ATCGTCGCTCGCTCCTCTCGTGAGAT<br> ATCGCTGCTAGCTAGCTGATGCGTAT”</p>
+<p>What does this do? (Hint: ‘tr –help’)</p>
+<pre class="bash"><code>head -100 data/transcripts.fna | tr '\n' '\0'
+</code></pre>
+<p>To start we want to search for hits to just one of these transcripts. Use this to pull out <em>part</em> of the first sequence in the file:</p>
+<pre class="bash"><code>head -50 data/transripts.fna &gt; data/first.fna</code></pre>
+<p>And then we can run a basic BLAST search:</p>
+<pre class="bash"><code>head -60 data/transcripts.fna &gt; data/min.fna
+
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 
+</code></pre>
+<p>Spend some time parsing this output.</p>
+<p>Looking at the alignments can be informative. Often, however, you may just want summary data:</p>
+<pre class="bash"><code>ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6</code></pre>
+<p>The columns in this blast output format are: 1. qseqid query (e.g., gene) sequence id 2. sseqid subject (e.g., reference genome) sequence id 3. pident percentage of identical matches 4. length alignment length 5. mismatch number of mismatches 6. gapopen number of gap openings 7. qstart start of alignment in query 8. qend end of alignment in query 9. sstart start of alignment in subject 10. send end of alignment in subject 11. evalue expect value</p>
+<div id="more-blast-all-query-sequences-from-transcript-file" class="section level3">
+<h3>More: BLAST all query sequences from transcript file</h3>
+<p>First, test this command out with a somewhat larger subset of the transcript data:</p>
+<pre class="bash"><code>head -10000 data/transcripts.fna &gt; data/subtranscripts.fna
+
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/subtranscripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
+</code></pre>
+<p>How long did that take?</p>
 <p>We can look at the blastout.tab file using cat or head:</p>
 <pre class="bash"><code>head blastout.tab</code></pre>
-<p>And if we want to know what the</p>
+<p>Now try with the complete transcripts file. (This may take a while. Make sure your laptop is plugged in while running.)</p>
+<pre class="bash"><code>
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/transcripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
+</code></pre>
+</div>
+<div id="homework" class="section level2">
+<h2>Homework:</h2>
+<p>Load the complete output file into R and make a ggplot figure of at least 2 of the columns. Then post to <a href="https://bio200-bioinformatics.slack.com/messages/CCY83KSS2">#ggplot</a></p>
+</div>
 </div>
 
 

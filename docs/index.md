@@ -47,7 +47,9 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 # Working with DNA sequence data
 
-### Day 9: Alignment
+### Day 9: <a href='./blast.html'> Alignment and BLAST 
+
+### Day 10: Short read alignment: The Burrows-Wheeler Transform and bwa
 
 ### Inferring Evolution
 
