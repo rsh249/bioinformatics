@@ -1,0 +1,68 @@
+---
+title: "BLAST Day 2"
+author: "Prof. Harbert"
+date: "October 2, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### More: BLAST all query sequences from transcript file
+
+First, test this command out with a somewhat larger subset of the transcript data:
+
+```{bash, eval =FALSE}
+head -10000 data/transcripts.fna > data/subtranscripts.fna
+
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/subtranscripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
+
+
+```
+
+
+
+How long did that take?
+
+We can look at the blastout.tab file using cat or head:
+
+```{bash, eval=FALSE}
+head blastout.tab
+```
+
+## Plotting BLAST output in R
+
+Start up RStudio and read the data in (your paths may be slightly different so check those if you are getting errors).
+
+```{r}
+setwd('C:/Users/rharbert/blast2')
+res = read.table('blastout.tab')
+head(res)
+colnames(res) = c('qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 'evalue') 
+```
+Then load ggplot and try some data visualization of your BLAST results.
+
+```{r}
+library(ggplot2)
+ggplot(data=res, aes(x=pident, y=evalue)) + geom_point()
+
+ggplot(data=res, aes(x=length, y=evalue)) + geom_point()
+
+```
+
+
+
+## Homework:
+
+Now try with the complete transcripts file. (This may take a while. Make sure your laptop is plugged in while running and that the screen stays on.)
+
+
+```{bash, eval =FALSE}
+
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/transcripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
+
+
+```
+
+Load the complete output file into R and make a ggplot figure of at least 2 of the columns. You do NOT have to plot the same columns as I did above or in the same way. Then post to [#ggplot](https://bio200-bioinformatics.slack.com/messages/CCY83KSS2) with a comment on your interpretation of the data you are showing. Make your plots look good!

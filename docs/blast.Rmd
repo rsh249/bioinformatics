@@ -152,38 +152,3 @@ The columns in this blast output format are:
  10. 	 send 	 end of alignment in subject
  11. 	 evalue 	 expect value
  
-### More: BLAST all query sequences from transcript file
-
-First, test this command out with a somewhat larger subset of the transcript data:
-
-```{bash, eval =FALSE}
-head -10000 data/transcripts.fna > data/subtranscripts.fna
-
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/subtranscripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
-
-
-```
-
-
-
-How long did that take?
-
-We can look at the blastout.tab file using cat or head:
-
-```{bash, eval=FALSE}
-head blastout.tab
-```
-
-Now try with the complete transcripts file. (This may take a while. Make sure your laptop is plugged in while running.)
-
-
-```{bash, eval =FALSE}
-
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/transcripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
-
-
-```
-
-## Homework:
-
-Load the complete output file into R and make a ggplot figure of at least 2 of the columns. Then post to [#ggplot](https://bio200-bioinformatics.slack.com/messages/CCY83KSS2)
