@@ -57,11 +57,71 @@ ggplot(data=sam, aes(x=length)) + geom_density() + xlim(c(0,800))
 
 ```
 
+### genoPlotR -- An R package for visualizing genomic data
 
+First we need to pull just a few of our blast hits.
+
+```{bash, eval=FALSE}
+#These correspond roughly to the hits to "N"
+ncbi-blast-2.7.1+/bin/blastdbcmd.exe -db data/genome.fna -range 9070000-9090000 -entry all > data/blasthits.fa
+
+```
+
+```{r}
+#install.package('genoPlotR')
+
+library(genoPlotR)
+setwd('C:/Users/rharbert/blast2')
+
+tr <- read_dna_seg_from_fasta('data/transcripts.fna')
+ge <- read_dna_seg_from_fasta('data/blasthits.fa')
+trvsge <- read_comparison_from_blast('blastout.tab')
+xlims <- list(c(1,5000), c(1,50000))
+plot_gene_map(dna_segs=list(tr, ge),
+  comparisons=list(trvsge),
+  xlims=xlims,
+  main="Transcripts vs Genome, comparison of the first 50 kb of genome",
+  gene_type="side_blocks",
+  dna_seg_scale=TRUE, 
+  scale=TRUE)
+
+```
+
+Ok. That's a lot and without knowing much about where we are in the genome there is not much to get from that plot. Let's try zooming in to just just a few kb.
+
+```{r}
+xlims <- list(c(1,1000), c(1,5000))
+plot_gene_map(dna_segs=list(tr, ge),
+  comparisons=list(trvsge),
+  xlims=xlims,
+  main="Transcripts vs Genome, comparison of the first 50 kb of genome",
+  gene_type="side_blocks",
+  dna_seg_scale=TRUE, 
+  scale=TRUE)
+```
+
+What's going on here? Hint: Remember that the top of the graph corresponds to the transcript sequence. Why are the matches in the genome spaced out like that?
+
+```{r}
+xlims <- list(c(1000,2000), c(1,5000))
+plot_gene_map(dna_segs=list(tr, ge),
+  comparisons=list(trvsge),
+  xlims=xlims,
+  main="Transcripts vs Genome, comparison of the first 50 kb of genome",
+  gene_type="side_blocks",
+  dna_seg_scale=TRUE, 
+  scale=TRUE)
+```
+
+How about this one? What's with that red bar? (Hint: the blue bars are opposite direction matches and red bars are forward matches)
 
 ## Homework:
 
-Now try with the complete transcripts file. (This may take a while. Make sure your laptop is plugged in while running and that the screen stays on.)
+Get data for mitochondria from wolves and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
+
+That should look something like this:
+
+```{bash, eval=FALSE}
 
 
 ```{bash, eval =FALSE}

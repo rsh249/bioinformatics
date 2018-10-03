@@ -49,17 +49,31 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 9: <a href='./blast.html'> Alignment and BLAST 
 
-### Day 10: Short read alignment: The Burrows-Wheeler Transform and bwa
+### Day 10: <a href='./blast2.html'> BLAST Continued
 
-### Inferring Evolution
+### Day 11: Short read alignment: The Burrows-Wheeler Transform
 
-### Genomes
+# Inferring Evolution
 
-### Metagenomics
+### Multiple Sequence Alignment
 
-### Ecological Modeling
+### Phylogenetic tree building
 
-### Catching up with Python
+# Genomes
+
+### Cancer resequencing
+
+# Metagenomics
+
+### Microbiome profiling: Kraken/Centrifuge
+
+# Ecological Modeling
+
+### Primary Biodiversity Data in R: GBIF, iNaturalist
+
+### Maxent Species Distribution Modeling
+
+# Catching up with Python
 
 
 

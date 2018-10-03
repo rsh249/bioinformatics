@@ -201,7 +201,21 @@ ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue
 <p>Spend some time parsing this output.</p>
 <p>Looking at the alignments can be informative. Often, however, you may just want summary data:</p>
 <pre class="bash"><code>ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6</code></pre>
-<p>The columns in this blast output format are: 1. qseqid query (e.g., gene) sequence id 2. sseqid subject (e.g., reference genome) sequence id 3. pident percentage of identical matches 4. length alignment length 5. mismatch number of mismatches 6. gapopen number of gap openings 7. qstart start of alignment in query 8. qend end of alignment in query 9. sstart start of alignment in subject 10. send end of alignment in subject 11. evalue expect value 12. bitscore</p>
+<p>The columns in this blast output format are:</p>
+<ol style="list-style-type: decimal">
+<li><pre><code> qseqid      query (e.g., gene) sequence id</code></pre></li>
+<li><pre><code> sseqid      subject (e.g., reference genome) sequence id</code></pre></li>
+<li><pre><code> pident      percentage of identical matches</code></pre></li>
+<li><pre><code> length      alignment length</code></pre></li>
+<li><pre><code> mismatch    number of mismatches</code></pre></li>
+<li><pre><code> gapopen     number of gap openings</code></pre></li>
+<li><pre><code> qstart      start of alignment in query</code></pre></li>
+<li><pre><code> qend    end of alignment in query</code></pre></li>
+<li><pre><code> sstart      start of alignment in subject</code></pre></li>
+<li><pre><code> send    end of alignment in subject</code></pre></li>
+<li><pre><code> evalue      expect value</code></pre></li>
+<li>bitscore</li>
+</ol>
 </div>
 
 
