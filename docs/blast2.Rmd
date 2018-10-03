@@ -40,7 +40,7 @@ setwd('C:/Users/rharbert/blast2')
 res = read.table('blastout.tab')
 head(res)
 colnames(res) = c('qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 'evalue', 'bitscore') 
-sam = res[sample(x=seq(1, nrow(res)), size = 5000),]
+sam = res[sample(x=seq(1, nrow(res)), size = 1000),]
 ```
 
 Then load ggplot and try some data visualization of your BLAST results.
@@ -117,7 +117,7 @@ How about this one? What's with that red bar? (Hint: the blue bars are opposite 
 
 ## Homework:
 
-Get data for mitochondria from gibbons and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
+Get data for mitochondria from platypus and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
 
 That should look something like this:
 
@@ -126,7 +126,7 @@ The mitochondrial sequences are located on the course GitHub repository
 ```{bash, eval=FALSE}
 curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/pan.fasta > data/pan.fa
 
-curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/hylobates.fasta > data/vulpes.fa
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/platypus.fasta > data/platypus.fa
 ```
 
 Then ...
@@ -135,7 +135,7 @@ Then ...
 ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/pan.fa -dbtype nucl -title pan
 
 
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/pan.fa -query data/vulpes.fa -outfmt 6 -max_target_seqs 1000 -evalue 10 -word_size 8  -out comp.out    
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/pan.fa -query data/platypus.fa -outfmt 6 -max_target_seqs 100 -evalue 1 -out comp.out    
 
 
 ```
@@ -147,17 +147,18 @@ library(genoPlotR)
 setwd('C:/Users/rharbert/blast2')
 
 tr <- read_dna_seg_from_fasta('data/pan.fa')
-ge <- read_dna_seg_from_fasta('data/vulpes.fa')
+ge <- read_dna_seg_from_fasta('data/platypus.fa')
 trvsge <- read_comparison_from_blast('comp.out')
-
 
 plot_gene_map(dna_segs=list(tr, ge),
   comparisons=list(trvsge),
-  main="Chimp and Wolf Mitochondria",
+  main="Chimp and Platypus Mitochondria",
   gene_type="side_blocks",
   dna_seg_scale=TRUE, 
   scale=TRUE)
 ```
 
+Once you have this working manipulate one of the parameters to blastn including: 'word_size', 'evalue', 'gapopen', or 'gapextend'.
 
-Then post to [#blast](https://bio200-bioinformatics.slack.com/messages/CD5UY3933) with a comment on your interpretation of the data you are showing.
+
+Then post at least two versions of the graph to [#blast](https://bio200-bioinformatics.slack.com/messages/CD5UY3933) with a comment on your interpretation of the data you are showing.
