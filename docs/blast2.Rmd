@@ -117,7 +117,7 @@ How about this one? What's with that red bar? (Hint: the blue bars are opposite 
 
 ## Homework:
 
-Get data for mitochondria from wolves and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
+Get data for mitochondria from gorillas and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
 
 That should look something like this:
 
@@ -126,18 +126,38 @@ The mitochondrial sequences are located on the course GitHub repository
 ```{bash, eval=FALSE}
 curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/pan.fasta > data/pan.fa
 
-curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/vulpes.fasta > data/vulpes.fa
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/gorilla.fasta > data/gorilla.fa
 ```
 
 Then ...
 
 ```{bash, eval =FALSE}
-ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/vulpes.fa -dbtype nucl -title vulpes
+ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/pan.fa -dbtype nucl -title pan
 
 
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/vulpes.fa -query data/pan.fa -outfmt 6 -max_target_seqs 1000 -evalue 10 -ungapped -num_threads 2 -out blastout.tab    
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/pan.fa -query data/hylobates.fa -outfmt 6 -max_target_seqs 1000 -evalue 10 -ungapped -word_size 4 -num_threads 2 -out primates.out    
 
 
 ```
 
-Load the complete output file into R and make a ggplot figure of at least 2 of the columns. You do NOT have to plot the same columns as I did above or in the same way. Then post to [#ggplot](https://bio200-bioinformatics.slack.com/messages/CCY83KSS2) with a comment on your interpretation of the data you are showing. Make your plots look good!
+And plot as before:
+
+```{r}
+library(genoPlotR)
+setwd('C:/Users/rharbert/blast2')
+
+tr <- read_dna_seg_from_fasta('data/pan.fa')
+ge <- read_dna_seg_from_fasta('data/hylobates.fa')
+trvsge <- read_comparison_from_blast('primates.tab')
+
+
+plot_gene_map(dna_segs=list(tr, ge),
+  comparisons=list(trvsge),
+  main="Chimp and Gibbon Mitochondria",
+  gene_type="side_blocks",
+  dna_seg_scale=TRUE, 
+  scale=TRUE)
+```
+
+
+Then post to [#blast](https://bio200-bioinformatics.slack.com/messages/CD5UY3933) with a comment on your interpretation of the data you are showing.
