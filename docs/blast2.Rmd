@@ -117,7 +117,7 @@ How about this one? What's with that red bar? (Hint: the blue bars are opposite 
 
 ## Homework:
 
-Get data for mitochondria from gorillas and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
+Get data for mitochondria from gibbons and chimps. Build a blast database from one and query the other. Then build a map of the blast hits.
 
 That should look something like this:
 
@@ -126,7 +126,7 @@ The mitochondrial sequences are located on the course GitHub repository
 ```{bash, eval=FALSE}
 curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/pan.fasta > data/pan.fa
 
-curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/gorilla.fasta > data/gorilla.fa
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/hylobates.fasta > data/vulpes.fa
 ```
 
 Then ...
@@ -135,7 +135,7 @@ Then ...
 ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/pan.fa -dbtype nucl -title pan
 
 
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/pan.fa -query data/hylobates.fa -outfmt 6 -max_target_seqs 1000 -evalue 10 -ungapped -word_size 4 -num_threads 2 -out primates.out    
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/pan.fa -query data/vulpes.fa -outfmt 6 -max_target_seqs 1000 -evalue 10 -word_size 8  -out comp.out    
 
 
 ```
@@ -147,13 +147,13 @@ library(genoPlotR)
 setwd('C:/Users/rharbert/blast2')
 
 tr <- read_dna_seg_from_fasta('data/pan.fa')
-ge <- read_dna_seg_from_fasta('data/hylobates.fa')
-trvsge <- read_comparison_from_blast('primates.tab')
+ge <- read_dna_seg_from_fasta('data/vulpes.fa')
+trvsge <- read_comparison_from_blast('comp.out')
 
 
 plot_gene_map(dna_segs=list(tr, ge),
   comparisons=list(trvsge),
-  main="Chimp and Gibbon Mitochondria",
+  main="Chimp and Wolf Mitochondria",
   gene_type="side_blocks",
   dna_seg_scale=TRUE, 
   scale=TRUE)
