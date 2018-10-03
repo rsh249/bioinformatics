@@ -121,12 +121,21 @@ Get data for mitochondria from wolves and chimps. Build a blast database from on
 
 That should look something like this:
 
-```{bash, eval=FALSE}
+The mitochondrial sequences are located on the course GitHub repository
 
+```{bash, eval=FALSE}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/pan.fasta > data/pan.fa
+
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/vulpes.fasta > data/vulpes.fa
+```
+
+Then ...
 
 ```{bash, eval =FALSE}
+ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/vulpes.fa -dbtype nucl -title vulpes
 
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/transcripts.fna -outfmt 6 -max_target_seqs 1 -evalue 1e-100 -ungapped -num_threads 2 -out blastout.tab    
+
+ncbi-blast-2.7.1+/bin/blastn.exe -db data/vulpes.fa -query data/pan.fa -outfmt 6 -max_target_seqs 1000 -evalue 10 -ungapped -num_threads 2 -out blastout.tab    
 
 
 ```
