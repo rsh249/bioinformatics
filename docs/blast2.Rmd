@@ -39,15 +39,21 @@ Start up RStudio and read the data in (your paths may be slightly different so c
 setwd('C:/Users/rharbert/blast2')
 res = read.table('blastout.tab')
 head(res)
-colnames(res) = c('qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 'evalue') 
+colnames(res) = c('qseqid', 'sseqid', 'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 'evalue', 'bitscore') 
+sam = res[sample(x=seq(1, nrow(res)), size = 5000),]
 ```
+
 Then load ggplot and try some data visualization of your BLAST results.
 
 ```{r}
 library(ggplot2)
-ggplot(data=res, aes(x=pident, y=evalue)) + geom_point()
+ggplot(data=sam, aes(x=pident, y=evalue)) + geom_point()
 
-ggplot(data=res, aes(x=length, y=evalue)) + geom_point()
+ggplot(data=sam, aes(x=evalue)) + geom_histogram(bins=10) 
+
+
+ggplot(data=sam, aes(x=length)) + geom_density() + xlim(c(0,800))
+
 
 ```
 

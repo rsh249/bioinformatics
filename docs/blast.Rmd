@@ -151,4 +151,5 @@ The columns in this blast output format are:
  9. 	 sstart 	 start of alignment in subject
  10. 	 send 	 end of alignment in subject
  11. 	 evalue 	 expect value
+ 12.  bitscore  
  
