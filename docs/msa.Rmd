@@ -1,0 +1,161 @@
+---
+title: "Multiple Sequence Alignment"
+author: "Prof. Harbert"
+date: "October 10, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Review BLAST plots
+
+[#blast](https://bio200-bioinformatics.slack.com/messages/CD5UY3933)
+
+### Linear vs. Exponential complexity
+
+*Discuss*: Which adds more complexity when comparing sequences or strings of text -- Adding length to the sequences or adding more sequences to the comparison?
+
+
+
+## Multiple Sequence Alignment
+
+MSA refers to the task of performing *global* alignments of nucleotide or protein sequences to assess total similarity or *Homology*. This is a fundamental task in Bioinformatics but also one of the single most challenging things to do algorithmically. It is for this reason that you should always be skeptical of MSA and any program that claims to do it well. They all fail sometimes and detecting that can be very difficult particularly when datasets are very large.
+
+Google Scholar pulls up 1.3 million hits for the search "Multiple sequence alignment algorithm":
+https://scholar.google.com/scholar?hl=en&as_sdt=0%2C22&q=multiple+sequence+alignment+algorithm&btnG=
+
+Here is a good paper that outlines some of the challenges that arise due to poor alignments in comparative genomics: https://scholar.google.com/scholar?hl=en&as_sdt=0%2C22&q=multiple+sequence+alignment+algorithm&btnG=
+
+Some papers comparing different programs for MSA:
+
+https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0018093&type=printable
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4015676/pdf/1748-7188-9-4.pdf
+
+https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-471
+
+
+
+### Prerequisites for MSA
+
+In order to perform an MSA properly you need:
+
++ Homologous sequences (from the same or related genes/sequence fragments)
++ Approximately the same starting length
++ Organized in one fasta formatted file.
+
+You can query sequences through NCBI: https://www.ncbi.nlm.nih.gov/
+
+And we may revisit finding homologous sequences next week with phylotaR: https://github.com/ropensci/phylotaR
+
+But for now we will work with some mitochondrial sequences that we have set up already.
+
+
+
+
+### Setting up a multisequence fasta file
+
+First, create a new working directory for today containing a directory named 'data':
+
+```{bash, eval=FALSE}
+mkdir msa
+cd msa
+mkdir data
+ls -l
+```
+
+Once in the new 'msa' directory download some mitochondrial sequences from the course repository:
+
+```{bash, eval=FALSE}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/pan.fasta > data/pan.fa
+
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/platypus.fasta > data/platypus.fa
+
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/vulpes.fasta > data/vulpes.fa
+
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/hylobates.fasta > data/hylobates.fa
+
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/gorilla.fasta > data/gorilla.fa
+
+```
+
+Then use *cat* to concatenate these files into one:
+
+```{bash, eval=FALSE}
+
+cd data
+cat pan.fa vulpes.fa hylobates.fa platypus.fa gorilla.fa > merged.fa
+
+```
+
+We now have one multisequence fasta file called 'merged.fa' that we can attempt to perform a multiple sequence alignment for.
+
+# Alignment Software: muscle
+
+We will use the alignment program Muscle.
+
+Paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC390337/pdf/gkh340.pdf
+
+Downloads: https://www.drive5.com/muscle/downloads.htm
+
+Manual: http://www.drive5.com/muscle/muscle_userguide3.8.html
+
+### Method outline:
+
+Step1: K-mer Distance - It is not time effective to compare every possible pair of sequences so we want to compare the most similar pairs of sequences first. Muscle does this by constructing a guide tree to sort similar sequences together. The method muscle uses is called "kmer clustering" where sequence similarity is measured by the number of "words" or kmers that two sequences have in common. 'Kmer' == nucleotide sequences of length k -- *Extra credit to the person who finds the default kmer length for this step in Muscle. These similarity scores then sort into a tree structure.
+
+Step 2: Align node -- Pairwise alignment of closely related sequences. "... progressing from the leaves towards the root." 
+
+Step 3: Root Alignment. Now that the program has a multiple sequence alignment (let's call it a draft) it builds a new distance matrix for all sequences (this time using strict % identities). The sequences are re-sorted and the pairwise alignment step is repeated. 
+
+Step 4: Refine biparts. Split sequences into two groups in the tree structure. Alignments are merged and the "profile alignment" for the two groups are compared. Muscle has a scoring algorithm that decides whether or not to keep each possible new alignment. If a new alignment is kept then each group of sequences is re-aligned to this new model. By doing all of this Muscle can iron out a lot of big patterns in your sequences (e.g. gaps, repeats). This step can be repeated many times to refine your alignment but at the cost of computational time. This step cannot be easily parallelized.
+
+Muscle terminates after a user specified number of iterations of Step 4, a maximum time threshold, or an alignment performance threshold.
+
+For more details on the algorithm see the Muscle paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC390337/pdf/gkh340.pdf
+
+
+
+### Downloads
+
+For Windows
+
+```{bash, eval=FALSE}
+curl https://www.drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86win32.exe > muscle
+
+#test:
+./muscle -version
+
+
+```
+
+For Mac
+
+```{bash, eval=FALSE}
+curl https://www.drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86darwin64.tar.gz > muscle.tar.gz
+
+tar -xzf muscle.tar.gz
+mv muscle3.8.31_i86darwin64 muscle
+./muscle --version
+
+```
+
+### A basic analysis:
+
+This runs a default Muscle alignment with 4 iterations. In Muscle that means 2 iterations of the Root alignment and 2 Refine biparts. Kind of counterintuitive. This takes about 7 minutes.
+
+```{bash, eval=FALSE}
+./muscle -in data/merged.fa -out out.fa -maxiters 4
+```
+
+
+### Homework:
+
+Look at the Muscle Manual: http://www.drive5.com/muscle/muscle_userguide3.8.html 
+
+Find and try at least two additional options, research what they are supposed to do and see if you can get them to work. Report back with a post to [#topics](https://bio200-bioinformatics.slack.com/messages/CCMH74VNY) by Monday about what you tried and how it went.
+
+
