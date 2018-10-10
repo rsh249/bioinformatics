@@ -51,11 +51,9 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 10: <a href='./blast2.html'> BLAST Continued
 
-### Day 11: Short read alignment: The Burrows-Wheeler Transform
-
 # Inferring Evolution
 
-### Multiple Sequence Alignment
+### Day 11: <a href='./msa.html'> Multiple Sequence Alignment
 
 ### Phylogenetic tree building
 
