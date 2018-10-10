@@ -1,6 +1,6 @@
 Links to potential Readings in Bioinformatics:
 https://rss.onlinelibrary.wiley.com/doi/10.1111/j.1740-9713.2018.01169.x #History of R
-
+http://library.open.oregonstate.edu/computationalbiology/
 
 #Ancient human pop-gen (Data available and methods OK).
 https://www.nature.com/articles/ncomms6257
