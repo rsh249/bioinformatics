@@ -55,6 +55,10 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 11: <a href='./msa.html'> Multiple Sequence Alignment
 
+### Day 12: Introduction to bash scripting
+
+### <a href='../files/BIO200A_MIDTERM_EXAM.docx'> Midterm Exam
+
 ### Phylogenetic tree building
 
 # Genomes
