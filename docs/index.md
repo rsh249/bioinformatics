@@ -55,7 +55,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 11: <a href='./msa.html'> Multiple Sequence Alignment
 
-### Day 12: Introduction to bash scripting
+### Day 12: <a href='./bash_script.html'> Introduction to bash scripting
 
 ### <a href='https://rsh249.github.io/bioinformatics/'> Midterm Exam
 

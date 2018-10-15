@@ -1,0 +1,25 @@
+---
+title: "Bash Scripting"
+author: "Prof. Harbert"
+date: "October 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Bash Scripting
+
+Today we are going to write reproducible bash scripts to perform a multiple sequence alignment analysis using Muscle on a new dataset. This illustrates the primary way to keep track of how a command line analysis was performed so that you can easily reproduce the analysis details. Scripts can easily be tweaked and re-run if you decide later that you want to change part of the job.
+
+The goal today will be to create a bash script that will read a fasta file, print the number of characters in the file, align it using Muscle, and then print the number of characters in the final alignment. We will expand on this on Wednesday to then perform a Phylogenetic analysis on the aligned data.
+
+### Data
+
+We will be using a new fasta file today that contains sequences from the Cytochrome C Oxidase gene for humans, chimps, 
+
+
+```{bash, eval=FALSE}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/homologene.fa
+```
