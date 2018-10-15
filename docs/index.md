@@ -57,7 +57,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 12: Introduction to bash scripting
 
-### <a href='../files/BIO200A_MIDTERM_EXAM.docx'> Midterm Exam
+### <a href='https://rsh249.github.io/bioinformatics/'> Midterm Exam
 
 ### Phylogenetic tree building
 
