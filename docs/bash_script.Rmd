@@ -172,20 +172,20 @@ On Wednesday we are going to use the program [RAxML](https://sco.h-its.org/exeli
 
 What do we mean by a phylogenetic tree? To get started let's think about how the organisms in our CO1 alignment are related. You all probably know these already.
 
-Schizosaccharomyces pombe (fungus)
-Arabidopsis (plant)
-Kluyveromyces lactis (fungus)
-Eremothecium gossypii (fungus)
-C. elegans (roundworm)
-A. gambiae (mosquito)
-D. melanogaster (fruit fly)
-G. gallus (chicken)
-H. sapiens (human)
-P. troglodytes (chimp)
-B. taurus (cow)
-R. norvegicus (rat)
-X. tropicalis (frog)
-D. rerio (fish)
++ Schizosaccharomyces pombe (fungus)
++ Arabidopsis (plant)
++ Kluyveromyces lactis (fungus)
++ Eremothecium gossypii (fungus)
++ C. elegans (roundworm)
++ A. gambiae (mosquito)
++ D. melanogaster (fruit fly)
++ G. gallus (chicken)
++ H. sapiens (human)
++ P. troglodytes (chimp)
++ B. taurus (cow)
++ R. norvegicus (rat)
++ X. tropicalis (frog)
++ D. rerio (fish)
 
 Can you arrange these into natural groups?
 
