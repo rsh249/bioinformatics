@@ -32,6 +32,8 @@ We will be using a new fasta file today that contains sequences from the Cytochr
 
 curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/homologene.fa > data/co1.fa
 
+```
+
 
 ## Scripting
 
@@ -162,3 +164,38 @@ echo "Muscle added $wcchange characters.\n"
 
 
 ```
+
+
+# Next: Phylogenetic tree building
+
+On Wednesday we are going to use the program [RAxML](https://sco.h-its.org/exelixis/web/software/raxml/index.html) to attempt to build a phylogenetic tree from our multiple sequence alignment of CO1. The assumption now is that we have created fully homologous sequences where each position in the aligned sequence is comparable due to common ancestry. We will explore RAxML settings and then add a suitable command to our bash script so that it will do the alignment and tree building all together.
+
+What do we mean by a phylogenetic tree? To get started let's think about how the organisms in our CO1 alignment are related. You all probably know these already.
+
+Schizosaccharomyces pombe (fungus)
+Arabidopsis (plant)
+Kluyveromyces lactis (fungus)
+Eremothecium gossypii (fungus)
+C. elegans (roundworm)
+A. gambiae (mosquito)
+D. melanogaster (fruit fly)
+G. gallus (chicken)
+H. sapiens (human)
+P. troglodytes (chimp)
+B. taurus (cow)
+R. norvegicus (rat)
+X. tropicalis (frog)
+D. rerio (fish)
+
+Can you arrange these into natural groups?
+
+
+### Homework: Reading
+
+To prepare please read: http://science.sciencemag.org/content/sci/310/5750/979.full.pdf
+
+
+
+
+
+
