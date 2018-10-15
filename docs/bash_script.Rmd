@@ -15,11 +15,150 @@ Today we are going to write reproducible bash scripts to perform a multiple sequ
 
 The goal today will be to create a bash script that will read a fasta file, print the number of characters in the file, align it using Muscle, and then print the number of characters in the final alignment. We will expand on this on Wednesday to then perform a Phylogenetic analysis on the aligned data.
 
+Lets work in the 'msa' folder you all made last week that has Muscle in it.
+
+```{bash, eval=FALSE}
+
+cd ~/msa
+
+```
+
 ### Data
 
-We will be using a new fasta file today that contains sequences from the Cytochrome C Oxidase gene for humans, chimps, 
+We will be using a new fasta file today that contains sequences from the Cytochrome C Oxidase gene for some animals. 
 
 
 ```{bash, eval=FALSE}
-curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/homologene.fa
+
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/homologene.fa > data/co1.fa
+
+
+## Scripting
+
+For the next part we will use nano to create and edit a bash script. Then we will run this on the command line, observe the output, and edit the script accordingly to meet our goals.
+
+First up. A basic bash script looks like this:
+
+```{bash, eval=FALSE}
+#!/usr/bin/bash
+
+echo "This is a bash script. Welcome!"
+
+
+```
+
+Open nano and put this into a new file called 'script'. Remember that to quit nano you type ctrl+O to save and then ctrl+X to exit.
+
+```{bash, eval=FALSE}
+
+nano script
+
+```
+
+
+### Adding commands to a script
+
+Let's copy the muscle alignment line to the bash script we have.
+
+```{bash, eval=FALSE}
+#!/usr/bin/bash
+
+echo "This is a bash script running Muscle. Welcome!"
+
+./muscle -in data/co1.fa -out out.fa -maxiters 4
+
+```
+
+Run that script and see what you happens.
+
+```{bash, eval=FALSE}
+
+./script
+
+```
+
+### Variables
+
+To make this reusable and easily edited we will make the file names into variables that we assign at the start of the script.
+
+```{bash, eval=FALSE}
+#!/usr/bin/bash
+echo "This is a bash script. Welcome!"
+
+#Set up variables
+infile='data/co1.fa'
+outfile='out.fa'
+
+
+./muscle -in $infile -out $outfile -maxiters 4
+
+
+```
+
+### Add functionality
+
+Initially we said we would make a script that gives some additional information about the file before and after the alignment is done. Let's add that now.
+
+```{bash, eval=FALSE}
+#!/usr/bin/bash
+echo "This is a bash script. Welcome!"
+
+#Set up variables
+infile='data/co1.fa'
+outfile='out.fa'
+
+wc -m $infile
+
+./muscle -in $infile -out $outfile -maxiters 4
+
+wc -m $outfile
+
+
+```
+
+This is OK, but we can do better by capturing the output of wc to a bash variable. If we use cat to pipe the data to wc then what we catch is just the number of characters in the file.
+
+```{bash, eval=FALSE}
+#!/usr/bin/bash
+echo "This is a bash script. Welcome!"
+
+#Set up variables
+infile='data/co1.fa'
+outfile='out.fa'
+
+wcin=$(cat $infile | wc -m)
+
+
+./muscle -in $infile -out $outfile -maxiters 4
+
+wcout=$(cat $outfile | wc -m)
+
+echo "Muscle aligned a $wcin character matrix to $wcout character alignment.\n"
+
+
+
+```
+
+If we want to just say how many characters were added we can use the bash command "expr" to evaluate a math statement. This is one of those times where bash is way clunkier than R or Python.
+
+```{bash, eval=FALSE}
+#!/usr/bin/bash
+echo "This is a bash script. Welcome!"
+
+#Set up variables
+infile='data/co1.fa'
+outfile='out.fa'
+
+wcin=$(cat $infile | wc -m)
+
+
+./muscle -in $infile -out $outfile -maxiters 4
+
+wcout=$(cat $outfile | wc -m)
+
+wcchange=$(expr $wcout - $wcin)
+
+echo "Muscle added $wcchange characters.\n"
+
+
 ```
