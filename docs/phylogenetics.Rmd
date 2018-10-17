@@ -47,6 +47,37 @@ RAxML is a very common program to use for phylogenetic tree construction these d
 
 ### Download RAxML Executables
 
-RAxML is distributed as source code [here]()
+RAxML is distributed as source code [on GitHub]().
+
+Mac Users have it easy and can retrieve the compiled program with:
+
+```{bash, eval=FALSE}
+curl https://www.sfu.ca/biology2/staff/dc/raxml/raxml/raxmlHPC-AVX-v8.zip > raxml.zip
+
+unzip raxml.zip
+
+mv raxmlHPC-AVX-v8/raxml ./raxml
+
+
+
+```
+
+
+Windows users can use:
+
+```{bash, eval =FALSE}
+
+curl https://github.com/stamatak/standard-RAxML/raw/master/WindowsExecutables_v8.2.10/raxmlHPC-AVX.exe
+
+mv raxmlHPC-AVX.exe raxml
+
+```
+
+Now we can run RAxML.
+
+```{bash, eval = FALSE}
+./raxml -p 100 -s 
+
+```
 
 
