@@ -1,0 +1,52 @@
+---
+title: "Phylogenetics Crash Course"
+author: "Prof. Harbert"
+date: "October 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Next: Phylogenetic tree building
+
+Today we will be using [RAxML](https://sco.h-its.org/exelixis/web/software/raxml/index.html) to build a phylogenetic tree of the taxa below using our aligned CO1 matrix. Once we get this to work we will add the RAxML command to our bash script to start building a small pipeline to perform the MSA and phylogenetic tree construction together.
+
+Organisms:
+
++ Schizosaccharomyces pombe (fungus)
++ Arabidopsis (plant)
++ Kluyveromyces lactis (fungus)
++ Eremothecium gossypii (fungus)
++ C. elegans (roundworm)
++ A. gambiae (mosquito)
++ D. melanogaster (fruit fly)
++ G. gallus (chicken)
++ H. sapiens (human)
++ P. troglodytes (chimp)
++ B. taurus (cow)
++ R. norvegicus (rat)
++ X. tropicalis (frog)
++ D. rerio (fish)
+
+## Focus Activity
+
+Last time we arranged these into natural groups based on shared features. Based on your [reading](http://science.sciencemag.org/content/sci/310/5750/979.full.pdf) try to build a tree structure to relate the above organisms to one another. This will be the hypothesis that we test with our molecular phylogeny from RAxML.
+
+### Phylogenetics Note
+
+The field of phylogenetics has sustained a searing debate over methods for the last couple decades. We will not get into that here, but instead will focus on the current "best practices" that you may encounter. The major methods you should be aware of are Maximum Likelihood, Bayesian, and Parsimony. These refer to the statistic used to calculate tree optimality. 
+
+Parsimony is the simplest and counts changes in nucleotides (characters) across the tree. The best tree is the one with the fewest changes (the most shared characters between sister branches). This kind of statistic is similar to what we did in the focus activity.
+
+However, we know that given enough evolutionary time any given position in the genome may have had multiple nucleotide changes and that we may only observe a subset of all of the "real" changes that have occurred by looking at the modern sequence. Both Maximum Likelihood and Bayesian methods attempt to solve this problem by applying probability models of base substitutions to correct for these unseen changes. These probability models are typically chosen ahead of time or based on the sequence data. For example, in an alignment you may have more Gs and Cs than As and Ts. This might suggest that it is more likely to have an A->C change than the reverse. Maximum Likelihood uses regular frequentist probability models for base changes in a tree. Bayesian methods use a Bayesian probability framework that attempts to account for tree parameters as well.
+
+RAxML is a very common program to use for phylogenetic tree construction these days. It is the premier Maximum Likelihood phylogenetics program. We will focus on some basic tree building with RAxML today.
+
+### Download RAxML Executables
+
+RAxML is distributed as source code [here]()
+
+
