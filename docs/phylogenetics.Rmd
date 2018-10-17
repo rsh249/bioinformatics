@@ -67,11 +67,46 @@ Windows users can use: https://github.com/stamatak/standard-RAxML/raw/master/Win
 
 Download that and copy it manually into your 'msa' directory.
 
+Then: 
 
-Now we can run RAxML.
+```{bash, eval=FALSE}
+mv raxmlHPC-AVX.exe raxml
+
+```
+
+
+Next we need to convert our fasta file to something RAxML can read called a phylip file. To do this we need a little helper script and we need to get rid of some | characters in the fasta file headers.
+
+```{bash, eval =FALSE}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/docs/scripts/convert.sh > convert.sh
+
+sed 's/|.*|://' out.fa > out2.fa #shorten the fasta header
+sed 's/\s//' out2.fa > out3.fa #shorten the fasta header
+
+./convert.sh out3.fa > out.phy
+
+```
+Now we can hopefully run RAxML.
 
 ```{bash, eval = FALSE}
-./raxml -p 100 -s 
+./raxml -p 100 -s out.phy -m GTRCAT -n tree
+
+```
+
+That should have been fast.
+
+Now start RStudio and try (You may have to install some stuff):
+
+```{R, eval = FALSE}
+library("ape")
+library("ggplot2")
+library("ggtree")
+setwd("~/msa")
+tree <- read.tree("RAxML_bestTree.tree")
+tree
+
+ggtree(tree) + geom_tiplab()
+
 
 ```
 
