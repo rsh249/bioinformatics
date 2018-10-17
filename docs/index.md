@@ -59,7 +59,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### <a href='https://github.com/rsh249/bioinformatics/raw/master/files/BIO200A_MIDTERM_EXAM.docx'> Midterm Exam
 
-### Phylogenetic tree building
+### <a href='./phylogenetics.html'> Phylogenetic tree building
 
 # Genomes
 
