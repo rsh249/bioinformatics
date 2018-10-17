@@ -63,15 +63,10 @@ mv raxmlHPC-AVX-v8/raxml ./raxml
 ```
 
 
-Windows users can use:
+Windows users can use: https://github.com/stamatak/standard-RAxML/raw/master/WindowsExecutables_v8.2.10/raxmlHPC-AVX.exe
 
-```{bash, eval =FALSE}
+Download that and copy it manually into your 'msa' directory.
 
-curl https://github.com/stamatak/standard-RAxML/raw/master/WindowsExecutables_v8.2.10/raxmlHPC-AVX.exe
-
-mv raxmlHPC-AVX.exe raxml
-
-```
 
 Now we can run RAxML.
 
