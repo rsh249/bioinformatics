@@ -1,0 +1,53 @@
+---
+---
+title: "Phylogenetics II"
+author: "Prof. Harbert"
+date: "October 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Corrections for Phylogenetics Lesson
+
+Last week we had some trouble getting RAxML to work for everyone that wanted to create a phylogenetic tree for our organisms:
+
++ Schizosaccharomyces pombe (fungus)
++ Arabidopsis (plant)
++ Kluyveromyces lactis (fungus)
++ Eremothecium gossypii (fungus)
++ C. elegans (roundworm)
++ A. gambiae (mosquito)
++ D. melanogaster (fruit fly)
++ G. gallus (chicken)
++ H. sapiens (human)
++ P. troglodytes (chimp)
++ B. taurus (cow)
++ R. norvegicus (rat)
++ X. tropicalis (frog)
++ D. rerio (fish)
+
+Today we will solve our file conversion issues so that we get valid phylip files for input to RAxML.
+
+### New Script
+
+To save time here is the code for the updated script:
+
+```{bash, eval=FALSE}
+
+```
+
+Changes made:
++ Use bash substitutions to trim taxon names from the fasta headers first.
++ Change output of Muscle from -out to -phyiout. This flag outputs the aligned sequences as an "Interleaved phylip file".
++ Added iterations to muscle (now 10)
++ Added call to an R script for plotting your trees.
+
+You will need to download the R script for tree plotting like this:
+
+```{bash, eval=FALSE}
+curl 
+```

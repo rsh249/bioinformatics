@@ -59,7 +59,13 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### <a href='https://github.com/rsh249/bioinformatics/raw/master/files/BIO200A_MIDTERM_EXAM.docx'> Midterm Exam
 
-### <a href='./phylogenetics.html'> Phylogenetic tree building
+### Day 13: <a href='./phylogenetics.html'> Phylogenetic tree building
+
+### Day 14A: <a href='./phylogenetics2.html'> Phylogenetics II
+
+# Open Science + Course Projects
+
+### Day 14B: <a href='./opensci.html'> Open Science, bioRxiv, and course projects
 
 # Genomes
 
