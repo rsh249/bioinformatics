@@ -43,7 +43,6 @@ Let's have a look around https://www.biorxiv.org/collection/bioinformatics for r
 
 Details can be found [here](https://github.com/rsh249/bioinformatics/raw/master/files/BIO200A_biorxiv_project.docx)
 
-
 # Homework: 
 
 Find a repository that your instructor created and try to figure out what it does. This will be varying degrees of difficult depending on how well the repository is documented. Submit answers to [#git](https://bio200-bioinformatics.slack.com/messages/CCQL816TC) and collaborate with other students who pick the same repository.
