@@ -150,16 +150,17 @@ $(document).ready(function () {
 <p>To save time here is the code for the updated script:</p>
 <pre class="bash"><code>
 #!/bin/bash
-echo &quot;This is a bash script to do multiple sequence alignment with muscle and phylogenetic tree construction with RAxML. Welcome!&quot;
+echo &quot;This is a bash script to do multiple sequence alignment with
+muscle and phylogenetic tree construction with RAxML. Welcome!&quot;
 
 #Set up variables
 infile='data/co1.fa'
 outfile='out.phy'
-jobname='tree1'
+jobname='tree2'
 mu_maxiters=10
 
 #Trim taxon names out of fasta header
-cat $infile | awk -F &quot; &quot; '{if($2 ~ /[A-Za-z_0-9]/){print &quot;&gt;&quot; $2}else{print $0}}' &gt; trim.fa
+cat $infile |  sed &quot;s/[|]//g&quot; | awk -F &quot; &quot; '{if($2 ~ /[A-Za-z_0-9]/){print &quot;&gt;&quot; $2                                         }else{print $0}}' &gt; trim.fa
 
 wcin=$(cat trim.fa | wc -m)
 
@@ -175,9 +176,6 @@ echo &quot;Muscle added $wcchange characters.\n&quot;
 ./raxml -p 12345 -s $outfile -m GTRCAT -n $jobname
 
 echo &quot;RAxML Finished!&quot;
-
-#remove intermediate files:
-rm trim.fa
 </code></pre>
 <p>Changes made: + Use bash substitutions to trim taxon names from the fasta headers first. + Change output of Muscle from -out to -phyiout. This flag outputs the aligned sequences as an “Interleaved phylip file”. + Added iterations to muscle (now 10)</p>
 <p>Then you should be able to run the new script.</p>

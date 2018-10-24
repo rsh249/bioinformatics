@@ -39,16 +39,17 @@ To save time here is the code for the updated script:
 ```{bash, eval=FALSE}
 
 #!/bin/bash
-echo "This is a bash script to do multiple sequence alignment with muscle and phylogenetic tree construction with RAxML. Welcome!"
+echo "This is a bash script to do multiple sequence alignment with
+muscle and phylogenetic tree construction with RAxML. Welcome!"
 
 #Set up variables
 infile='data/co1.fa'
 outfile='out.phy'
-jobname='tree1'
+jobname='tree2'
 mu_maxiters=10
 
 #Trim taxon names out of fasta header
-cat $infile | awk -F " " '{if($2 ~ /[A-Za-z_0-9]/){print ">" $2}else{print $0}}' > trim.fa
+cat $infile |  sed "s/[|]//g" | awk -F " " '{if($2 ~ /[A-Za-z_0-9]/){print ">" $2                                         }else{print $0}}' > trim.fa
 
 wcin=$(cat trim.fa | wc -m)
 
@@ -65,8 +66,6 @@ echo "Muscle added $wcchange characters.\n"
 
 echo "RAxML Finished!"
 
-#remove intermediate files:
-rm trim.fa
 
 ```
 
