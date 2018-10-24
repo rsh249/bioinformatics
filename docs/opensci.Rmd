@@ -37,7 +37,9 @@ The number one most common way to share code is on GitHub. See your [instructor'
 
 One great way to rapidly publish new science and simultaneously ensure that there is free access to your work is through publishing Preprints. These are documents that are posted to public websites that archive the work on the web. In biology the bioRxiv project is the primary repository for preprints.
 
-Let's have a look around https://www.biorxiv.org/collection/bioinformatics for recent preprints in bioinformatics. 0=
+Let's have a look around https://www.biorxiv.org/collection/bioinformatics for recent preprints in bioinformatics. 
+
+WARNING: Preprints have NOT been peer reviewed for quality and soundness of science. Use information from preprints at your own risk. But sometimes that's necessary to keep up with cutting edge research.
 
 # The Course Project
 

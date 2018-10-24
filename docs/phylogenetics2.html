@@ -206,16 +206,18 @@ ggtree(tree) + geom_tiplab()</code></pre>
 <h3>Bootstrapping</h3>
 <p>The way that RAxML (and all phylogenetics programs) work is by first building a draft tree structure (based on sequence distance, %similarity, or parsimony criteria). This initial tree is then manipulated to change branch pairings and branch lengths to see what improves the model. IF a change makes the likelihood greater then it is kept and more changes are tried. All of this injects a level of <em>randomness</em> into the tree searching algorithms. This means that you could get different arrangements on different runs or with slight variation in your dataset.</p>
 <p>To account for potential variation you should use a Bootstrap analysis. This works like a regular statistical bootstrap where the initial data are resampled n times and the analysis is run for each of n samples. Then the consensus outcome represents the most reliable parts of the outcome.</p>
-<p>To do this in RAxML we set the flag -N:</p>
+<p>To do this in RAxML we set the flag -f -x and -N:</p>
 <pre class="bash"><code>
-./raxml -p 12345 -N 20 -s out.phy -m GTRCAT -n boot1
+./raxml -f a -p 12345 -x 12345 -N 20 -s out.phy -m GTRCAT -n boot1
 </code></pre>
+<p>And we need a second call to raxml to summarize the 20 trees into one “consensus” tree.</p>
+<pre class="bash"><code>./raxml -f b -t ref -z RAxML_bootstrap.boot1 -m GTRCAT -n consensus</code></pre>
 <p>And do a slightly different ggtree plotting method:</p>
 <pre class="r"><code>setwd('C:/Users/rharbert/msa')
-tree &lt;- read.tree('RAxML_bestTree.tree1')
+tree &lt;- read.tree('RAxML_bipartitions.boot1')
 tree
 
-ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='grey')</code></pre>
+ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='red')</code></pre>
 </div>
 </div>
 <div id="homework" class="section level1">
