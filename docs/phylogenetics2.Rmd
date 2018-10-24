@@ -38,16 +38,101 @@ To save time here is the code for the updated script:
 
 ```{bash, eval=FALSE}
 
+#!/bin/bash
+echo "This is a bash script to do multiple sequence alignment with muscle and phylogenetic tree construction with RAxML. Welcome!"
+
+#Set up variables
+infile='data/co1.fa'
+outfile='out.phy'
+jobname='tree1'
+mu_maxiters=10
+
+#Trim taxon names out of fasta header
+cat $infile | awk -F " " '{if($2 ~ /[A-Za-z_0-9]/){print ">" $2}else{print $0}}' > trim.fa
+
+wcin=$(cat trim.fa | wc -m)
+
+./muscle -in trim.fa -phyiout $outfile -maxiters $mu_maxiters
+
+wcout=$(cat $outfile | wc -m)
+
+wcchange=$(expr $wcout - $wcin)
+
+echo "Muscle added $wcchange characters.\n"
+
+
+./raxml -p 12345 -s $outfile -m GTRCAT -n $jobname
+
+echo "RAxML Finished!"
+
+#remove intermediate files:
+rm trim.fa
+
 ```
 
 Changes made:
 + Use bash substitutions to trim taxon names from the fasta headers first.
 + Change output of Muscle from -out to -phyiout. This flag outputs the aligned sequences as an "Interleaved phylip file".
 + Added iterations to muscle (now 10)
-+ Added call to an R script for plotting your trees.
 
-You will need to download the R script for tree plotting like this:
+Then you should be able to run the new script.
+
+```{bash, eval = FALSE}
+#either:
+bash script
+#or
+./script
+
+```
+
+Look at the tree in RStudio:
+
+First install a couple new packages:
+```{R, eval=FALSE}
+install.packages('devtools') #fingers crossed
+install.packages('dplyr')
+library(devtools)
+devtools::install_github('GuangchuangYu/ggtree')
+```
+
+```{R, eval =FALSE}
+library("ape")
+library("ggplot2")
+library("ggtree")
+
+setwd('C:/Users/rharbert/msa')
+tree <- read.tree('RAxML_bestTree.tree1')
+tree
+
+ggtree(tree) + geom_tiplab()
+```
+
+### Bootstrapping
+
+The way that RAxML (and all phylogenetics programs) work is by first building a draft tree structure (based on sequence distance, %similarity, or parsimony criteria). This initial tree is then manipulated to change branch pairings and branch lengths to see what improves the model. IF a change makes the likelihood greater then it is kept and more changes are tried. All of this injects a level of *randomness* into the tree searching algorithms. This means that you could get different arrangements on different runs or with slight variation in your dataset.
+
+To account for potential variation you should use a Bootstrap analysis. This works like a regular statistical bootstrap where the initial data are resampled n times and the analysis is run for each of n samples. Then the consensus outcome represents the most reliable parts of the outcome.
+
+To do this in RAxML we set the flag -N:
 
 ```{bash, eval=FALSE}
-curl 
+
+./raxml -p 12345 -N 20 -s out.phy -m GTRCAT -n boot1
+
 ```
+
+And do a slightly different ggtree plotting method:
+
+```{R, eval=FALSE}
+setwd('C:/Users/rharbert/msa')
+tree <- read.tree('RAxML_bestTree.tree1')
+tree
+
+ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='grey')
+```
+
+# Homework:
+
+Edit your script (or a new one) to do a muscle alignment with 100 iterations and a bootstrap analysis with RAxML with 100 replicates. Create ggtree figures of the output and post to [#trees](https://bio200-bioinformatics.slack.com/messages/CDMEAPW2Y)
+
+[Home](https://rsh249.github.io/bioinformatics)
