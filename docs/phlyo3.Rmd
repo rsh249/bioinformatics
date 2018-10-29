@@ -1,0 +1,80 @@
+---
+title: 'Phylogenetics 3: Bootstrap visualization'
+author: "Prof. Harbert"
+date: "October 29, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Wrap up from RAxML Homework:
+
+Hopefully you got a RAxML job to run and put the code into your script to link muscle and RAxML into one pipeline.
+
+Today we will cover the Bootstrap procedure and show one way to summarize the results of that analysis.
+
+### Bootstrap
+
+For a quick discussion of bootstrapping see last week's [lecture](https://rsh249.github.io/bioinformatics/phylogenetics2.html)
+
+To do a RAxML bootstrap we set the flag -f -x and -N: This one will do 20 iterations of the tree construction with sampled aligned sequence data.
+
+```{bash, eval=FALSE}
+
+./raxml -f a -p 12345 -x 12345 -N 20 -s out.phy -m GTRCAT -n boot1
+
+```
+
+And we need a second call to raxml to summarize the 20 trees into one "consensus" tree.
+
+```{bash, eval=FALSE}
+./raxml -f b -t ref -z RAxML_bootstrap.boot1 -m GTRCAT -n consensus
+```
+
+
+### Failsafe
+
+If all else fails with RAxML we can download a consensus tree I generated earlier:
+
+```{bash, eval=FALSE}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/RAxML_bipartitions.boot1
+
+```
+
+### ggtree
+
+Attempt to install ggtree and we will spend some time troubleshooting your problems.
+
+Try:
+
+```{R, eval = FALSE}
+install.packages('devtools') #fingers crossed
+install.packages('dplyr')
+library(devtools)
+devtools::install_github('GuangchuangYu/ggtree')
+```
+
+You *may* need to install Rtools for Windows systems: https://cran.r-project.org/bin/windows/Rtools/ *Use Rtools35.exe
+
+IF you get unmet dependencies and the regular install.packages() fails to fix it try to find those missing repositories on GitHub and use: (replace with path to repository you want)
+
+```{R, eval = FALSE}
+devtools::install_github('unmet/dependencies')
+```
+
+### Plotting bootstrap tree:
+
+If we get ggtree to work then we can plot it with the bootstrap support values as:
+
+```{R, eval=FALSE}
+setwd('C:/Users/rharbert/msa')
+tree <- read.tree('RAxML_bipartitions.boot1')
+tree
+
+ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='red')
+```
+
+Next: [Working with Git](https://rsh249.github.io/bioinformatics/git.html)
+

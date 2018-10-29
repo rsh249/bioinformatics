@@ -1,0 +1,44 @@
+---
+title: "Working with Git"
+author: "Prof. Harbert"
+date: "October 29, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### What is GitHub?
+
+GitHub is a site for project management that is often used for storing and distributing coding and programming projects. The Git software provides tools that track and record every change that is made to any document in the repository and then posts the current versions and the change log to a central repository (i.e., on GitHub). It's complicated, but git can be used to reconstruct any past version of a file since the point where it was added to the repository.
+
+You should be familiar with how Git repositories work and how to add and retrieve content. You also need to know how to interact with the GitHub community and how to get in touch with developers of code that you may be using from GitHub. Today we will tour some of the main features.
+
+Last time you should have made a GitHub account. Have those credentials handy as we go forward.
+
+### GitHub Desktop
+
+Git is a set of command line tools. They are a pain to learn as a novice and remember even as someone who uses git a lot. For those reasons I highly recommend using the GitHub Desktop app. 
+
+Download GitHub Desktop [here](https://desktop.github.com/) and install it on your laptop. When prompted, sign in.
+
+Goals:
+
++ Create a new repository and add content. We will add your muscle->raxml scripts.
++ Make some changes and update your repository.
++ Fork someone else's repository for your own use.
++ Via the website, check Issues and submit a comment or suggested fix.
+
+## Homework:
+
+Do not forget that your project proposals are due on Monday, November 5th!
+
+
+
+
+
+
+
+
+[home](https://rsh249.github.io/bioinformatics)

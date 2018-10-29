@@ -63,13 +63,17 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 14A: <a href='./phylogenetics2.html'> Phylogenetics II
 
+### Day 15A: <a href='./phylo3.html'> Phylogenetics III: Bootstraps
+
 # Open Science + Course Projects
 
-### Day 14B: <a href='./opensci.html'> Open Science, bioRxiv, and course projects
+### Day 14B: <a href='./opensci.html'> Open Science, bioRxiv, and course projects **Not covered during lecture**
+
+### Day 15B: <a href='./git.html'>
 
 # Genomes
 
-### Cancer resequencing
+### Read mapping and finding variants
 
 # Metagenomics
 
