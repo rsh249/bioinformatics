@@ -69,7 +69,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### Day 14B: <a href='./opensci.html'> Open Science, bioRxiv, and course projects **Not covered during lecture**
 
-### Day 15B: <a href='./git.html'>
+### Day 15B: <a href='./git.html'> Working with Git
 
 # Genomes
 
