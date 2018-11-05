@@ -73,7 +73,9 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 # Genomes
 
-### Read mapping and finding variants
+### Getting Set Up: <a href = './conda.html'> Package Management with Conda
+
+### Read mapping, finding variants, and viewing genome alignments.
 
 # Metagenomics
 

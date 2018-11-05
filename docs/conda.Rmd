@@ -1,0 +1,92 @@
+---
+title: "Package Management with Anaconda"
+author: "Prof. Harbert"
+date: "November 5, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Aims:
+
++ Review the Burrows-Wheeler Transform. If you have not already, please review the BWT lecture video from last week.
++ Learn about software package management using Anaconda.
++ Discuss the plan: For the next week or so we will be learning about working with whole genome sequencing data by processing some raw data from a Zika virus sequencing experiment. We will assess sequencing quality using 'fastqc', map reads with the Burrows-Wheeler Transform and the program 'bwa', convert read mappings to fasta sequence, and attempt to place the sequenced genome in a phylogenetic tree of published Zika genomes. We will get as far as we can in the next two sessions.
++ Tour NCBI [resources](https://www.ncbi.nlm.nih.gov/)
++ Install and test out some software through Anaconda. 
++ Get some preliminary data from a sequencing project.
+
+
+## Anaconda
+
+The Anaconda package manager (or 'conda' in shorthand) is an extremely useful code management tool in Bioinformatics and beyond. We will use the popular "bioconda" channel to download and install a variety of software today and for the rest of the semester. Conda takes a little effort to get set up and manage, but makes things like installing a program (e.g., raxml or muscle) much easier and more portable.
+
+For example, if you wanted to install muscle so that it would be available from anywhere on your machine (in the "PATH") you could use conda as:
+
+```{bash, eval = FALSE}
+conda install -c bioconda muscle
+```
+
+Then try it out by typing:
+
+```{bash, eval=FALSE}
+muscle -version
+```
+
+Note that these are all just command line calls. You can (and should!) put these install commands into a script in any project folder so that you can easily move from one machine to another as long as you have Anaconda installed.
+
+## SRA Tools  
+
+In support of our aims to work with raw sequencing data we will be accessing files from the NCBI Sequence Read Archive. To do that we will need to install the SRA Toolkit. We can do this with conda with:
+
+```{bash, eval =FALSE}
+conda install -c bioconda sra-tools
+```
+
+SRA Tools provides a number of utilities for uploading, downloading, and processing sequence data. We will primarily use it for downloading.
+
+## Download sequence data for Zika virus
+
+Use sra-tools utility fastq-dump to download a fastq file for a sequencing project on the Zika virus.
+
+```{bash, eval=FALSE}
+
+fastq-dump -A "SRR7694205"
+
+```
+
+## Entrez-Direct: Searching other NCBI databases
+
+Entrez-Direct provides a nubmer of tools for searching other NCBI databases (including Pubmed as well as the data portals for nucleotide, protein sequence). We will use conda to install as:
+
+```{bash, eval=FALSE}
+
+conda install -c bioconda entrez-direct
+
+```
+
+```{bash, eval=FALSE}
+
+esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > zika_ref.fa
+
+head zika_ref.fa
+
+```
+
+## Homework: Other software to Install
+
+We will be working with these packages later. For homework try installing each of these programs and report any errors to [#Slack](https://bio200-bioinformatics.slack.com/messages/CC56N6QTW) discussion.
+
+Run one line at a time:
+
+```{bash, eval=FALSE}
+
+conda install -c fastqc
+conda install -c bwa
+conda install -c samtools
+conda install -c raxml
+conda install -c muscle #if not already done from example
+conda install -c igv
+
+```
