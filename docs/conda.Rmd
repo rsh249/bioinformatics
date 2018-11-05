@@ -82,11 +82,11 @@ Run one line at a time:
 
 ```{bash, eval=FALSE}
 
-conda install -c fastqc
-conda install -c bwa
-conda install -c samtools
-conda install -c raxml
-conda install -c muscle #if not already done from example
-conda install -c igv
+conda install -c bioconda fastqc
+conda install -c bioconda bwa
+conda install -c bioconda samtools
+conda install -c bioconda raxml
+conda install -c bioconda muscle #if not already done from example
+conda install -c bioconda igv
 
 ```
