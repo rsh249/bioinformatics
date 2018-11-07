@@ -82,4 +82,12 @@ fastqc SRR7694205_* #This will run fastqc twice, once for each read file
 
 ```
 
+We can view the output as an HTML file in your preferred browser by opening that file stored in the same folder where the data are stored. Reading fastqc output can be very useful for understanding how well your sequencing worked and how your data will behave later. This output can provide clues later as to why a downstream analysis is not working out as it should. 
+
+For comparison check out a few more fastqc pages that I have from my own work [here](https://rsh249.github.io/bioinformatics/PPCPr3kA_GAGATTCC-TATAGCCT_ACC8G0ANXX_L008_001.R2_fastqc.html) and [here]()
+
+# Mapping
+
+For now we will assume the reads are good enough for our purposes.
+
 
