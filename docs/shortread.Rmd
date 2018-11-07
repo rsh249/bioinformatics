@@ -88,6 +88,111 @@ For comparison check out a few more fastqc pages that I have from my own work [h
 
 # Mapping
 
-For now we will assume the reads are good enough for our purposes.
+For now we will assume the reads are good enough for our purposes and move on to mapping those reads to our reference.
+
+If you have the Entrez-Direct tools installed you can retreive a reference genome with:
+
+```{bash, eval=FALSE}
+
+esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > zika_ref.fa
+
+```
+
+If you did not get that working you can use curl:
+
+```{bash, eval =FALSE}
+curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/zika_ref.fa > zika_ref.fa
+
+```
+
+### Indexing the reference sequence
+
+Here (finally!) is your Burrows-Wheeler Transform in action. We will use bwa to index the reference sequence into a BWT format that can be used to quickly map our sequence reads and find where the reads go in the genome and whether or not there are any differences between our raw data and the reference.
+
+```{bash, eval=FALSE}
+
+bwa index zika_ref.fa
+
+```
+
+What files did this create? Can you read them? In short 'no', but they are all important for the next commands.
+
+### Mapping
+
+Read mapping with bwa for short read data is done with the bwa mem command. This will create an alignment file in the SAM format.
+
+```{bash, eval=FALSE}
+
+bwa mem -M -t2 -R '@RG\tID:1\tSM:A' zika_ref.fa *.fastq > mapping.sam
+
+```
+
+Note how fast this happens. We are processing >10,000 reads per second which is much faster than blast on a comparable dataset.
+
+View the SAM file output. It is difficult to read but we can make it a little better with this bit of code:
+
+```{bash, eval = FALSE}
+samtools view mapping.sam | tr "\t" '\n' | head -n 100
+
+```
+
+Many of our reads are not mapped (value '0' at read position or an '*' anywhere in the alignment info). We can use samtools to return only the mapped reads with samtools view and the '-F' flag (NOTE: -f will return un-mapped reads so be sure to capitalize).
+
+```{bash, eval=FALSE}
+samtools view -h -F 4 mapping.sam > mapped.sam
+
+```
+
+### Converting to BAM (binary) files
+
+Many downstream programs require the alignment results to be in a binary format known as BAM. Most programs also require the BAM files to be sorted and indexed for readability. Samtools can do this too.
+
+```{bash, eval=FALSE}
+samtools view -h -b mapping.sam > mapped.bam
+samtools sort mapped.bam > mapped_sort.bam
+samtools index mapped_sort.bam #Create an index file necessary for later analyses.
+```
+
+### Pileup -- Variant detection
+
+The samtools tool 'mpileup' translates our BAM alignment to a form that stores the variant bases in our data.
+
+```{bash, eval=FALSE}
+
+samtools mpileup --fasta-ref zika_ref.fa mapped_sort.bam > map.pileup
+less map.pileup
+
+```
+
+We want to create a single 'consensus' sequence in a fasta format so we can place our data in a phylogenetic tree later on. To do this we want to convert our pileup into a VCF file (Variant Call Format) that we can then convert to fasta. To create a VCF file we need to upgrade to bcftools, like samtools but for other related formats.
+
+```{bash, eval=FALSE}
+conda install -c bioconda bcftools
+conda install -c bioconda tabix
+
+```
+
+```{bash, eval=FALSE}
+bcftools mpileup -Ou -f zika_ref.fa mapped_sort.bam | bcftools call -mv -Oz -o calls.vcf.gz
+
+tabix calls.vcf.gz
+
+bcftools consensus -H A --fasta-ref zika_ref.fa calls.vcf.gz > consensus.fa
+
+
+```
+
+But how is this consensus.fa different from the reference? We cannot easily tell by reading but we can look at the calls file.
+
+```{bash, eval = FALSE}
+
+gunzip calls.vcf.gz
+less calls.vcf
+grep -v "##"
+grep -v "##" | wc -l
+
+
+```
+
 
 

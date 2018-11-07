@@ -177,7 +177,68 @@ less SRR7694205_1.fastq
 </div>
 <div id="mapping" class="section level1">
 <h1>Mapping</h1>
-<p>For now we will assume the reads are good enough for our purposes.</p>
+<p>For now we will assume the reads are good enough for our purposes and move on to mapping those reads to our reference.</p>
+<p>If you have the Entrez-Direct tools installed you can retreive a reference genome with:</p>
+<pre class="bash"><code>
+esearch -db nucleotide -query &quot;NC_035889.1&quot; | efetch -format fasta &gt; zika_ref.fa
+</code></pre>
+<p>If you did not get that working you can use curl:</p>
+<pre class="bash"><code>curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/zika_ref.fa &gt; zika_ref.fa
+</code></pre>
+<div id="indexing-the-reference-sequence" class="section level3">
+<h3>Indexing the reference sequence</h3>
+<p>Here (finally!) is your Burrows-Wheeler Transform in action. We will use bwa to index the reference sequence into a BWT format that can be used to quickly map our sequence reads and find where the reads go in the genome and whether or not there are any differences between our raw data and the reference.</p>
+<pre class="bash"><code>
+bwa index zika_ref.fa
+</code></pre>
+<p>What files did this create? Can you read them? In short ‘no’, but they are all important for the next commands.</p>
+</div>
+<div id="mapping-1" class="section level3">
+<h3>Mapping</h3>
+<p>Read mapping with bwa for short read data is done with the bwa mem command. This will create an alignment file in the SAM format.</p>
+<pre class="bash"><code>
+bwa mem -M -t2 -R '@RG\tID:1\tSM:A' zika_ref.fa *.fastq &gt; mapping.sam
+</code></pre>
+<p>Note how fast this happens. We are processing &gt;10,000 reads per second which is much faster than blast on a comparable dataset.</p>
+<p>View the SAM file output. It is difficult to read but we can make it a little better with this bit of code:</p>
+<pre class="bash"><code>samtools view mapping.sam | tr &quot;\t&quot; '\n' | head -n 100
+</code></pre>
+<p>Many of our reads are not mapped (value ‘0’ at read position or an ’*‘anywhere in the alignment info). We can use samtools to return only the mapped reads with samtools view and the’-F’ flag (NOTE: -f will return un-mapped reads so be sure to capitalize).</p>
+<pre class="bash"><code>samtools view -h -F 4 mapping.sam &gt; mapped.sam
+</code></pre>
+</div>
+<div id="converting-to-bam-binary-files" class="section level3">
+<h3>Converting to BAM (binary) files</h3>
+<p>Many downstream programs require the alignment results to be in a binary format known as BAM. Most programs also require the BAM files to be sorted and indexed for readability. Samtools can do this too.</p>
+<pre class="bash"><code>samtools view -h -b mapping.sam &gt; mapped.bam
+samtools sort mapped.bam &gt; mapped_sort.bam
+samtools index mapped_sort.bam #Create an index file necessary for later analyses.</code></pre>
+</div>
+<div id="pileup-variant-detection" class="section level3">
+<h3>Pileup – Variant detection</h3>
+<p>The samtools tool ‘mpileup’ translates our BAM alignment to a form that stores the variant bases in our data.</p>
+<pre class="bash"><code>
+samtools mpileup --fasta-ref zika_ref.fa mapped_sort.bam &gt; map.pileup
+less map.pileup
+</code></pre>
+<p>We want to create a single ‘consensus’ sequence in a fasta format so we can place our data in a phylogenetic tree later on. To do this we want to convert our pileup into a VCF file (Variant Call Format) that we can then convert to fasta. To create a VCF file we need to upgrade to bcftools, like samtools but for other related formats.</p>
+<pre class="bash"><code>conda install -c bioconda bcftools
+conda install -c bioconda tabix
+</code></pre>
+<pre class="bash"><code>bcftools mpileup -Ou -f zika_ref.fa mapped_sort.bam | bcftools call -mv -Oz -o calls.vcf.gz
+
+tabix calls.vcf.gz
+
+bcftools consensus -H A --fasta-ref zika_ref.fa calls.vcf.gz &gt; consensus.fa
+</code></pre>
+<p>But how is this consensus.fa different from the reference? We cannot easily tell by reading but we can look at the calls file.</p>
+<pre class="bash"><code>
+gunzip calls.vcf.gz
+less calls.vcf
+grep -v &quot;##&quot;
+grep -v &quot;##&quot; | wc -l
+</code></pre>
+</div>
 </div>
 
 
