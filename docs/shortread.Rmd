@@ -1,0 +1,85 @@
+---
+title: "Short Read Data Analysis"
+author: "Prof. Harbert"
+date: "November 7, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Aims
+
++ Work with Illumina short read sequencing data.
++ Check quality control parameters
++ Perform read mapping against a reference genome with 'bwa' which uses a Burrows-Wheeler alignment.
+
+## Overview
+
+Illumina sequencing-by-synthesis technology is the dominant form of DNA sequencing at present. If you continue in biological research it is likely you will encounter this kind of thing at some point. Illumina is also becoming more widespread in medical genomic sequencing (e.g., cancer tumors, microbiome/metagenomics, pathogen ID). Illumina produces 'short-read' sequence data that usually consists of millions of 50-200 bp sequences. These are often "paired" (i.e., read in both directions which may or may not overlap in the middle). 
+
+Today we will work with a set of merged short read data. This means that we have one file with reads between 150-300bp that was created by overlapping the paired reads from a sequencing experiment. The data we have came from a Zika virus isolate obtained from brain tissue of infected rats in a lab colony (https://www.ncbi.nlm.nih.gov/sra/SRR7694205). 
+
+## Windows Note
+
+If you are using Windows and recently upgraded to the Ubuntu command line for this class. I advise that you do two things:
+
+First, in your Ubuntu Linux user home directory create a link to a folder on your Windows directory tree.
+
+```{bash, eval=FALSE}
+#the command 'ln' creates a link in your file system. '-s' makes this "symbolic" meaning nothing is actually copied but the link just passes you to the other location.
+ln -s /mnt/c/Users/YOUR_USERNAME/Documents ./winbox
+
+```
+
+Second, 'cd' into the 'winbox' directory for all work today and everyday. This will make your files easily found with the Windows file viewer.
+
+```{bash, eval = FALSE}
+cd winbox
+ls -a
+```
+
+
+## Getting set up
+
+Create a new directory to work in for today.
+
+```{bash, eval = FALSE}
+mkdir shortreads
+
+```
+
+We need to download a new set of read files. The one we downloaded last time was the 'merged' reads and we want the original forward and reverse pairs. We will still use 'fastq-dump' from the SRA Toolkit, but this time with one extra flag that gets the paired read files. It seems to be a little quicker too.
+
+```{bash, eval = FALSE}
+fastq-dump -A "SRR7694205" --split-3
+less SRR7694205_1.fastq
+
+```
+
+These data are in the 'fastq' file format. Each sequence read is started with an "@" sign ahead of a read ID. In this case that is the "SRR..." accession number with some suffix number attached. Under the "@" line there is the read quality scores. Then a "+" line with the read ID again followed by the actual sequence data. That makes 4 lines per sequence in *most* fastq file formats. Sometimes there are trailing lines that mess up your line counts (make the total not divisible by 4). 
+
+Challenge: How could you use Unix command line tools to find out how many reads we have in both the forward ("*_1.fastq") and reverse ("_2.fastq") reads files here?
+
+
+## fastqc
+
+If you have not already please use conda to install fastqc.
+
+```{bash, eval=FALSE}
+conda install -c bioconda fastqc
+```
+
+The quality scores recorded in the fastq files here are known as phred scores. The letters are codes for relative probability of error that can be found in a table [here](https://www.drive5.com/usearch/manual/quality_score.html). Using that table and the 'head' or 'less' commands read a few quality score strings and try to 'feel out' what the relative error looks like. Are there any patterns? Are some reads 'better' than others?
+
+
+There is a better way. We can use the program fastqc to visualize quality scoreso and more!
+
+```{bash, eval=FALSE}
+fastqc SRR7694205_* #This will run fastqc twice, once for each read file
+
+
+```
+
+
