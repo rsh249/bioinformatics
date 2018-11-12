@@ -1,0 +1,123 @@
+---
+title: "Genomes wrap-up"
+author: "Prof. Harbert"
+date: "November 12, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Quick start
+
+Given the install errors we had last class we will demo one path we could take with our Zika genome data.
+
+## Zika Consensus 
+
+We can use samtools and related bcftools to create a consensus fasta file for our mapped reads and their variants file. This will be a complete 'genome' with the variants of our genome replacing those of the reference.
+
+First we must get our mapped reads into a form that we can work with.
+
+
+### Converting to BAM (binary) files
+
+Many downstream programs require the alignment results to be in a binary format known as BAM. Most programs also require the BAM files to be sorted and indexed for readability. Samtools can do this too.
+
+```{bash, eval=FALSE}
+samtools view -h -b mapping.sam > mapped.bam
+samtools sort mapped.bam > mapped_sort.bam
+samtools index mapped_sort.bam #Create an index file necessary for later analyses.
+```
+
+### Pileup -- Variant detection
+
+The samtools tool 'mpileup' translates our BAM alignment to a form that stores the variant bases in our data.
+
+```{bash, eval=FALSE}
+
+samtools mpileup --fasta-ref zika_ref.fa mapped_sort.bam > map.pileup
+less map.pileup
+
+```
+
+We want to create a single 'consensus' sequence in a fasta format so we can place our data in a phylogenetic tree later on. To do this we want to convert our pileup into a VCF file (Variant Call Format) that we can then convert to fasta. To create a VCF file we need to upgrade to bcftools, like samtools but for other related formats.
+
+```{bash, eval=FALSE}
+conda install -c bioconda bcftools
+conda install -c bioconda tabix
+
+```
+
+```{bash, eval=FALSE}
+bcftools mpileup -Ou -f zika_ref.fa mapped_sort.bam | bcftools call -mv -Oz -o calls.vcf.gz
+
+tabix calls.vcf.gz
+
+bcftools consensus -H A --fasta-ref zika_ref.fa calls.vcf.gz > consensus.fa
+
+
+```
+
+But how is this consensus.fa different from the reference? We cannot easily tell by reading but we can look at the calls file.
+
+```{bash, eval = FALSE}
+
+gunzip calls.vcf.gz
+less calls.vcf
+grep -v "##"
+grep -v "##" | wc -l
+
+
+```
+
+
+
+### Get more Zika Data
+
+```{bash, eval=FALSE }
+esearch -db nucleotide -query "NC_035889.1, KF383115, KF268950,  KF268948, KF268949, KJ776791, KU501216, KU501217, KU509998, HQ234499,  KU501215, KU321639, KF383116, KF383117, KF383119, KF993678, HQ234498, LC002520" | efetch -format fasta > zika_mat.fa
+
+```
+
+
+And reformat reference and consensus headers so we can find those later.
+
+```{bash, eval =FALSE}
+sed -i "1s/.*/>Zika_reference/" zika_ref.fa
+sed -i "1s/.*/>Seq_consensus/" consensus.fa
+```
+
+### Align and build a RAxML tree.
+
+FIRST: copy our muscle/raxml script from earlier to your shortreads directory. Then edit to have the input file be 'mat.fa' and delete our awkward awk line.
+
+```{bash, eval=FALSE}
+#view script file
+cat script
+
+cat zika_ref.fa consensus.fa zika_mat.fa > mat.fa
+./script
+
+```
+
+
+### Plot with ggtree
+
+```{R, eval=TRUE}
+library(ggtree)
+
+setwd("/Users/rharbert/Documents/shortreads")
+tree <- read.tree('RAxML_bestTree.tree')
+ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='red')
+
+```
+
+From this (if you look up those accession numbers) we see a group of genomes with our consensus and reference genome that all are from South America (mostly Brazil in 2015 when Zika was widespread there). The other large group is made up of African and Asian virus types.
+
+
+
+
+
+[Home](https://rsh249.github.io/bioinformats)
+

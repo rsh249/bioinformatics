@@ -77,13 +77,12 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### <a href = './shortread.html'> Read mapping, finding variants, and viewing genome alignments.
 
-# Metagenomics
+### Wrap-up <a href = './genome_wrapup.html'> Generating a consensus genome from mapped reads.
 
-### Microbiome profiling: Kraken/Centrifuge
 
 # Ecological Modeling
 
-### Primary Biodiversity Data in R: GBIF, iNaturalist
+### <a href = './spatial.html'> Primary Biodiversity Data in R: GBIF, iNaturalist
 
 ### Maxent Species Distribution Modeling
 
