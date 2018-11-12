@@ -1,0 +1,79 @@
+---
+title: "Spatial Data in R"
+author: "Prof. Harbert"
+date: "November 12, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installing necessary packages
+
+For the next few lessons you will need:
+
+```{r, eval=FALSE}
+install.packages('dismo') 
+install.packages('raster')
+install.packages('spocc')
+install.packages('ENMeval')
+
+#And maybe
+
+devtools::install_github('rsh249/vegdistmod')
+
+
+```
+
+### Review data sources
+
+We will be getting data for distribution modeling from:
+
++ [WorldClim](https://www.worldclim.org)
++ [GBIF](https://www.gbif.org)
++ [iNaturalist](https://www.inaturalist.org)
+
+# Geographic data: Continuous surfaces -- > Raster data objects
+
+Geographic data that are continuous across your study area can be represented as a gridded image-like data type known as a raster. These are basically really big 2 dimensional tables but with special attributes that help align the values in the matrix across the curved surface of Earth.
+
+Our primary raster data will be climate. We will get that from the WorldClim project.
+
+### Downloading climate data: WorldClim
+
+We can download climate data for land masses except Antarctica using the 'raster' library and:
+
+```{r}
+library(raster)
+clim = getData('worldclim', var='bio', res=5)
+
+summary(clim)
+summary(clim[[1]])
+plot(clim[[1]], col= topo.colors(9))
+```
+
+See [here](https://www.worldclim.org/bioclim) for Bioclim variable definitions.
+
+We are looking at 'bio1' above which is the mean annual temperature value in Celsius degrees * 10.
+
+### Raster operations: Crop
+
+If we want to 'zoom in' on a region of interest we can crop the raster just like a picture file. However, we must use the coordinates of the raster. In this case that is latitude and longitude in decimal degrees.
+
+```{r}
+
+#define an 'extent' object.
+#eastern US
+ext = extent(-100, -50, 20, 55)
+
+#crop
+c2 = crop(clim, ext)
+plot(c2[[1]], col=topo.colors(99))
+
+```
+
+
+# Next time: Vectors data, mining GBIF/iNaturalist, and ENMeval for distribution modeling.
+
+[Home](https://rsh249.github.io/bioinformatics)
