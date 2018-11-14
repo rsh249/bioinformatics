@@ -84,7 +84,10 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### <a href = './spatial.html'> Geospatial data in R
 
-### GBIF, iNaturalist, and Maxent Species Distribution Modeling
+### <a href = './primary_biodiv.html'> Primary Biodiversity Data (GBIF) and mapping
+
+### Maxent and ENMevaluate
+
 
 # Catching up with Python
 
