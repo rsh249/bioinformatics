@@ -2,7 +2,9 @@
 title: "GBIF, iNaturalist, and Primary Biodiversity Data"
 author: "Prof. Harbert"
 date: "November 14, 2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -89,3 +91,66 @@ map_leaflet(df)
 ```{r}
 map_leaflet(df[,c('name', 'longitude', 'latitude', 'stateProvince', 'country', 'year', 'occurrenceID')])
 ```
+
+Specifying columns makes it much easier to sift through large amounts of data to check sources and look for patterns of bias.
+
+NOTE: mapr only works with data formatted by spocc and related libraries.
+
+### More with spocc queries.
+
+Do you notice something odd when you run:
+
+```{r}
+nrow(df)
+```
+
+Check how many records are returned for the same search on the [GBIF website](https://www.gbif.org/species/5361872) 
+
+Our query only returned the first 500 records because that is the default for the occ() function.
+
+We can fix that:
+
+```{r}
+ulmus2 <- occ(query='Ulmus americana', limit=2500)
+map_leaflet(ulmus2)
+```
+
+# Meeting up with WorldClim
+
+R gives us the tools to plot spatial point data like our occurrence records over a geospatial raster object like the WorldClim data. R also gives us tools to access the raster data for our occurrence points.
+
+Load WorldClim again: (If you are in the same folder then you will not have to download the data again so this should be quick).
+
+```{r}
+library(raster)
+wc = getData('worldclim', var='bio', res = 5)
+
+```
+Plot raster with points over:
+
+```{r}
+ext = extent(-125, -55, 20, 60)
+wc2 = crop(wc, ext)
+plot(wc2[[12]], col = topo.colors(99))
+points(df$longitude, df$latitude)
+
+```
+
+###Extracting climate data
+
+The 'raster' library has a function for referencing the climate data stored in our raster for every occurrence point. These data are the primary input to our species distribution models.
+
+```{r}
+extr = extract(wc2, c(df$longitude, df$latitude))
+summary(extr)
+boxplot(extr[,'bio12'], main='Distribution of Mean Annual Precipitation for occurrence of Ulmus americana')
+```
+
+
+### Challenge:
+
+Query iNaturalist for *Ulmus americana* records. (Hint: you may want to look at the rinat library and the get_inat_obs() function).
+
+# Homework:
+
+Using spocc and mapr. Create a leaflet map of a species of interest to you. Make sure you get at least 20 unique locations where an occurrence is recorded. Record all of your commands in an Rscript. Save your leaflet map as a webpage. Post the script and your map to GitHub (you may want to create a repository for this course on your account). When that is up post a link to your repository on Slack using the [biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4) channel. 
