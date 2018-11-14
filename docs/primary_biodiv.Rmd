@@ -69,9 +69,23 @@ If not already done:
 install.packages('mapr')
 ```
 
-Then:
+Then call map_leaflet() either on the spocc object:
 
 ```{r}
 library(mapr)
 map_leaflet(ulmus)
+
+```
+
+OR with the data.frame:
+
+```{r}
+map_leaflet(df)
+```
+
+
+'mapr' shows the data for the first few columns in each pop-up tab. We can control what is shown there by only passing some columns to map_leaflet(). 
+
+```{r}
+map_leaflet(df[,c('name', 'longitude', 'latitude', 'stateProvince', 'country', 'year', 'occurrenceID')])
 ```
