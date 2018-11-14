@@ -151,6 +151,13 @@ boxplot(extr[,'bio12'], main='Distribution of Mean Annual Precipitation for occu
 
 Query iNaturalist for *Ulmus americana* records. (Hint: you may want to look at the rinat library and the get_inat_obs() function).
 
-# Homework:
+# Assignments:
+
+## Reading:
+
+By next class read the [ENMeval](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.12261) paper. To go with this write a ~1 page reflection on the paper and submit that by email before class.
+
+
+## Homework:
 
 Using spocc and mapr. Create a leaflet map of a species of interest to you. Make sure you get at least 20 unique locations where an occurrence is recorded. Record all of your commands in an Rscript. Save your leaflet map as a webpage. Post the script and your map to GitHub (you may want to create a repository for this course on your account). When that is up post a link to your repository on Slack using the [biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4) channel. 
