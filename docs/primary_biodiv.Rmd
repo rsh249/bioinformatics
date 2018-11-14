@@ -1,0 +1,77 @@
+---
+title: "GBIF, iNaturalist, and Primary Biodiversity Data"
+author: "Prof. Harbert"
+date: "November 14, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Primary Biodiversity Data
+
+Observations of the occurrence of a species are the fundamental unit of biodiversity data. We will explore in this unit where to look for open-access occurrence data, how to access those sources from R, and tools for visualizing point distributions of species.
+
+### Library 'spocc'
+
+A great tool from the rOpenSci consortium (a group of developers building R capacity for open science).
+
+Package details on [GitHub](https://github.com/ropensci/spocc)
+
+Tutorial [here](https://ropensci.org/tutorials/spocc_tutorial/)
+
+We should all have spocc installed, but if not try:
+
+```{r, eval=FALSE}
+
+install.packages('spocc')
+
+```
+
+
+With spocc installed we can try a simple query of the GBIF database that we have seen briefly before. 
+
+```{r}
+library(spocc)
+ulmus <- occ(query='Ulmus americana', from='gbif')
+```
+
+The data are returned as an "S3 class" object. Somewhere in there is a tidyverse tibble (like a table but not).
+
+```{r, eval=FALSE}
+print(ulmus) ## Not obvious what or where the data are
+```
+
+```{r, eval=FALSE}
+View(ulmus)
+```
+
+Maybe it's still not obvious how we get in. To view an element of the data returned we use the "$" operator and call each by name. In general it's easier to convert these to regular R data frame objects since not everything we want to do with these data is compatible with the tidyverse/spocc formatting.
+
+```{r}
+
+df = as.data.frame(occ2df(ulmus$gbif))
+
+#Also try:
+#head(df)
+#colnames(df) #!! That's a lot of columns!!
+
+```
+
+
+### mapr: Leaflet mapping of species distribution data.
+
+To create interactive graphics showing species occurrence locations and some metadata we can use 'mapr'. This library uses a JavaScript library known as leaflet and Open Street Maps services (and others!) to create interactive maps that you can navigate through and click on points to pop-up metadata about each occurrence.
+
+If not already done:
+```{r, eval=FALSE}
+install.packages('mapr')
+```
+
+Then:
+
+```{r}
+library(mapr)
+map_leaflet(ulmus)
+```
