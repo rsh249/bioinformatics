@@ -1,0 +1,165 @@
+---
+title: "ENMeval and Maxent for Species Distribution Modeling"
+author: "Prof. Harbert"
+date: "November 19, 2018"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Species Distribution Modeling
+
+A key method in ecology, evolutionary biology, conservation, biogeography, and climate change biology (among other fields!) is the Species Distribution Model (SDM). SDMs are a tool for understanding where a species can occur based on presence-only correlative modeling of where a species is known to occur. These models can be used to infer niche overlap between species, assess conservation risk, identify past ranges, or study invasive potential.
+
+Today we will be using the common "Maxent" method to estimate the current distribution of your species of interest.
+
+# Focus activity
+
+Bring up data for your species of interest in R and plot those points over a WorldClim climate layer. If you have time, test the leaflet mapping we did last week on your species too.
+
+
+```{r}
+library(spocc)
+spocc_download = occ(query ='Quercus virginiana', from='gbif', limit=2000);
+spocc_download
+
+library(dismo)
+wc = getData('worldclim', var='bio', res=5)
+```
+
+# ENMeval 
+
+If you have not already, run:
+
+```{r, eval=FALSE}
+install.packages('ENMeval')
+
+```
+
+Then:
+
+```{r}
+library(ENMeval)
+library(raster)
+
+
+##Name your occurrence data 'occdat' and convert to data frame
+occdat <- occ2df(spocc_download)
+
+##Name your climate data 'predictors'
+
+## crop to fit study area (EDIT WITH YOUR REGION)
+
+ext=extent(c(-100, -55, 20, 45))
+predictors = crop(wc, ext)
+
+```
+
+ENMeval runs the Maxent SDM tool with many potential model settings, data partitioning, and model assessments. We will work through just one possible way to use these tools here.
+
+Setting up ENMeval works as follows:
+
+```{r}
+##Trim and filter location data
+loc=occdat[,c('longitude', 'latitude')]
+extr = extract(predictors, loc)
+loc = loc[!is.na(extr[,1]),]
+
+
+eval = ENMevaluate(occ=as.data.frame(loc), env = predictors, method='block', parallel=FALSE, fc=c("L", "LQ"), RMvalues=seq(0.5, 2, 0.5), rasterPreds=T)
+```
+
+There's a lot of moving parts in ENMevaluate. Here are a few of the highlights explained:
+
++ occ .-> occurrence points as a 2 column data frame containing longitude then latitude
++ env .-> environmental predictor variables (raster object). Using WorldClim bioclim here.
++ fc .-> Maxent feature classes to use. These are model types that Maxent has access to in the model fitting stage. Options are any combination of 'L' for linear, 'Q' for quadratic, 'H' for hinge, 'P' for power, and 'T' for threshold but common and recommended settings here are c("L", "LQ", "LQH"). For more explanation see the paper "A statistical explanation of [MaxEnt for ecologists"](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1472-4642.2010.00725.x). 
++ RMvalues .-> A smoothing parameter. The higher the number the smoother your model. Low values *can* lead to overfitting and low transferability to other times and spaces.
+
+
+# Picking a "good" model
+
+ENMeval has now built and tested several model combinations in Maxent. But which is the 'best'?
+
+Look at the eval@results object for more. Pay close attention to the AICc column and the avg.test.AUC columns. Can you find which model (1st column) or models minimizes AICc and maximizes AUC? Is it the same model settings for both?
+
+```{r}
+eval@results
+```
+
+For me the best model by AICc is #2: LQ_0.5
+
+```{r}
+which(eval@results$AICc == min(eval@results$AICc))
+```
+
+And the best model by avg.test.AUC is #7: L_2
+
+```{r}
+which(eval@results$avg.test.AUC== max(eval@results$avg.test.AUC))
+```
+
+I'm going to keep the AICc best model for the rest of this time but an argument could be made for either (or some other "best" model measure).
+
+```{r}
+best=which(eval@results$AICc == min(eval@results$AICc))
+```
+
+# Plotting model output
+
+ENMeval has already calculated a predicted distribution map for each model setting. We can plot the best model(s) with:
+
+Best model AICc: #2
+
+```{r}
+plot(eval@predictions[[best]])
+points(as.data.frame(loc), pch=20, cex =0.1)
+```
+
+# Predicting Species' Range
+
+One way we can use this output is to create a potential range for your species. We can do this by evaluating model thresholds for presence/absence designation.
+
+To do this we need access to the background points and the Maxent model objects. Both of which we get from ENMeval.
+
+
+```{r}
+
+#extract model estimated suitability for occurrence localities
+est.loc = extract(eval@predictions[[best]], as.data.frame(loc))
+#extract model estimated suitability for background
+est.bg = extract(eval@predictions[[best]], eval@bg.pts)
+#evaluate predictive ability of model
+ev = evaluate(est.loc, est.bg)
+#detect possible thresholds 
+thr = threshold(ev)
+#plot using "equal sensitivity and specificity" criteria
+plot(eval@predictions[[best]] > thr$equal_sens_spec, col = c('lightgrey', 'black'))
+
+
+```
+
+There are many possible ways to establish these kinds of maps. Here we work through one common approach but it will not work in every case.
+
+
+
+# Homework
+
+Create a potential distribution for your species. Record all commands in an R script and save plots to your Git repository. Post links to [#biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4)
+
+THEN, download future climate data for one modeling scenario (see ?getData). Crop to your region of interest and use the predict() function to predict your species' future distribution. Place current and future distributions into a Word document and write a ~300 word commentary on what the output suggests to you. Include the word doc in your Git repository too. Post questions to the [#biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4) channel if you run into issues.
+
+You can add to your mapping repository from last time if you want.
+
+[Home](https://rsh249.github.io/bioinformatics/index.html)
+

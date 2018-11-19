@@ -86,7 +86,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### <a href = './primary_biodiv.html'> Primary Biodiversity Data (GBIF) and mapping
 
-### Maxent and ENMevaluate
+### <a href = './ENMeval.html'> Maxent and ENMevaluate
 
 
 # Catching up with Python
