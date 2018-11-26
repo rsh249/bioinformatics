@@ -1,0 +1,499 @@
+---
+title: "Python Workshop 1"
+author: "Prof. Harbert"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python('/usr/bin/python')
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Overview
+
+Today and next class we will work through a brief but dense introduction to the Python programming language. Python, like R, is an interpreted language with an interactive command line interface. We can work directly on the Python command line or write sripts to implement a workflow. Today we will cover the basics of working in Python and on Wednesday we will cover scripting and apply some of our new Python skills to write a script that searches the NCBI databases.
+
+# Setup 
+
+## Python Workshop
+
+These sessions will cover:
+
++ Insalling* and running Python
++ Data and variable types and structures
++ Reading and writing common file types (e.g., txt, csv)
++ Basic programming in Python through interactive and scripted sessions
++ Using some common libraries for Bioinformatics
+
+## To install Python
+MacOS
+https://conda.io/docs/user-guide/install/macos.html
+
+Windows
+https://conda.io/docs/user-guide/install/windows.html
+
+## Package installation
+
+If needed you can install Python libraries/packages with anaconda using
+
+```{bash, eval=FALSE}
+conda install package_name
+#e.g.,
+conda install pandas
+conda install biopython
+```
+
+
+# Python Variables
+
+Much like base R, base Python has distinct integer, numeric, character, and factor classes. In Python these are:
+
+### Integers
+
+```{python}
+x=2
+
+print(x)
+
+
+print(type(x))
+````
+
+### Floating Point Numbers
+
+```{python}
+y=2.2
+
+print(y)
+
+print(type(y))
+````
+
+In Python integer and floating point types interface pretty well
+```{python}
+z = x*y
+
+print(z)
+
+type(z)
+```
+
+### Character Strings
+
+Text is stored in the string variable type. Each character is indexed in an ordered list.
+
+```{python}
+str = 'The quick brown fox jumps over the lazy log';
+print(str[0])
+print(str[1])
+print(str[0:8])
+
+```
+
+### Explicit variable calling
+
+```{python}
+n = float(1)
+print(n)
+print(type(n))
+```
+
+
+### Array/List
+
+Stores multiple data objects of type integer, float, or string. Can be mixed. Denoted by brackets "[]"
+
+Note: These objects are like R lists, not vectors. Variable type can vary within these.
+
+```{python}
+arr = [0,1,2,3,4]
+print(arr)
+arr2 = [0, 1, "two", "three", 4.4]
+print(arr2)
+
+#values can be changed
+arr[0] = 2
+
+```
+
+Arrays can be arrays of arrays, which is kind of like a data.frame or matrix.
+
+```{python}
+twodarr = [arr, arr, arr, arr]
+print(twodarr[1])
+print(twodarr[1][1]) #row 1 column 1
+```
+
+This is funky so if you want R data.frame like objects use Pandas. We will cover this next class, or see [here](http://pandas.pydata.org/pandas-docs/version/0.15/tutorials.html)
+
+
+
+### Tuples
+
+Imutable array-like objects. Denoted by parentheses insead of brackets. Try setting a value in an existing tuple.
+
+```{python}
+tup = (0,1,2,3)
+print(tup)
+print(tup[0])
+
+tup_b = ('the', 'quick', 'brown', 'fox')
+print(tup_b)
+print(tup_b[3])
+
+
+
+```
+
+What happens if we try and set a value in a tuple?
+
+### Dictionaries
+
+These are lists of key/value pairs. In Perl these are Hash objects. R does not have anything quite like this, but it is kind of like row/column names. The key is set to look-up the values. These can be useful for translation, or information lookup (e.g., zipcodes)
+
+```{python}
+translation = {'one': 1, 'two': 2}
+print(translation['one'])
+
+#Values can also be set
+translation['one'] = 5
+print(translation['one'])
+
+#Keys are added like:
+translation['five'] = 1
+print(translation['five'])
+
+#Values can be anything
+translation['six'] = [0,1,2,3,4]
+print(translation['six'])
+```
+
+
+
+# Operators
+
+Tutorial: https://www.programiz.com/python-programming/operators
+
+### Math
+
+Mostly like R. But compare "**" and "\^". In python "\^" is a bitwise operator (bit "OR") which may not do what you expect (take an exponent) and which we will ignore for now.
+
+```{python}
+print(x+7)
+print(x*2)
+print(x**3)
+print(x^3)
+
+
+```
+
+### Logic
+
+```{python}
+print(x==y)
+print(x>y)
+print(x<=y)
+
+```
+
+### Operators on strings 
+
+"+" concatenates strings. 
+
+"==" compares exact string identity. 
+
+Other operations don't behave like you might expect. ">" and "<" perform byte comparisons of the character codes and are usually not useful.
+
+```{python}
+str1 = "hello"
+str2 = "world"
+print(str1+str2)
+print(str1+" "+str2+"!")
+
+print(str1==str2)
+print(str1=='hello')
+print(str1>str2)
+print(str2>str1)
+
+```
+
+# Python Functions, Libraries, and Loops
+
+### Functions
+
+We have already seen a few functions. For example print(). All functions have the same format: name ( object )
+
+Some useful functions:
+Range - cast a sequence of numbers from i to n by x
+```{python}
+r=range(0,10,1)
+print(r)
+r2=range(0,20,2)
+print(r2)
+r3=range(10,0,-1)
+print(r3)
+```
+
+Join - Concatenate strings b
+```{python}
+bases=["A","C","G","T"]
+#join
+print(''.join(bases))
+print(' '.join(bases))
+print('_'.join(bases))
+print("\t".join(bases))
+print(' '.join(str1))
+```
+
+Length - get length of array or string
+```{python}
+print(len(str))
+print(len(arr))
+```
+
+
+
+###Libraries/Import
+
+```{r fig.width=4, fig.align='center', echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("./images/xkcd.png")
+ grid.raster(img)
+```
+
+Like R, the power of python comes from code libraries. Libraries are called bye the 'import' statement and libraries can be aliased using "import lib as alias".
+
+```{python}
+import random
+print(random.choice(bases))
+print(random.choice(bases))
+
+import random as r
+print(r.choice(bases))
+
+```
+
+### Loops
+
+"For" loops are programming structures that are useful for repeating things. There are often better, more efficient ways to do this like the "apply" family of functions in R. For now we will stick with basic for loops because they are highly useful.
+
+```{python}
+for i in [1,2,3,4]:
+  print(i)
+```
+
+Instead of declaring the list of values to iterate through we could also call range and give the number:
+
+```{python}
+for i in range(10):
+  print(i**3)
+  
+```
+
+Random character strings
+
+```{python}
+import random as r
+
+n=1999
+seqn=range(n)
+seq=[]
+for i in seq:
+  seq.append(r.choice(bases))
+  
+seqstr=''.join(seq)
+print(seqstr[1:50])
+```
+
+
+
+# Writing Python Functions
+
+Use 'def' to define a function named 'square'
+```{python}
+def square(x):
+  return x**2
+  
+square(1234)
+
+```
+
+
+Write a function to generate a random DNA or RNA sequence of length 'n'. We will use a for loop here for simplicity.
+
+```{python}
+def nullDNA(n):
+  bases = ['A','C','G','T']
+  import random
+  seqn=range(n)
+  seq=[]
+  for i in seqn:
+    seq.append(random.choice(bases))
+  
+  return(''.join(seq))
+  
+
+seqstr = nullDNA(40)
+print(seqstr)
+
+  
+```
+
+Instead of loops, simple functions like our square function- go nicely into 'map' structures. This is A LOT like the apply family of functions in R. Mapping a function works well when there are few arguments and the repetition is simple (e.g., repeat 50 times).
+
+```{python}
+ret=map(square, range(50))
+print(ret)
+```
+
+Mapping should speed up execution over a for loop. Let's see how ours does.
+
+```{python}
+import timeit # Time handling functions
+inputs = range(1000000)
+start_time = timeit.default_timer()
+ret=[*map(square, inputs)]
+elapsed1 = timeit.default_timer() - start_time
+print(elapsed1)
+
+start_time = timeit.default_timer()
+ret2=[]
+for i in range(len(inputs)):
+  ret2.append(square(inputs[i]))
+
+
+elapsed2 = timeit.default_timer() - start_time
+print(elapsed2)
+
+```
+
+
+# String matching with Regular Expressions
+
+### The 're' library
+
+```{python}
+import re
+m=re.findall("TTT",seqstr[0:100])
+print(m)
+print(len(m)) #the number of matches to TTT in seq
+#re.sub(pattern, replace, string)
+
+s=re.sub('A', 'N', seqstr)
+print(s[0:50])
+```
+
+
+### Reading and parsing text files
+
+To open text files we want to open a filehandle (a variable pointing to a file to read) with the open function. 'with open("file.txt") as filehandle:' is a statement that reads Open file.txt and refer to it with the variable filehandle and then do something. In the case below we will read the whole file into a character string or into an array of character strings.
+
+```{python}
+##read text file
+with open ("../data/98.txt", "r") as myfile:
+    data=myfile.read()
+print(data[0])
+
+
+#Try also:
+
+with open ("../data/98.txt", "r") as myfile:
+    data2=myfile.readlines()
+
+
+print(data2[0])
+
+#How is data2 different?
+
+```
+
+With the file read into a single character string we will use 're' to parse the text in any way you might use 'grep'.
+
+```{python}
+lines=re.findall("\n", data)
+print(len(lines)) 
+
+it=re.findall("It", data)
+itwas=re.findall("It was", data)
+itwasthe=re.findall("It was the ", data)
+itwasthebest=re.findall("It was the best", data)
+
+
+
+```
+
+### Challenge:
+
+* How many words are there in this file?
+* How many lines?
+* How many chapters?
+
+Hint: Look at functions available to you in the re library [here](https://docs.python.org/3/library/re.html).
+
+### Searching Nucleotide strings
+For object seqstr that we generated earlier, find all start codons AUG.
+
+```{python}
+seqstr = nullDNA(280)
+
+transl = re.sub('T', 'U', seqstr)
+
+startc = re.findall("AUG", transl)
+
+#to get position of first match, use 'search' instead of 'findall'.
+m = re.search("AUG", transl)
+first = m.span()
+print(first) #will give start and end of first match..
+
+#to get position of *all* matches we cannot use findall. Instead use finditer which works a little differently. 
+
+m2 = re.finditer("AUG", transl) #returns an iterator object, must use a loop
+for n in m2:
+    coord=n.span()
+    print(coord[0])
+    print(transl[coord[0]:coord[0]+20]) #Print match plus 20 characters
+    
+    
+
+
+```
+
+### Challenge
+
+What would we need to get all possible open reading frames and return those as an array?
+
+How could we use a Python dictionary object to translate these open reading frames?
+
+# Homework 
+
+Finish this workshop.
+
+Then, create a series of Python commands that tries to do one of the following:
+
+
++ Write a routine to generate the reverse complement of a DNA sequence. 
++ Create a dictionary object to translate from DNA or RNA sequence to amino acid sequence. Test with a few codons.
++ Write a routine to pull out one or more open reading frames from a DNA/RNA sequence (from "AUG" to the next stop codon).
++ Write a function that mutates 'n' random positions in a DNA sequence. e.g., mutate(n, seqstr) returns a character string with exactly n bases changed.
++ Write a function that calculates a factorial (n!). Use this to calculate factorials for 1 through 100. Then use map() to speed it up.
+
+
+Turn in what you have by posting your code plus a commentary on what you wrote to the [#python](https://bio200-bioinformatics.slack.com/messages/CEC51EBN0) Slack. Your code does not necessarily have to be complete, but you should discuss in your post what you would need to do or fix to make it work. Your code does need to show progress over what is covered here (i.e., more than just copy/paste).
+
+
+[home](https://rsh249.github.io/bioinformatics)
+
+
+
+

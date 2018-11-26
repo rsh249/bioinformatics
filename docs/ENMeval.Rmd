@@ -1,7 +1,7 @@
 ---
 title: "ENMeval and Maxent for Species Distribution Modeling"
 author: "Prof. Harbert"
-date: "November 19, 2018"
+date: format(Sys.time(), "%b %d, %Y")
 output: 
   html_document:
     theme: united
