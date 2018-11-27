@@ -31,45 +31,45 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ## Outline:
 
-### Day 2: <a href='./bio_data_sci.html'> Biology as a Data Science
+### <a href='./bio_data_sci.html'> Biology as a Data Science
 
-### Day 3: "Big-Data" in Biology Homework <a href='https://bio200-bioinformatics.slack.com/messages/CCMH74VNY'> #topics
+### "Big-Data" in Biology Presentations/Discussion
 
-### Day 4: <a href='./R_basics.html'> Introduction to R (part 1/n)
+### <a href='./R_basics.html'> Introduction to R (part 1/n)
 
-### Day 5: <a href='./parallel.html'> Intro to Computing 
+### <a href='./parallel.html'> Intro to Computing 
 
-### Day 6: <a href='./ggplot.html'> Graphics in R
+### <a href='./ggplot.html'> Graphics in R
 
-### Day 7: <a href='./dna_seq.html'> DNA Sequencing Tech
+### <a href='./dna_seq.html'> DNA Sequencing Tech
 
-### Day 8: <a href='./unix_shell.html'> Unix command line tools
+### <a href='./unix_shell.html'> Unix command line tools
 
 # Working with DNA sequence data
 
-### Day 9: <a href='./blast.html'> Alignment and BLAST 
+### <a href='./blast.html'> Alignment and BLAST 
 
-### Day 10: <a href='./blast2.html'> BLAST Continued
+### <a href='./blast2.html'> BLAST Continued
 
 # Inferring Evolution
 
-### Day 11: <a href='./msa.html'> Multiple Sequence Alignment
+### <a href='./msa.html'> Multiple Sequence Alignment
 
-### Day 12: <a href='./bash_script.html'> Introduction to bash scripting
+### <a href='./bash_script.html'> Introduction to bash scripting
 
 ### <a href='https://github.com/rsh249/bioinformatics/raw/master/files/BIO200A_MIDTERM_EXAM.docx'> Midterm Exam
 
-### Day 13: <a href='./phylogenetics.html'> Phylogenetic tree building
+### <a href='./phylogenetics.html'> Phylogenetic tree building
 
-### Day 14A: <a href='./phylogenetics2.html'> Phylogenetics II
+### <a href='./phylogenetics2.html'> Phylogenetics II
 
-### Day 15A: <a href='./phylo3.html'> Phylogenetics III: Bootstraps
+### <a href='./phylo3.html'> Phylogenetics III: Bootstraps
 
 # Open Science + Course Projects
 
-### Day 14B: <a href='./opensci.html'> Open Science, bioRxiv, and course projects **Not covered during lecture**
+### <a href='./opensci.html'> Open Science, bioRxiv, and course projects **Not covered during lecture**
 
-### Day 15B: <a href='./git.html'> Working with Git
+### <a href='./git.html'> Working with Git
 
 # Genomes
 
