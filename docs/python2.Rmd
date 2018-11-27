@@ -1,0 +1,177 @@
+---
+title: "Python Workshop 2"
+author: "Prof. Harbert"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python('/home/rharbert/anaconda3/bin/python')
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Scripting in Python
+
+Interactive Python is great but you want to put your workflow in scripts so it is easy to reproduce. The basic format is below. Copy and paste it into a text file.
+
+```{python, eval=FALSE}
+str='hello world'
+print(str)
+quit() #Can skip this, will exit at end of file
+```
+
+### Accepting command line input
+
+```{python, eval=FALSE}
+import sys
+print(sys.argv[0])
+print(sys.argv[1])
+print(len(sys.argv))
+quit() 
+```
+
+Then run: "python script.py 'in string'"
+
+We can expand on this and do something with the command line input. Like print it in reverse order.
+
+```{python, eval=FALSE}
+import sys
+str=sys.argv[1]
+l=len(str)
+for i in range(l,0,-1):
+  print(str[i])
+  
+quit() 
+```
+
+
+# Biopython and Entrez search tools
+
+## Install
+
+```{bash, eval=FALSE}
+conda install biopython
+```
+
+## Biopython modules
+
+Biopython is a big project from which we will use the submodule Entrez which provides tools for searching NCBI databases and the submodule SeqIO for switching between sequence file types.
+
+## Queries
+
+Take a look at the databases we can access:
+
+```{python}
+from Bio import Entrez
+from Bio import SeqIO
+
+Entrez.email='your@email.com'
+
+handle = Entrez.einfo()
+record = Entrez.read(handle)
+print(record["DbList"])
+
+```
+
+## Nucleotide DB Searches
+
+For the search string it may be useful to check on the NCBI website first to learn how to develop these strings effectively.
+
+https://www.ncbi.nlm.nih.gov/nucleotide/
+
+Look at the search details box to the right after entering a search term.
+
+Let's put the next few code chunks into a script that accepts a search string as sys.argv[0] and passes it to the Entrez.esearch function.
+
+Supplemental Tutorial:http://biopython.org/DIST/docs/api/Bio.Entrez-module.html 
+
+```{python}
+
+from Bio import Entrez
+from Bio import SeqIO
+
+Entrez.email='your@email.com'
+#search Genbank, returns accession numbers (up to 100)
+handle=Entrez.esearch(db='nucleotide', retmax=3, term="rbcl[All Fields]", idtype="acc") 
+record = Entrez.read(handle)
+print(handle)
+print(record)
+handle.close()
+
+
+fetch = Entrez.efetch(db='nucleotide', id=",".join(record['IdList']), rettype='gb', retmode='text')
+gb=fetch.read()
+print(gb[0:1000])
+
+```
+
+Note that Entrez.efetch() has a limit of 200 records. So you may have to put this in a loop. You can check this as below:
+
+```{python}
+print(record['Count']) #If this is greater than 200 you need to put this in a loop.
+
+```
+## Sequence File conversion
+
+Now let's use SeqIO to switch from the Genbank file format to fasta
+
+```{python}
+
+target = open('../data/seqs.gb', 'w')     #Open file seqs.gb for writing
+target.write(gb)
+target.close()
+count = SeqIO.convert("../data/seqs.gb", "genbank", "../data/seqs.fasta", "fasta")    #convert file seqs.gb to seqs.fasta
+print("Converted %i records to fasta" % count)
+```
+
+## Pubmed Queries
+
+```{python}
+
+from Bio import Entrez
+
+Entrez.email='your@email.com'
+handle=Entrez.esearch(db='pubmed', retmax=300, term="maxent", retmode='xml') 
+record = Entrez.read(handle)
+handle.close()
+
+#print(record)
+
+hits = int(record['Count']) #Is this more than 300? If so we need to put the part above in a loop
+
+#One search method that *works*
+handle = Entrez.efetch(db="pubmed", id=record['IdList'], rettype="gb", retmode="xml", retmax=300)
+pm = Entrez.read(handle)
+title=list()
+numreturn=len(pm['PubmedArticle'])
+#for i in range(numreturn): #too long for demo.
+for i in range(3):
+  print(i)
+  #Title
+  print(pm['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle'])
+  #Year
+  print(pm['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleDate'][0]['Year'])
+  #Abstract
+  print(pm['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0])
+  print('\n')
+
+
+```
+
+# Homework
+
+Write a Python script to search Pubmed and return a list that contains the title, year, and abstract for all of your hits. Then write this info to a text file. Hint: Look [here](https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python) for help with creating and writing to files. Post your script to the [#python](https://bio200-bioinformatics.slack.com/messages/CEC51EBN0) channel.
+
+
+[home](https://rsh249.github.io/bioinformatics)

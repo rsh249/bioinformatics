@@ -93,7 +93,7 @@ In addition to this site and the college eLearn page we will be keeping a course
 
 ### <a href = './python1.html'> Python Workshop Part 1
 
-### Python Workshop Part 2 (Coming soon!)
+### <a href = './python2.html'> Python Workshop Part 2 
 
 
 # Projects
