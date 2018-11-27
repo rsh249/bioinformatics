@@ -29,7 +29,9 @@ After having completed Introduction to Bioinformatics you will be able to:
 ## Stay Connected
 In addition to this site and the college eLearn page we will be keeping a course dialogue on [Slack](https://bio200-bioinformatics.slack.com)
 
-## Outline:
+# Outline:
+
+# Introduction to Bioinformatics
 
 ### <a href='./bio_data_sci.html'> Biology as a Data Science
 
