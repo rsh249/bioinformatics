@@ -20,6 +20,12 @@ use_python('/home/rharbert/anaconda3/bin/python')
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# First
+
+Since we have limited time to spend on Python we will not be covering Pandas and data visualization with matplotlib today. I encourage you to have a look through a Python workshop I have run in the past [here](https://rsh249.github.io/python_workshop). 
+
+Today we will focus on scripting in Python and working with a package that extracts data from the NCBI databases.
+
 
 # Scripting in Python
 
@@ -171,7 +177,7 @@ for i in range(3):
 
 # Homework
 
-Write a Python script to search Pubmed and return a list that contains the title, year, and abstract for all of your hits. Then write this info to a text file. Hint: Look [here](https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python) for help with creating and writing to files. Post your script to the [#python](https://bio200-bioinformatics.slack.com/messages/CEC51EBN0) channel.
+Write a Python script to search Pubmed for a topic of interest to you and return a list that contains the title, year, and abstract for all of your hits. Then write this info to a text file. Hint: Look [here](https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python) for help with creating and writing to files. Post your script to the [#python](https://bio200-bioinformatics.slack.com/messages/CEC51EBN0) channel.
 
 
 [home](https://rsh249.github.io/bioinformatics)

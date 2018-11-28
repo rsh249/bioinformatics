@@ -249,11 +249,16 @@ div.tocify {
 
 <h1 class="title toc-ignore">Python Workshop 2</h1>
 <h4 class="author"><em>Prof. Harbert</em></h4>
-<h4 class="date"><em>27 November, 2018</em></h4>
+<h4 class="date"><em>28 November, 2018</em></h4>
 
 </div>
 
 
+<div id="first" class="section level1">
+<h1>First</h1>
+<p>Since we have limited time to spend on Python we will not be covering Pandas and data visualization with matplotlib today. I encourage you to have a look through a Python workshop I have run in the past <a href="https://rsh249.github.io/python_workshop">here</a>.</p>
+<p>Today we will focus on scripting in Python and working with a package that extracts data from the NCBI databases.</p>
+</div>
 <div id="scripting-in-python" class="section level1">
 <h1>Scripting in Python</h1>
 <p>Interactive Python is great but you want to put your workflow in scripts so it is easy to reproduce. The basic format is below. Copy and paste it into a text file.</p>
@@ -315,36 +320,37 @@ record <span class="op">=</span> Entrez.read(handle)
 <span class="bu">print</span>(handle)</code></pre></div>
 <pre><code>## &lt;_io.TextIOWrapper encoding='utf-8'&gt;</code></pre>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">print</span>(record)</code></pre></div>
-<pre><code>## DictElement({'Count': '277409', 'RetMax': '3', 'RetStart': '0', 'IdList': ['LC214993.1', 'LC214987.1', 'LC214986.1'], 'TranslationSet': [], 'TranslationStack': [DictElement({'Term': 'rbcl[All Fields]', 'Field': 'All Fields', 'Count': '277409', 'Explode': 'N'}, attributes={}), 'GROUP'], 'QueryTranslation': 'rbcl[All Fields]'}, attributes={})</code></pre>
+<pre><code>## DictElement({'Count': '277664', 'RetMax': '3', 'RetStart': '0', 'IdList': ['RPOP01000074.1', 'RPQC01000009.1', 'RPQT01000547.1'], 'TranslationSet': [], 'TranslationStack': [DictElement({'Term': 'rbcl[All Fields]', 'Field': 'All Fields', 'Count': '277664', 'Explode': 'N'}, attributes={}), 'GROUP'], 'QueryTranslation': 'rbcl[All Fields]'}, attributes={})</code></pre>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">handle.close()
 fetch <span class="op">=</span> Entrez.efetch(db<span class="op">=</span><span class="st">'nucleotide'</span>, <span class="bu">id</span><span class="op">=</span><span class="st">&quot;,&quot;</span>.join(record[<span class="st">'IdList'</span>]), rettype<span class="op">=</span><span class="st">'gb'</span>, retmode<span class="op">=</span><span class="st">'text'</span>)
 gb<span class="op">=</span>fetch.read()
 <span class="bu">print</span>(gb[<span class="dv">0</span>:<span class="dv">1000</span>])</code></pre></div>
-<pre><code>## LOCUS       LC214993                1446 bp    DNA     linear   PLN 23-NOV-2018
-## DEFINITION  Bacopa floribunda chloroplast rbcL gene for
-##             ribulose-1,5-bisphosphate carboxylase/oxygenase large subunit,
-##             complete cds, isolate: BF01.
-## ACCESSION   LC214993
-## VERSION     LC214993.1
-## KEYWORDS    .
-## SOURCE      chloroplast Bacopa floribunda
-##   ORGANISM  Bacopa floribunda
-##             Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
-##             Spermatophyta; Magnoliophyta; eudicotyledons; Gunneridae;
-##             Pentapetalae; asterids; lamiids; Lamiales; Plantaginaceae;
-##             Gratioleae; Bacopa.
-## REFERENCE   1
-##   AUTHORS   Tungphatthong,C., Somnuek,J., Phadungcharoen,T., Ingkaninan,K.,
-##             Denduangboripant,J. and Sukrong,S.
-##   TITLE     DNA barcoding of &lt;i&gt;Bacopa&lt;/i&gt; species coupled with high-resolution
-##             melting analysis
-##   JOURNAL   Genome (2018) In press
-##    PUBMED   30388379
-##   REMARK    DOI:10.1139/gen-2018-0059
-##             Publication St</code></pre>
+<pre><code>## LOCUS       RPOP01000074            2914 bp    DNA     linear   ENV 25-NOV-2018
+## DEFINITION  Euryarchaeota archaeon isolate bin.732 Contig_574918, whole genome
+##             shotgun sequence.
+## ACCESSION   RPOP01000074 RPOP01000000
+## VERSION     RPOP01000074.1
+## DBLINK      BioProject: PRJNA330672
+##             BioSample: SAMN10417332
+## KEYWORDS    WGS.
+## SOURCE      Euryarchaeota archaeon (sediment metagenome)
+##   ORGANISM  Euryarchaeota archaeon
+##             Archaea; Euryarchaeota.
+## REFERENCE   1  (bases 1 to 2914)
+##   AUTHORS   Dalcin Martins,P., Danczak,R.E., Roux,S., Frank,J., Borton,M.A.,
+##             Wolfe,R.A., Burris,M.N. and Wilkins,M.J.
+##   TITLE     Viral and metabolic controls on high rates of microbial sulfur and
+##             carbon cycling in wetland ecosystems
+##   JOURNAL   Microbiome 6 (1), 138 (2018)
+##    PUBMED   30086797
+##   REMARK    Publication Status: Online-Only
+## REFERENCE   2  (bases 1 to 2914)
+##   AUTHORS   Dalcin Martins,P.
+##   TITLE     Direct Submission
+##   JOURNAL   Submitted (19-NOV-2018) Mic</code></pre>
 <p>Note that Entrez.efetch() has a limit of 200 records. So you may have to put this in a loop. You can check this as below:</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="bu">print</span>(record[<span class="st">'Count'</span>]) <span class="co">#If this is greater than 200 you need to put this in a loop.</span></code></pre></div>
-<pre><code>## 277409</code></pre>
+<pre><code>## 277664</code></pre>
 </div>
 <div id="sequence-file-conversion" class="section level2">
 <h2>Sequence File conversion</h2>
@@ -389,7 +395,7 @@ numreturn<span class="op">=</span><span class="bu">len</span>(pm[<span class="st
 ## 1
 ## Species distribution models and empirical test: Comparing predictions with well-understood geographical distribution of &lt;i&gt;Bothrops alternatus&lt;/i&gt; in Argentina.
 ## 2018
-## Species distribution models (SDMs) estimate the geographical distribution of species although with several limitations due to sources of inaccuracy and biases. Empirical tests arose as the most important steps in scientific knowledge to assess the efficiency of model predictions, which are poorly rigorous in SDMs. A good approach to the empirical distribution (ED) of a species can be obtained from comprehensive empirical knowledge, that is, well-understood distributions gathered from large amount of data generated with appropriate spatial and temporal samples coverage. The aims of this study were to (a) compare different SDMs predictions with an ED; and (b) evaluate if fuzzy global matching (FGM) could be used as an index to compare SDMs predictions and ED. Six algorithms with 5 and 20 variables were used to assess their accuracy in predicting the ED of the venomous snake &lt;i&gt;Bothrops alternatus&lt;/i&gt; (Viperidae). Its entire distribution is known, thanks to thorough field surveys across Argentina, with 1,767 records. ED was compared with SDMs predictions using Map Comparison Kit. SDMs predictions showed important biases in all methods used, from 70% sub-estimation to 40% over-estimation of ED. BIOCLIM predicted ˜31% of &lt;i&gt;B. alternatus&lt;/i&gt; ED. DOMAIN predicted 99% of ED, but over-estimated 40% of the area. GLM with five variables calculated 75% of ED, while Genetic Algorithm for Rule-set Prediction showed ˜60% of ED; the last two presenting overpredictions in areas with favorable climatic conditions but not inhabited by the species. MaxEnt and RF were the only methods to detect isolated populations in the southern distribution of &lt;i&gt;B. alternatus&lt;/i&gt;. Although SDMs proved useful in making predictions about species distribution, predictions need validation with expert maps knowledge and ED. Moreover, FGM showed a good performance as an index with values similar to True Skill Statistic, so that it could be used to relate ED and SDMs predictions.
+## Species distribution models (SDMs) estimate the geographical distribution of species although with several limitations due to sources of inaccuracy and biases. Empirical tests arose as the most important steps in scientific knowledge to assess the efficiency of model predictions, which are poorly rigorous in SDMs. A good approach to the empirical distribution (ED) of a species can be obtained from comprehensive empirical knowledge, that is, well-understood distributions gathered from large amount of data generated with appropriate spatial and temporal samples coverage. The aims of this study were to (a) compare different SDMs predictions with an ED; and (b) evaluate if fuzzy global matching (FGM) could be used as an index to compare SDMs predictions and ED. Six algorithms with 5 and 20 variables were used to assess their accuracy in predicting the ED of the venomous snake &lt;i&gt;Bothrops alternatus&lt;/i&gt; (Viperidae). Its entire distribution is known, thanks to thorough field surveys across Argentina, with 1,767 records. ED was compared with SDMs predictions using Map Comparison Kit. SDMs predictions showed important biases in all methods used, from 70% sub-estimation to 40% over-estimation of ED. BIOCLIM predicted 31% of &lt;i&gt;B. alternatus&lt;/i&gt; ED. DOMAIN predicted 99% of ED, but over-estimated 40% of the area. GLM with five variables calculated 75% of ED, while Genetic Algorithm for Rule-set Prediction showed 60% of ED; the last two presenting overpredictions in areas with favorable climatic conditions but not inhabited by the species. MaxEnt and RF were the only methods to detect isolated populations in the southern distribution of &lt;i&gt;B. alternatus&lt;/i&gt;. Although SDMs proved useful in making predictions about species distribution, predictions need validation with expert maps knowledge and ED. Moreover, FGM showed a good performance as an index with values similar to True Skill Statistic, so that it could be used to relate ED and SDMs predictions.
 ## 
 ## 
 ## 2
@@ -400,7 +406,7 @@ numreturn<span class="op">=</span><span class="bu">len</span>(pm[<span class="st
 </div>
 <div id="homework" class="section level1">
 <h1>Homework</h1>
-<p>Write a Python script to search Pubmed and return a list that contains the title, year, and abstract for all of your hits. Then write this info to a text file. Hint: Look <a href="https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python">here</a> for help with creating and writing to files. Post your script to the <a href="https://bio200-bioinformatics.slack.com/messages/CEC51EBN0">#python</a> channel.</p>
+<p>Write a Python script to search Pubmed for a topic of interest to you and return a list that contains the title, year, and abstract for all of your hits. Then write this info to a text file. Hint: Look <a href="https://www.pythonforbeginners.com/files/reading-and-writing-files-in-python">here</a> for help with creating and writing to files. Post your script to the <a href="https://bio200-bioinformatics.slack.com/messages/CEC51EBN0">#python</a> channel.</p>
 <p><a href="https://rsh249.github.io/bioinformatics">home</a></p>
 </div>
 
