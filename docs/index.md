@@ -26,7 +26,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 + Run bioinformatics programs from the Unix command line to perform analysis of DNA sequence data.
 + Understand the importance of reproducibility and open access for data and computer code in bioinformatics.
 
-# License: (Creative Commons Attribution 4.0 license)[https://github.com/rsh249/bioinformatics/blob/master/LICENSE.md]
+# License: https://github.com/rsh249/bioinformatics/blob/master/LICENSE.md
 # Outline:
 
 # Introduction to Bioinformatics
