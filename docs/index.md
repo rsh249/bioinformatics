@@ -7,10 +7,8 @@
 <center>
 Contact Info:<br>
 Rob Harbert, 
-rharbert@stonehill.edu <br>
+rharbert [at] stonehill [dot] edu <br>
 Stonehill College <br>
-Easton, MA <br>
-(540)354-8104 (cell) <br>
 </center>
 ---
 
