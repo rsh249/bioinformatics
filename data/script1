@@ -1,0 +1,20 @@
+#this is a comment
+
+#echo will print something back to the the terminal when the script is run
+echo 'Word Count\n' 
+
+#then we can run any command that we ran on the command line before
+wc test.txt
+
+sleep 3 # pauses the script for 3 seconds
+
+head -5 test.txt
+
+sleep 3
+
+#find Romeo
+grep -i "romeo" test.txt
+
+#The script will end when there are no more commands to run. Some languages require an explicit "quit" command.
+
+exit
