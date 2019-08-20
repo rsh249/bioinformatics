@@ -1,4 +1,4 @@
-﻿<html>
+<html>
   <head>
     {% seo %}
   </head>
@@ -19,7 +19,7 @@ This course introduces common concepts and tools in the field of Bioinformatics 
 After having completed Introduction to Bioinformatics you will be able to:
 + Discuss Biology as a subdiscipline in “Data Science”
 + Understand the major sources of ‘big-data’ in Biology and the scale and nature of the data being produced.
-+ Perform fundamental operations (data input/output, statistics, data visualization) in both R and Python programming environments.
++ Perform fundamental operations (data input/output, statistics, data visualization).
 + Use common bioinformatics tools using the Unix command line, R, and Python.
 + Run bioinformatics programs from the Unix command line to perform analysis of DNA sequence data.
 + Understand the importance of reproducibility and open access for data and computer code in bioinformatics.
@@ -35,7 +35,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./bio_data_sci.html'> Biology as a Data Science
 
-### "Big-Data" in Biology Presentations/Discussion
+<!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)
 
@@ -103,6 +103,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 ### Peer consulting day
 
 ### Presentation Days
+
+--->
 
 
 
