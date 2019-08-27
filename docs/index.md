@@ -13,6 +13,7 @@ Stonehill College <br>
 ---
 
 ## Course Description
+
 This course introduces common concepts and tools in the field of Bioinformatics with a focus on developing a basic skill set for working with large biological data sets. The digital age has resulted in a period of rapid growth of data, and in biology this is revolutionizing how we look at the world. Understanding how the field uses computational tools to manage and study these massive datasets is a crucial skill set for the modern Biology student. This course will cover the major sources of data in biology and an overview of the myriad of computational tools available
 
 ## Objectives:

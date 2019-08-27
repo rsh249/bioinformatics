@@ -1,0 +1,73 @@
+---
+title: "Welcome!"
+author: "Prof. Harbert"
+date: Meeting 1
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Welcome to Bioinformatics!
+
+The field of Biology is becoming increasingly dependent upon the production and analysis of data. We are producing data at scales that require the current and next generation of researchers to develop skills in data analysis and computational methods. The field of Bioinformatics is using computer programming to address emerging issues at the interface of Biology and Data Science/Computer Science.
+
+## In this class...
+
+We will:
+
++ Learn the basics of computer programming
++ Use coding to analyze biological data (e.g., DNA sequence data and biodiversity data)
++ Develop effective data visualizations
++ Demonstrate good practices for reproducibility and documentation of computational work.
++ and more....
+
+## Your Syllabus
+
+Can be found [https://github.com/rsh249/bioinformatics/blob/master/syllabus/BIO331_2019fall_syllabus.docx](here). 
+
+## Class Discussions
+
+We will hold weekly discussions on [https://introbioinformatics.slack.com](Slack).
+
+
+# What is Bioinformatics in 2019? 
+
+https://www.ncbi.nlm.nih.gov/pubmed/11552348
+
+https://www.ebi.ac.uk/training/online/course/bioinformatics-terrified/what-bioinformatics-0
+
+## Is it Data Science?
+
+https://datascience.berkeley.edu/about/what-is-data-science/
+
+# For Next Time: Homework
+
+Before our meeting next week (Wednesday) there will be a small group assignment. Working in pairs you need to collect some "real-world" data. Make some time this week to go out and observe something on campus. This could be biological or not. Past examples include counting water birds on the pond, comparing the number of left handed desks in various classrooms on campus, and observing the amount of time it takes to get through the line at Dunkin. However, this could also be something like measuring the dimensions of leaves of several tree species, or the [light intensity](https://play.google.com/store/apps/details?id=com.tsang.alan.lightmeter&hl=en_US) at different locations or different times of day.
+
+Aim to collect about 20-30 data points and work together to decide on a standard way that you are collecting and storing your information (i.e., an excel spreadsheet or word document table). 
+
+We will work with your datasets over the next couple of weeks to discuss and demonstrate good data handling practices and data visualization techniques with the R programming language. You will NOT be graded based on how *good* your data are, but rather on the effort you put into the design and collection of your datasest.
+
+*Within two days* please post your data collection idea to the [#datacoll](https://introbioinformatics.slack.com/messages/CMR21G0FN) Slack channel.
+
+Bring your data with you to our next in-class meeting.
+
+
+
+
+
+
+
+
+
+
