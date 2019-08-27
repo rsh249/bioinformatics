@@ -33,11 +33,11 @@ We will:
 
 ## Your Syllabus
 
-Can be found [https://github.com/rsh249/bioinformatics/blob/master/syllabus/BIO331_2019fall_syllabus.docx](here). 
+Can be found [here](https://github.com/rsh249/bioinformatics/raw/master/syllabus/BIO331_2019fall_syllabus.pdf). 
 
 ## Class Discussions
 
-We will hold weekly discussions on [https://introbioinformatics.slack.com](Slack).
+We will hold weekly discussions on [Slack](https://introbioinformatics.slack.com).
 
 
 # What is Bioinformatics in 2019? 
