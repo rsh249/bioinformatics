@@ -34,7 +34,9 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 # Introduction to Bioinformatics
 
-### <a href='./bio_data_sci.html'> Biology as a Data Science
+### <a href='./welcome.html'> Meeting 1: Welcome!
+
+### <a href='./bio_data_sci.html'> Meeting 2: Biology as a Data Science
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 
