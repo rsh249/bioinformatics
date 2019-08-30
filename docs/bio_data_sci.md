@@ -1,13 +1,13 @@
 ---
 title    : Biology as a Data Science
-subtitle : BIO200A Introduction to Bioinformatics
+subtitle : BIO331 Introduction to Bioinformatics
 author   : Prof. Harbert
 mode     : selfcontained # {standalone, draft}
 hitheme  : dark
 widgets  : [bootstrap]
 assets:
   js:
-    - "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"
+    - "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"
     - "http://bartaz.github.io/sandbox.js/jquery.highlight.js"
 --- .segue .dark .nobackground
 
