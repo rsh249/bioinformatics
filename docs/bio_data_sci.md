@@ -3,8 +3,17 @@ title    : Biology as a Data Science
 subtitle : BIO331 Introduction to Bioinformatics
 author   : Prof. Harbert
 mode     : selfcontained # {standalone, draft}
-hitheme  : dark
-widgets  : [bootstrap]
+cdn: false
+theme: journal
+widgets: [disqus, userecho]
+highlighter: prettify
+hitheme: twitter-bootstrap
+linenums: true
+disqus:
+  shortname: slidify
+
+
+
 assets:
   js:
     - "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"
