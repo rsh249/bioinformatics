@@ -37,14 +37,14 @@ The growth of data generation and collection is far outpacing the ability to pro
 ## Defining Data Science
 
 "Data science has been called "the sexiest job of the 21st century,"
-presumably by someone who has never visited a fire station. Nonetheless, data science is a hot and growing field...But what is data science? According to a Venn diagram that is somewhat famous in the industry, data science lies at the intersection of hacking skills [computer science], math and statistical knowledge, and substantive [subject] expertise."
--- [From Data Science From Scratch](http://shop.oreilly.com/product/0636920033400.do)
+presumably by someone who has never visited a fire station."
+-- [From "Data Science From Scratch"](http://shop.oreilly.com/product/0636920033400.do)
 
 <img src="./images/Data_Science_VD.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="30%" style="display: block; margin: auto;" />
 
 
 
-  [From Drew Conway](http://drewconway.com/zia/2013/3/26/the-data-science-venn-diagram)
+  [Drew Conway](http://drewconway.com/zia/2013/3/26/the-data-science-venn-diagram)
 
 ---
 
@@ -54,7 +54,7 @@ Data Scientist (n.):
 
 "Person who is better at statistics than any software engineer and better at software engineering than any statistician."  
 
--Josh Wills (Apache Crunch)   
+-Josh Wills (Data Engineer)   
 
 [Via Twitter](https://twitter.com/josh_wills/status/198093512149958656?lang=en)
 
@@ -67,13 +67,15 @@ Data Scientist (n.):
 The "Data Science" of Biology
 
 
-+ "Person who is better at biology than any programmer and better at programming than any biologist."
-+ Some intersection of coding skill, math/stats functionality, and biological specialization.
++ "Person who is better at biology than any programmer and better at programming than any biologist." 
++ An intersection of coding skill, math/stats functionality, and biological specialization.
++ [Current Example](https://careers.amnh.org/postings/2056)
 
+<br><br>
 
-What's key is that in both Data Science and Bioinformatics the jobs of the future are going to require the basics of data oriented disciplines. 
+In both Data Science and Bioinformatics the jobs of the future are going to require the basics of data oriented disciplines. 
 
-+ Quantitative, data processing skills are the "new normal" expected for professionals in all fields.
++ Data processing skills are the "new normal" expected for professionals in all fields.
 
 ---
 
@@ -88,6 +90,8 @@ What's key is that in both Data Science and Bioinformatics the jobs of the futur
 
 
 ## Big Data: Volume, velocity, variety, and veracity
+
+The 4 'V's of big data:
 
 + How much data is there now?
 + How quickly are we making/recording/streaming more?
