@@ -1,0 +1,142 @@
+---
+title: "Getting started with R"
+author: "Prof. Harbert"
+date: Lab 1
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# R and RStudio
+
+R is a programming language originally designed by statisticians. Now it is a common programming language for scientific applications. 
+
+In this course we will use R through the RStudio interface. Your instructor will demonstrate how to access and log into the RStudio server for this class.
+
+```{r}
+version
+```
+
+We can now get started with the R command promp open.
+
+```{r}
+x=2
+print(x) ##Print method
+class(x)
+
+x=seq(1:10) # Create a vector
+class(x)
+print(x)
+print(x[1]) # First index of vector
+print(x[1:5])
+
+y = matrix(nrow=5, ncol=5) # create a 5x5 matrix
+print(y)
+class(y)
+y[1,1] = 5
+print(y)
+y[,1]= x[1:5]
+print(y)
+class(y[,1])
+
+y = cbind(seq(1:5), 
+seq(1:5),
+seq(1:5),
+seq(1:5),
+seq(1:5))
+
+class(y)
+
+
+```
+
+## Data input/output
+
+### Read table/tab/csv/txt text files:
+read.table()
+read.csv()
+read.delim()
+
+```{r}
+cars = read.table('https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/mtcars.csv', header=T, sep = ',') # Read a comma separated values file
+head(cars)
+
+cars = read.csv('https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/mtcars.csv')
+
+cars = read.delim('https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/mtcars.csv', sep=',')
+
+
+```
+
+### Write Files
+
+```{r}
+write.table(cars, file='mtcars.tab')
+write.csv(cars, file='mtcars.csv')
+```
+
+Where are these files now?
+
+
+
+### Basic plotting
+
+One of R's biggest advantages is the ability to create high quality graphics in nearly any format or style. Today we will be working with the basic plotting features of R. These are good, but limited at times. Later we will take a look at the [ggplot library](https://ggplot2.tidyverse.org/). ggplot is the current 'state of the art' in graphics for R. 
+
+```{r}
+cars=read.csv('mtcars.csv')
+```
+
+
+```{r}
+head(cars)
+plot(cars)
+```
+
+OK. That was not so great. Let's try somethnig more useful for visualizing these data. We can tell plot() which columns we want to create a scatterplot for:
+
+```{r}
+colnames(cars)
+plot(cars[,'cyl'], cars[,'mpg'])
+```
+
+OR we can create other types of plots by calling other functions. e.g., a histogram of boxplot:
+
+```{r}
+hist(cars[,'mpg'])
+
+```
+
+
+```{r}
+boxplot(cars[,'hp'])
+```
+
+# Homework Assignment
+
+
+1) Read your data into R. Create a simple plot of some of your data. Post it to the [#plots](https://introbioinformatics.slack.com/messages/CMWDBLP8R) channel. 
+
+
+# [Home](https://rsh249.github.io/bioinformatics)
+
+
+
+
+
+
+
+
+

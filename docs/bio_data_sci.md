@@ -125,10 +125,13 @@ The top data producer in biology is clearly DNA sequencing:
 
 ## Genomic data "Variety"
 
-The alphabet of the genome has 4 letters (ACGT).
+The alphabet of the genome has 4 letters (ACGT). However, much like languages, the code of the genome depends on series of nucleotides (i.e., genes, regulatory elements).
+
+So how does this increase complexity?
 
 
-+ What is the probability of any given 12 letter word occurring more than once in the human genome? (Hint: you might need to look up how big the human genome is)
++ What is the probability of randomly selecting any given 12 letter DNA word? 
++ What about doing this twice? (Is it likely to get the same sequence of DNA in a genome by chance?)
 
 ---
 

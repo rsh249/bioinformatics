@@ -131,10 +131,13 @@ knitr::include_graphics('./images/journal.pbio.1002195.t001.PNG')
 
 ## Genomic data "Variety"
 
-The alphabet of the genome has 4 letters (ACGT).
+The alphabet of the genome has 4 letters (ACGT). However, much like languages, the code of the genome depends on series of nucleotides (i.e., genes, regulatory elements).
+
+So how does this increase complexity?
 
 
-+ What is the probability of any given 12 letter word occurring more than once in the human genome? (Hint: you might need to look up how big the human genome is)
++ What is the probability of randomly selecting any given 12 letter DNA word? 
++ What about doing this twice? (Is it likely to get the same sequence of DNA in a genome by chance?)
 
 ---
 
@@ -208,7 +211,7 @@ Earth observation satellites have a growing history of contributing to our abili
 
 Pick one of the "big-data" resources mentioned in the preceeding slides, research the 4V's relating to that project and prepare to speak for ~2 minutes on your findings on Monday to share your findings with the class. 
 
-+ So that we don't have duplicates please sign up on the Slack [#topics channel](https://bio200-bioinformatics.slack.com/messages/CCMH74VNY)
++ So that we don't have duplicates please sign up on the Slack [#topics channel](https://introbioinformatics.slack.com/messages/CMRAB5YRH)
 + If you find or no of a big-data project not mentioned here (and there are many!) feel free to research what you find interesting.
 
 
