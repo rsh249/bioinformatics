@@ -38,7 +38,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./bio_data_sci.html'> Meeting 2: Biology as a Data Science
 
-### <a href='./R_lab.html'>
+### <a href='./R_lab.html'> Lab 1: Getting started with R
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 
