@@ -89,44 +89,10 @@ write.csv(cars, file='mtcars.csv')
 Where are these files now?
 
 
-
-# Basic plotting
-
-One of R's biggest advantages is the ability to create high quality graphics in nearly any format or style. Today we will be working with the basic plotting features of R. These are good, but limited at times. Later we will take a look at the [ggplot library](https://ggplot2.tidyverse.org/). ggplot is the current 'state of the art' in graphics for R. 
-
-```{r}
-cars=read.csv('mtcars.csv')
-```
-
-
-```{r}
-head(cars)
-plot(cars)
-```
-
-OK. That was not so great. Let's try somethnig more useful for visualizing these data. We can tell plot() which columns we want to create a scatterplot for:
-
-```{r}
-colnames(cars)
-plot(cars[,'cyl'], cars[,'mpg'])
-```
-
-OR we can create other types of plots by calling other functions. e.g., a histogram of boxplot:
-
-```{r}
-hist(cars[,'mpg'])
-
-```
-
-
-```{r}
-boxplot(cars[,'hp'])
-```
-
 # Homework Assignment
 
 
-1) Read your data into R. Create a simple plot of some of your data. Post it to the [#plots](https://introbioinformatics.slack.com/messages/CMWDBLP8R) channel. 
+1) Read your data into R. 
 2) *DISCUSSION*: In the slack [#discussion](https://introbioinformatics.slack.com/messages/CN3DX55M3) channel we will host this week's discussion. Please search online for an R related resource for R beginners. This could be a book/eBook, a web tutorial, youtube video, or something else. Post what you find. Look through the resource you found and tell the group about it (what it is, how it is structured, who it is targetted to).
 
 
