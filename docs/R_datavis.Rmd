@@ -1,0 +1,260 @@
+---
+title: "Data Visualization in R"
+author: "Prof. Harbert"
+date: Meeting 4
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+[home](https://rsh249.github.io/bioinformatics)
+
+# Cool stuff:
+
+https://aeon.co/amp/videos/watch-a-single-cell-become-a-complete-organism-in-six-pulsing-minutes-of-timelapse?__twitter_impression=true
+
+
+# Data Visualization
+
+Today we will be using 'ggplot', an R package for data visualization. These tools will help you create publication quality plots and figures directly from your R code. If there is one thing that you get out of this class I hope that it is som confidence with these tools. 
+
+What is 'ggplot'? The name refers to the "Grammar of Graphics". This refers to a structured language for building data visualizations. 
+
+## ggplot resources
+
+[Hadley Wickham's paper](http://vita.had.co.nz/papers/layered-grammar.pdf)
+
+[The Grammar of Graphics Book](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448/ref=sr_1_1?keywords=grammar+of+graphics&qid=1568209903&s=gateway&sr=8-1)
+
+[R for Data Science -- Data Visualization chapter](https://r4ds.had.co.nz/data-visualisation.html)
+
+[ggplot documentation](https://ggplot2.tidyverse.org/reference/)
+
+
+
+## Recent news: ggplot in the press
+
+The BBC Visual and Data Journalism team uses R and ggplot to create their publication graphics. A few weeks ago they released their toolbox on [GitHub](https://github.com/bbc/bbplot). More from [Medium](https://medium.com/bbc-visual-and-data-journalism/how-the-bbc-visual-and-data-journalism-team-works-with-graphics-in-r-ed0b35693535)
+
+
+# Visualization Practice
+
+## Read Census Data
+
+For this section we will read in a table of US Census Demographic data from https://www.kaggle.com/muonneutrino/us-census-demographic-data. The file can be found on the RStudio server at '/usr/share/data/kaggle/census.csv'. 
+
+
+To read data into R we use:
+read.table()
+read.csv()
+read.delim()
+
+```{r, eval=TRUE}
+census = read.csv('/usr/share/data/kaggle/census.csv')
+head(census)
+
+```
+
+LOOK BACK: How do you write a table to a new file?
+
+
+## ggplot2 Graphics
+
+For help and an overview of all of the graphics types that are available in ggplot check out the [R ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf)
+
+```{r}
+library(ggplot2)
+```
+
+### Recall: Scatterplots using 'geom_point()'
+
+```{r}
+ggplot(data = census) +
+  geom_point(mapping = aes(x = Citizen, y = TotalPop))
+```
+
+## Graphs for single parameters:
+
+### geom_histogram()
+
+```{r}
+ggplot(data=census) +
+  geom_histogram(aes(x=Citizen), binwidth=100) 
+```
+
+But the x-axis is based on the maximum value, not the effective range so the distribution of the data is tough to read.
+
+```{r}
+ggplot(data=census) +
+  geom_histogram(aes(x=Citizen), binwidth=100)+
+  xlim(c(0,10000))
+```
+
+That also got rid of an artifact near zero. Let's inspect the data for 'Citizen' to see what data could be causing that:
+
+```{r}
+#summary(census$Citizen)
+sum(census$Citizen <=0)
+```
+
+Are zero values real?
+
+#### Sidetrack: Logical subsetting
+
+We can use logical operators and the data.frame index notation to find ONLY those rows of data that have a zero value in the Citizen column.
+
+```{r}
+# test for Citizen ==0
+logic = census$Citizen==0
+# Then use this vector of logical results to index the data frame
+zerocit= census[logic,] #make sure to use the rows position -> left of the column
+#summary(zerocit)
+```
+### Density:
+
+```{r}
+ggplot(data=census) +
+  geom_density(aes(x=Citizen)) +
+  xlim(c(0,10000))
+```
+
+### geom_area()
+
+```{r}
+ggplot(data=census) +
+  geom_area(stat='bin', bins = 30, aes(x=Citizen)) +
+  xlim(c(0,10000))
+```
+
+### For Discrete values: geom_bar()
+
+```{r}
+ggplot(data=census) +
+  geom_bar(aes(x=State))
+
+```
+But, this is hard to read. A few fixes:
+
++ Rotate x-axis labels (Use 'theme()')
++ Sort states by count (Use library(forcats) -- Tools for working with categorical variables)
+
+```{r}
+library(forcats)
+ggplot(data=census) +
+  geom_bar(aes(x=fct_infreq(State))) +
+  xlab('') +
+  theme(axis.text.x  = element_text(angle=90))
+```
+
+### Challenge 1:
+
+Pick a plot method appropriate for the data in the MeanCommute column. 
+
+## Graphs for two parameters
+
+### Continuous parameters
+
+#### geom_point()
+
+Scatterplots
+
+```{R}
+ggplot(data=census) + 
+    geom_point(aes(x=IncomePerCap, y=Poverty))
+```
+
+See also: geom_jitter(), and geom_label()
+
+#### geom_smooth
+
+Add a line
+
+```{r}
+ggplot(data=census) + 
+    geom_point(aes(x=IncomePerCap, y=Poverty), alpha=0.1) +
+    geom_smooth(aes(x=IncomePerCap, y=Poverty)) 
+```
+
+#### Countour and density plots
+
+```{R}
+ggplot(data=census) + 
+    geom_hex(aes(x=IncomePerCap, y=Poverty)) 
+```
+```{R}
+ggplot(data=census) + 
+    geom_density2d(aes(x=IncomePerCap, y=Poverty)) 
+```
+
+### One Discrete X One Continuous parameter
+
+#### Boxplots
+
+```{R}
+ggplot(data=census[1:10000,]) + 
+    geom_boxplot(aes(x=State, y=Poverty)) 
+```
+
+#### Violin charts
+
+```{R}
+ggplot(data=census[1:10000,]) + 
+    geom_violin(aes(x=State, y=Poverty)) 
+```
+
+## Facetting: Multipanel plots
+
+Plus more logical subsetting using the '%in%' operator.
+
+
+```{R}
+ggplot(data=census[census$State %in% c('Alabama', 'Oregon', 'New York', 'California'),]) + 
+    geom_point(aes(x=Employed, y=Poverty)) +
+    facet_grid(~State) + theme(axis.text.x = element_text(angle=90))
+    
+```
+
+### Challenge 2
+
+Develop a plot showing the relationship between MeanCommute and Transit. Then attempt to facet this by State for a subset (use %in%) of five states of your choosing.
+
+
+
+# Save your work
+
+You should have been keeping your code in an R script file. Save that file now so that you can refer back to it later.
+
+
+# Homework
+
+## Part 1
+
+Open a new data file using:
+
+```{r, eval=F}
+newdata = read.csv('/usr/share/data/classfiles/readlengths3.txt', sep=' ')
+```
+
+These data are read lengths for three samples run on an Illumina sequencing instrument. I want to know how the read length distributions differ between these three samples. The DNA came from fossilized packrat middens dating back up to 3500 years ago and the degree of fragmentation may tell something about the age and/or preservation state of the sample.
+
+Create a plot showing some attribute of the read length distribution that can be compared between these samples. Post to [#plots](https://introbioinformatics.slack.com/messages/CMWDBLP8R)
+
+## Part 2
+
+Re-make your plot from Monday and post to [#plots](https://introbioinformatics.slack.com/messages/CMWDBLP8R)
+
+
+[home](https://rsh249.github.io/applied_bioinformatics)

@@ -40,8 +40,9 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./R_lab.html'> Lab 1: Getting started with R
 
-### <a href='./R_lab2.html'> Meeting 3: Getting started with R + Big-Data in Biology Presentations/Discussion
+### <a href='./R_Lab2.html'> Meeting 3: Getting started with R + Big-Data in Biology Presentations/Discussion
 
+### <a href='./R_datavis.html'> Meeting 4: Data Visualization in R
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 

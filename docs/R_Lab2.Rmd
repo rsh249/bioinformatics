@@ -1,7 +1,7 @@
 ---
 title: "R Session 2"
 author: "Prof. Harbert"
-date: Lab 1
+date: Meeting 3
 output: 
   html_document:
     theme: united
