@@ -1,15 +1,25 @@
 ---
-title    : DNA Sequencing
-subtitle : BIO200A Introduction to Bioinformatics
+title: DNA Sequencing
+subtitle : BIO331 Introduction to Bioinformatics
 author   : Prof. Harbert
 mode     : selfcontained # {standalone, draft}
-hitheme  : dark
-widgets  : [bootstrap]
+cdn: false
+theme: journal
+widgets: [disqus, userecho]
+highlighter: prettify
+hitheme: twitter-bootstrap
+linenums: true
+disqus:
+  shortname: slidify
+
+
+
 assets:
   js:
-    - "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"
+    - "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"
     - "http://bartaz.github.io/sandbox.js/jquery.highlight.js"
 --- .segue .dark .nobackground
+
 
 ..
 
@@ -17,7 +27,7 @@ assets:
 
 ## DNA Sequencing: Overview
 
-The ability to sequence DNA is one of the greatest achievements of th field. 
+The ability to sequence DNA is one of the greatest achievements of the field of Biology. 
 
 We will talk today a bit about the history of DNA sequencing and the main technologies involved.
 
@@ -27,7 +37,7 @@ Traditional
 + Sanger Sequencing 
 + The Human Genome Project
 
-NGS
+Modern Sequencing Technologies
 + Illumina
 + PacBio
 + NanoPore
@@ -47,10 +57,22 @@ Dr. Frederick Sanger (1918-2013) -- Developed sequencing by the chain terminatin
 
 ---
 
+## DNA Polymerase
+
+Nucleic acid molecules are copied in living cells through the enzymatic activity of nuclease enzymes.
+
+Polymers of nucleotides are formed by covalent bonds between the phosphate and sugar groups.
+
+New nucleotides are always added on the 3' sugar carbon.
+
+
+<img src="./images/dna_structure.jpg" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="50%" style="display: block; margin: auto;" />
+
+[OpenStax College, Biology (CC BY 4.0)](https://openstax.org/books/concepts-biology/pages/9-1-the-structure-of-dna#fig-ch09_01_03)
 
 ## Sanger
 
-<img src="./images/fig1.jpg" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" width="50%" style="display: block; margin: auto;" />
+<img src="./images/fig1.jpg" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="50%" style="display: block; margin: auto;" />
 
 [Image credit: "Whole-genome sequencing: Figure 1," by OpenStax College, Biology (CC BY 4.0)](https://cnx.org/contents/GFy_h8cu@10.7:5l844Z38@7/Whole-Genome-Sequencing)
 
@@ -58,7 +80,7 @@ Dr. Frederick Sanger (1918-2013) -- Developed sequencing by the chain terminatin
 
 ## Sanger
 
-<img src="./images/fig2.jpg" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="50%" style="display: block; margin: auto;" />
+<img src="./images/fig2.jpg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="50%" style="display: block; margin: auto;" />
 
 [Image credit: "Whole-genome sequencing: Figure 1," by OpenStax College, Biology (CC BY 4.0)](https://cnx.org/contents/GFy_h8cu@10.7:5l844Z38@7/Whole-Genome-Sequencing)
 
@@ -98,7 +120,7 @@ How many runs at 500bp per read and (let's assume) 384 reads per run would it ta
 ## Human Genome Project
 
 
-<img src="./images/hgp_timeline.jpg" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="100%" style="display: block; margin: auto;" />
+<img src="./images/hgp_timeline.jpg" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" width="100%" style="display: block; margin: auto;" />
 
 [Source CC-by-2.0](https://www.flickr.com/photos/genomegov/26964377742/)
 
