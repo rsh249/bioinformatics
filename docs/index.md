@@ -44,6 +44,14 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./R_datavis.html'> Meeting 4: Data Visualization in R
 
+### Lab 2: Setting up Git in RStudio
+
+### <a href='./dna_seq.html'> Meeting 5: DNA Sequencing Technology
+
+### <a href='./unix_shell.html'> Meeting 6: Introduction to the Unix Shell
+
+
+
 <!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)

@@ -1,7 +1,7 @@
 ---
-title: "R Session 2"
+title: "More R"
 author: "Prof. Harbert"
-date: Meeting 3
+date: Meeting 4
 output: 
   html_document:
     theme: united
@@ -46,7 +46,7 @@ To use data stored on a computer we need to tell R where it is. This is done usi
 Paths can be *absolute*:
 
 ```{r}
-cars <- read.csv('/home/rharbert/GitHub/bioinformatics/docs/mtcars.csv') #Linux path type for server
+#cars <- read.csv('/home/rharbert/GitHub/bioinformatics/docs/mtcars.csv') #Linux path type for server
 #cars <- read.csv('/Users/rharbert/.../mtcars.csv') #Windows type if working on a personal machine
 ```
 **Your paths will be different**
@@ -73,7 +73,7 @@ Prints the current path of your R session.
 
 If you need to change the directory you are working in, use:
 
-```{R}
+```{R, eval=F}
 setwd('/home/rharbert/GitHub/bioinformatics/docs/')
 ```
 

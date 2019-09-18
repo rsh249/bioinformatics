@@ -1,10 +1,17 @@
 ---
-title: "The Unix Shell"
+title: "The Unix Shell: Gateway to Bioinformatics"
 author: "Prof. Harbert"
-date: "September 26, 2018"
-output: html_document
+date: Meeting 4
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -13,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Outline:
 
++ Setup
 + What is the Unix shell? (What's Unix? What's a shell?)
 + Read Evaluate Print Loop (REPL)
 + Why do we need to know this?
@@ -21,6 +29,19 @@ Outline:
 + Files (create, edit, delete)
 + Parsing (search and bulk edit files - read, search, sort, and rearrange files)
 + Advanced topics: Scripting, loops, functions (*Probably for later)
+
+## Setup: RStudio
+
+We are going to use the Unix (or similar) terminal tab in RStudio. If you do not already have RStudio set up you will need to do this now.
+
+To get RStudio set up on your laptop:
+
+1) Download and install R from [CRAN](https://cran.r-project.org/)
+2) Download and install the *Free* RStudio Desktop from the [RStudio Downloads Page](https://www.rstudio.com/products/rstudio/download/#download)
+
+**Do the install of R and THEN RStudio**
+
+
 
 
 ## What is the Unix Shell?
