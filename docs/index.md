@@ -50,7 +50,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./unix_shell.html'> Meeting 6: Introduction to the Unix Shell
 
-
+### <a href='./algorithms.html'> Meeting 7: Demystifying Algorithms
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 
