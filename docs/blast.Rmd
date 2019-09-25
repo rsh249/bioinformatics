@@ -1,8 +1,16 @@
 ---
 title: "Basic Local Alignment Search Tool (BLAST)"
 author: "Prof. Harbert"
-date: "October 1, 2018"
-output: html_document
+date: Meeting 7
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +27,7 @@ Sequence data on their own are not that informative. To make sense of it all we 
 
 When we want to align two sequences together we call that pairwise alignment. Finding the similarities between many sequences is called multiple sequence alignment. Today we will focus on pairwise alignment algorithms and the ubiquitous BLAST algorithm.
 
-First, let's look at the simple Needleman-Wusch alignment algorithm:[https://www.ebi.ac.uk/Tools/psa/emboss_needle/](https://www.ebi.ac.uk/Tools/psa/emboss_needle/). Needleman-Wunsch searches for the optimal alignment of any pair of DNA (or protein) sequences. NM alignments are complete or "global", that is, it compares every position of the sequences. 
+First, let's look at the simple Needleman-Wusch alignment algorithm:[https://www.ebi.ac.uk/Tools/psa/emboss_needle/](https://www.ebi.ac.uk/Tools/psa/emboss_needle/). Needleman-Wunsch searches for the optimal alignment of any pair of DNA (or protein) sequences. N-W alignments are complete or "global", that is, it compares every position of the sequences. 
 
 Consider the algorithmic complexity of the Needleman-Wunsch alignment.
 
@@ -34,6 +42,17 @@ Some good resources to review later:
 + http://www.metagenomics.wiki/tools/blast
 + https://www.ncbi.nlm.nih.gov/books/NBK279684/
 + https://www.ncbi.nlm.nih.gov/books/NBK1734/
++ https://www.ndsu.edu/pubweb/~mcclean/plsc411/Blast-explanation-lecture-and-overhead.pdf
+
+## Web BLAST
+
+Most people first interact with BLAST via the [web portal](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome).
+
+In the web portal search for this sequence:
+
+"CATTTCAGGTGTGGGTGTTTATGATTGCGCCCTACCGTGACGTTTTCATCTATCGGAGGGAGTGGAACACCTGTCGCTTTCTATCTTCCATTGTACTTTGTGTTTACGAGCTAAAGTTTTAACACAAGAAGTTAGTATATTTACCATTCGATACAAACTCTTTTTTTTTGAGGACCGCTGTAAATAATTTCTGCATATGCATTACGGCGATCGTGATAATAGAAAAATCCGTCGGTCAGTCGACTTACTAACAAGGATGTCCTAGTACGCTTCACAAAATTTCATTTTTGTAATGATCCAATCCAGAGACTGATTAGACTAATGTAACATCAGCTTTCTTAATAGCATTATCCGTTATAAATGAATTTTCGGCGTTTGACTCCGCTTCAAATATTTTGTCGCACACTTGAAAGATAGCCAAAGCCGAAGAATGCTTGGTTGATTGTATAGATCCTTCCGGGACTGAGCCCACCCATAAAATGCCATTGCCATAAACGAACAAGGTAACGGCCTGTTTCCATTTATTCATTCAGAAGTATCTTTTGTAGCCTTCCAAAATGGATTTTCCCCGATATCTAACATAATGCATGAAAGGATCTTTGAAGACCCGTCTGCGATAGCCGGAAAATCATTAGCAAAGACTTCTTCTACCACAAGGATATTTTTATTTTCCATAGAAATATATTCAGCTCAAAAAAAAGCCCCATGAGAGGATGCGACCCAATCGTAAATGAGAAAAGTGGTTGCGGAGAAAAAGTAAGATGGATTCGTATTCTAAGCATGAGAATTATAGGAACAAGGAAGCCTAATCTTGGATTTATTTTGCAGAAAAGGAAAAGTCAAATAGATTTTTGTAGAAAATAATAAAAACATTACCTTCAATTAGAATATAGATGAAGAAAAGGCCGTAATAAATGTACAAAGAAGGAATGCCACTTGTGAAGAATTTGAACCAAGATTTCCAGATGGACTGGGTGCAATATCAGCACCAACAGGAAATCCAGCGTTTCCTCGATAGATGAAACGT"
+
+What is it? ^^^
 
 
 
@@ -49,19 +68,18 @@ First, set up a working directory:
 mkdir blast
 cd blast
 mkdir data
-mkdir src
 
 
 ```
 
 Then, download data into the data folder
 
-```{bash, eval=FALSE}
+```{bash, eval=F}
 
-curl ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz  > data/genome.fna.gz
+cp /usr/share/data/BIO331/genome.fna.gz data/genome.fna.gz
 
 
-curl ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_rna.fna.gz  > data/transcripts.fna.gz
+cp /usr/share/data/BIO331/transcripts.fna.gz data/transcripts.fna.gz
 
 
 ```
@@ -100,22 +118,16 @@ ATCGCTGCTAGCTAGCTGATGCGTAT"
 
 What does this do? (Hint: 'tr --help')
 
-```{bash, eval=FALSE}
-head -100 data/transcripts.fna | tr '\n' '\0'
+```{bash, eval=F}
+head -100 data/transcripts.fna | tr '\n' '\0' 
 
 ```
 
 
-To start we want to search for hits to just one of these transcripts. Use this to pull out *part* of the first sequence in the file:
+Then we can run a basic BLAST search:
 
-```{bash, eval = FALSE}
-head -50 data/transripts.fna > data/first.fna
-```
-
-And then we can run a basic BLAST search:
-
-```{bash, eval = FALSE}
-head -60 data/transcripts.fna > data/min.fna
+```{bash, eval = F}
+head -100 data/transcripts.fna > min.fna
 
 blastn -db data/genome.fna -query data/min.fna -evalue 1e-50 
 
@@ -125,8 +137,10 @@ Spend some time parsing this output.
 
 Looking at the alignments can be informative. Often, however, you may just want summary data: *change -outfmt flag*
 
-```{bash, eval =FALSE}
+```{bash, eval = F}
+
 blastn -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6
+
 ```
 
 The columns in this blast output format are:
