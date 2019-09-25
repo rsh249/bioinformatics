@@ -70,9 +70,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -97,22 +95,92 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -122,8 +190,8 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Basic Local Alignment Search Tool (BLAST)</h1>
-<h4 class="author"><em>Prof. Harbert</em></h4>
-<h4 class="date"><em>October 1, 2018</em></h4>
+<h4 class="author">Prof. Harbert</h4>
+<h4 class="date">October 1, 2018</h4>
 
 </div>
 
@@ -131,14 +199,20 @@ $(document).ready(function () {
 <div id="today" class="section level1">
 <h1>Today:</h1>
 <ul>
-<li>Review the sequencing collaborative file.</li>
 <li>Discuss sequence alignment.</li>
 <li>Introduce command line BLAST</li>
 </ul>
 </div>
+<div id="dna-sequence-alginment" class="section level1">
+<h1>DNA Sequence Alginment</h1>
+<p>Sequence data on their own are not that informative. To make sense of it all we have to start comparing data through alignment.</p>
+<p>When we want to align two sequences together we call that pairwise alignment. Finding the similarities between many sequences is called multiple sequence alignment. Today we will focus on pairwise alignment algorithms and the ubiquitous BLAST algorithm.</p>
+<p>First, let’s look at the simple Needleman-Wusch alignment algorithm:<a href="https://www.ebi.ac.uk/Tools/psa/emboss_needle/" class="uri">https://www.ebi.ac.uk/Tools/psa/emboss_needle/</a>. Needleman-Wunsch searches for the optimal alignment of any pair of DNA (or protein) sequences. NM alignments are complete or “global”, that is, it compares every position of the sequences.</p>
+<p>Consider the algorithmic complexity of the Needleman-Wunsch alignment.</p>
+</div>
 <div id="blast" class="section level1">
 <h1>BLAST</h1>
-<p>NOTE: <em>Some of the introduction to BLAST and alignment will be done on the board</em></p>
+<p>BLAST (Basic Local Alignment Search Tool) optimizes time complexity in pairwise alignment by searching for short, local, sequence matches and then extending the comparison out from the matching regions.</p>
 <p>Some good resources to review later:</p>
 <ul>
 <li><a href="http://www.metagenomics.wiki/tools/blast" class="uri">http://www.metagenomics.wiki/tools/blast</a></li>
@@ -148,6 +222,7 @@ $(document).ready(function () {
 </div>
 <div id="get-data" class="section level1">
 <h1>Get Data</h1>
+<p><em>Work on the server</em></p>
 <p>We will attempt to search human transcriptome data against the human genome using NCBI RefSeq data.</p>
 <p>First, set up a working directory:</p>
 <pre class="bash"><code>mkdir blast
@@ -162,30 +237,20 @@ curl ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq
 
 curl ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_rna.fna.gz  &gt; data/transcripts.fna.gz
 </code></pre>
-<p>And get BLAST:</p>
-<p>For Mac users:</p>
-<pre class="bash"><code>curl ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+-x64-macosx.tar.gz &gt; blast.tar.gz
-
-tar -xzf blast.tar.gz
-</code></pre>
-<p>For Windwows users:</p>
-<pre class="bash"><code>curl ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+-x64-win64.tar.gz &gt; blast.tar.gz
-
-tar -xzf blast.tar.gz</code></pre>
-<p>Confirm that you have a folder called ncbi-blast-2.7.1+ or similar and remove the blast.tar.gz file (hint use ‘ls’ and ‘rm’ commands).</p>
-<p>tar flags: <a href="https://xkcd.com/1168/" class="uri">https://xkcd.com/1168/</a></p>
 </div>
 <div id="blast-make-database-from-genome-file" class="section level1">
 <h1>BLAST: Make Database from Genome File</h1>
 <p>The first step to running a blast analysis on your machine is to build your database. We will be using the genome file for that purpose.NOTE FOR MAC USERS: For all commands below leave out the “.exe” in the program file name.</p>
 <pre class="bash"><code>gunzip data/genome.fna.gz
 
-ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/genome.fna -dbtype nucl -title human
+makeblastdb -in data/genome.fna -dbtype nucl -title human
 </code></pre>
 <pre class="bash"><code>gunzip data/transcripts.fna.gz
 head -40 data/transcripts.fna
 </code></pre>
 <p>Use the Unix command line tools we talked about last time to look through the genome.fna and transcripts.fna files.</p>
+<div id="fasta" class="section level2">
+<h2>FASTA</h2>
 <p>They should both be in FASTA format which looks like this:</p>
 <p>“&gt; NC0000001.1 Descriptive title string<br> ACTCGCGCTCGATCGATCGATCGCTG<br> ATCGTCGCTCGCTCCTCTCGTGAGAT<br> ATCGCTGCTAGCTAGCTGATGCGTAT”</p>
 <p>What does this do? (Hint: ‘tr –help’)</p>
@@ -196,11 +261,11 @@ head -40 data/transcripts.fna
 <p>And then we can run a basic BLAST search:</p>
 <pre class="bash"><code>head -60 data/transcripts.fna &gt; data/min.fna
 
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 
+blastn -db data/genome.fna -query data/min.fna -evalue 1e-50 
 </code></pre>
 <p>Spend some time parsing this output.</p>
-<p>Looking at the alignments can be informative. Often, however, you may just want summary data:</p>
-<pre class="bash"><code>ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6</code></pre>
+<p>Looking at the alignments can be informative. Often, however, you may just want summary data: <em>change -outfmt flag</em></p>
+<pre class="bash"><code>blastn -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6</code></pre>
 <p>The columns in this blast output format are:</p>
 <ol style="list-style-type: decimal">
 <li><pre><code> qseqid      query (e.g., gene) sequence id</code></pre></li>
@@ -216,6 +281,7 @@ ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue
 <li><pre><code> evalue      expect value</code></pre></li>
 <li>bitscore</li>
 </ol>
+</div>
 </div>
 
 

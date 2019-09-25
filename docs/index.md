@@ -52,6 +52,10 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./algorithms.html'> Meeting 7: Demystifying Algorithms
 
+### <a href='./blast.html'> Meeting 8: Sequence alignment and BLAST
+
+### Lab 3: rBlast
+
 <!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)

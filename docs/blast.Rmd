@@ -10,14 +10,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # Today:
 
-+ Review the sequencing collaborative file.
 + Discuss sequence alignment.
 + Introduce command line BLAST
 
+# DNA Sequence Alginment
+
+Sequence data on their own are not that informative. To make sense of it all we have to start comparing data through alignment.
+
+When we want to align two sequences together we call that pairwise alignment. Finding the similarities between many sequences is called multiple sequence alignment. Today we will focus on pairwise alignment algorithms and the ubiquitous BLAST algorithm.
+
+First, let's look at the simple Needleman-Wusch alignment algorithm:[https://www.ebi.ac.uk/Tools/psa/emboss_needle/](https://www.ebi.ac.uk/Tools/psa/emboss_needle/). Needleman-Wunsch searches for the optimal alignment of any pair of DNA (or protein) sequences. NM alignments are complete or "global", that is, it compares every position of the sequences. 
+
+Consider the algorithmic complexity of the Needleman-Wunsch alignment.
+
+
+
 # BLAST
 
-NOTE: *Some of the introduction to BLAST and alignment will be done on the board*
-
+BLAST (Basic Local Alignment Search Tool) optimizes time complexity in pairwise alignment by searching for short, local, sequence matches and then extending the comparison out from the matching regions.
 
 Some good resources to review later:
 
@@ -28,6 +38,8 @@ Some good resources to review later:
 
 
 # Get Data
+
+*Work on the server*
 
 We will attempt to search human transcriptome data against the human genome using NCBI RefSeq data.
 
@@ -54,29 +66,6 @@ curl ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq
 
 ```
 
-And get BLAST:
-
-For Mac users:
-
-```{bash, eval = FALSE}
-curl ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+-x64-macosx.tar.gz > blast.tar.gz
-
-tar -xzf blast.tar.gz
-
-```
-
-For Windwows users:
-
-```{bash, eval=FALSE}
-curl ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+-x64-win64.tar.gz > blast.tar.gz
-
-tar -xzf blast.tar.gz
-```
-
-Confirm that you have a folder called ncbi-blast-2.7.1+ or similar and remove the blast.tar.gz file (hint use 'ls' and 'rm' commands).
-
-
-tar flags: https://xkcd.com/1168/
 
 
 # BLAST: Make Database from Genome File
@@ -86,7 +75,7 @@ The first step to running a blast analysis on your machine is to build your data
 ```{bash, eval=FALSE}
 gunzip data/genome.fna.gz
 
-ncbi-blast-2.7.1+/bin/makeblastdb.exe -in data/genome.fna -dbtype nucl -title human
+makeblastdb -in data/genome.fna -dbtype nucl -title human
 
 
 ```
@@ -100,6 +89,7 @@ head -40 data/transcripts.fna
 Use the Unix command line tools we talked about last time to look through the genome.fna and transcripts.fna files.
 
 
+## FASTA
 
 They should both be in FASTA format which looks like this:
 
@@ -127,16 +117,16 @@ And then we can run a basic BLAST search:
 ```{bash, eval = FALSE}
 head -60 data/transcripts.fna > data/min.fna
 
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 
+blastn -db data/genome.fna -query data/min.fna -evalue 1e-50 
 
 ```
 
 Spend some time parsing this output.
 
-Looking at the alignments can be informative. Often, however, you may just want summary data:
+Looking at the alignments can be informative. Often, however, you may just want summary data: *change -outfmt flag*
 
 ```{bash, eval =FALSE}
-ncbi-blast-2.7.1+/bin/blastn.exe -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6
+blastn -db data/genome.fna -query data/min.fna -evalue 1e-50 -outfmt 6
 ```
 
 The columns in this blast output format are:
@@ -163,5 +153,10 @@ The columns in this blast output format are:
  11. 	 evalue 	 expect value
  
  12.  bitscore  
+ 
+ 
+ 
+ 
+ 
  
  
