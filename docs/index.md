@@ -54,7 +54,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./blast.html'> Meeting 8: Sequence alignment and BLAST
 
-### Lab 3: rBlast
+### <a href='./rBlast.html'> Lab 3: rBlast
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 

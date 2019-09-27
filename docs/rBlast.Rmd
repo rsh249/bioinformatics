@@ -1,0 +1,177 @@
+---
+title: "More R"
+author: "Prof. Harbert & Jordan Callahan"
+date: Meeting 4
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# rBlast
+
+[The rBLAST package](https://github.com/mhahsler/rBLAST/) provides R code tools that implement access to the commandline BLAST tools in R. Today we will use this package to build a new BLAST database, run BLAST queries, and visualize the results in ggplot.
+
+## Downloading Packages
+
+Packages are a complilation of R functions, data, and code in a specific format that are stored in libraries. Upon initial download, R comes with a basic set of packages installed, but others are avaiable to download. These packages are an easy way to share code with others. In this lesson, we will be downloading and installing the taxonomizr and rBLAST packages. Taxonomizr contains functions that work with NCBI accessions and taxonomy. rBLAST is a basic local alignment search tool, searching for query sequences in databases. 
+
+```{r, eval=FALSE, echo=TRUE}
+library(taxonomizr)
+library(rBLAST)
+library(ggplot2)
+```
+
+## Get data
+
+For this exercise our data can be copied to your user directory with:
+
+```{bash, eval = FALSE}
+mkdir rBLAST
+
+mkdir rBLAST/data
+```
+
+```{bash}
+cd rBLAST
+
+
+
+cp /usr/share/data/BIO331/MATK-1RKIM/* ./
+
+
+```
+How many lines are there in each file? Which files should we work with for our BLAST classification?'
+
+## Database: NCBI 'nt'
+
+The database we are going to use this time is too large to copy to each user. Instead you will access the files directly on the server. 
+
+## Setting Variables
+
+In the code below, we set a DNA sequence file as a variable of the function readDNAStringSet which loads sequences from an input file including fastq and fasta files. The bl variable is an output of the blast function where each compartment corresponds to a blast search. The cl variable is the result of the top hits when the dns is compared to the  blast database. 
+
+```{r, eval=FALSE}
+
+
+#makeblastdb creates a folder that contains a blast database like below
+#makeblastdb('/usr/share/data/ncbi/nt/nt.fa', dbtype = "nucl") #This takes about 1hr
+
+#prepare for a BLAST query
+dna <- readDNAStringSet('barcode11.fastq', format='fastq')
+bl <- blast(db="/usr/share/data/ncbi/nt/nt.fa")
+
+#Run BLAST query
+cl <- predict(bl, dna[1:10])
+
+cl[1:5,]
+#to view first 5 hits
+summary(cl)
+#shows the top QueryID hits and other summary statistics including percent identity, alignment length and mismatches. 
+```
+
+
+## Collecting BLAST hits
+
+The next step is to collect information on the sequences that matched one or more of the query sequences. The code below will create a vector that will contain the accession number (a unique identifier given to a biological sequence when it is submitted to the database). This number is contained in the "SubjectID" term returned from BLAST, but we have to parse it out as that field also includes the GI number.
+
+A loop can be used to separate out the accession numbers from each of the SubjectID terms from the blast search and store those in the vector 'accid'.
+
+```{r, eval=FALSE}
+
+accid = as.character(cl$SubjectID)
+```
+
+## Build taxonomizr database
+
+The code below builds a taxonomy (names) database for taxonomizr. 
+
+This has already been done for you. So proceed to the next section.
+
+
+```{r, eval=FALSE, echo=TRUE}
+
+libdir='data'
+dir.create(libdir)
+setwd(libdir)
+getNamesAndNodes()
+getAccession2taxid(types=c('nucl_gb'))
+getAccession2taxid()
+system("gunzip *.gz")
+read.accession2taxid(list.files('.','accession2taxid'),'accessionTaxa.sql')
+print(paste('taxonomizr database built and located at', getwd(), sep=' '))
+
+#prepareDatabase('accessionTaxa.sql') #run this somewhere else
+
+```
+
+
+## Getting species names
+
+The taxonomizr code below looks up the organism names based on the accession IDs. The 'taxlist' object at the end contains the taxonomic assignments for every BLAST hit.
+
+First read the taxonomizr data in:
+
+```{r, eval=FALSE}
+taxaNodes<-read.nodes.sql("/usr/share/data/taxonomizr/nodes.dmp")
+taxaNames<-read.names.sql("/usr/share/data/taxonomizr/names.dmp")
+
+```
+
+Then match the accession IDs to names in the taxonomy database:
+
+
+```{r, eval=FALSE, echo=TRUE}
+
+#takes accession number and gets the taxonomic ID
+ids<-accessionToTaxa(accid, '/usr/share/data/taxonomizr/accessionTaxa.sql')
+#taxlist displays the taxonomic names from each ID #
+taxlist=getTaxonomy(ids, taxaNodes, taxaNames)
+```
+
+
+## Visualizing BLAST Hits
+
+Here we create a summary data table with full list of taxonimic names (cltax). Then ggplot can be used to visualize the output.
+
+```{r, eval=FALSE, echo=TRUE}
+cltax=cbind(cl,taxlist) #bind BLAST hits and taxonomy table
+colnames(cltax)
+#ggplot for top hits or percent identity of each family
+ggplot(data=cltax) + 
+  geom_boxplot(aes(x=family, y=Perc.Ident)) + 
+  theme(axis.text.x = element_text(angle=90)) +
+  ylim(c(85,100))
+#Comparing alignment length for each family 
+ggplot(data=cltax) + 
+  geom_boxplot(aes(x=family, y=Alignment.Length)) + 
+  theme(axis.text.x = element_text(angle=90))
+```
+
+Subsetting can be used to select and exclude variables and observations. In this case, we evaluate how many blast hits each family has after subsetting the data to those matches with >95% identity. 
+
+```{r, eval=FALSE, echo=TRUE}
+#take the taxonomic names that have above a 95% identity and place in new data set to manipulate
+newdata <- subset(cltax, Perc.Ident >= 95, 
+                  select=c(family, Perc.Ident))
+#creates plot of selected dataset comparing family id and percent identity 
+ggplot(data=newdata) + aes(x = family, y = Perc.Ident) +
+  geom_point(alpha=0.3, color="tomato", position = "jitter") +
+  geom_boxplot(alpha=0) + coord_flip()
+```
+
+# Homework
+
+Work through the rest of the code on this page and make sure you can get it to run. Then create at least one plot different than what we have made here. Examples of other plots might include plotting the BLAST match length against taxonomy, or counting the occurrence of each name (use either genus or species) in your hits and plotting a bar graph showing the number of hits per group. Post your plots to [#plots](https://introbioinformatics.slack.com/messages/CMWDBLP8R) channel on Slack before next class.
+
+
