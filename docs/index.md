@@ -56,6 +56,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./rBlast.html'> Lab 3: rBlast
 
+### <a href='./metagenomics.html'> Meeting 9: Metagenomics
+
 <!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)

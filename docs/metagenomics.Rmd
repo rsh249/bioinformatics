@@ -1,0 +1,102 @@
+---
+title: "Metagenomics"
+author: "Prof. Harbert"
+date: Meeting 4
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Taxonomic Classification of DNA
+
+The ability to generate massive datasets through massively parallel DNA sequencing technologies has made it possible to generate enough genetic information to identify organisms from trace amounts (even single molecules) of DNA evidence.
+
+However, distilling these massive datasets down to useful information requires more advanced and efficient algorithms as we compare larger and larger amounts of data to even bigger reference databases.
+
+# Meta *
+
+There is some confusion in the scientific literature regarding the proper terms for these techniques. The consensus seems to be:
+
+**Metabarcoding**: Classifying single gene/short regions of amplified DNA from many sources. (Related to DNA barcoding --> identifying specific samples based on a short region of DNA sequence)
+
+**Metagenomics**:  Classifying mixed whole genome data from many organisms. Including multiple bacterial genome assembly from mixed samples.
+
+**Metataxonomics**: Classifying DNA sequence data from mixed samples to identify what organisms are present.
+
+However, many people use metagenomics to cover the last two (-genomics and -taxonomics). We will explore the techniques primarily for metataxonomics.
+
+# Reference Databases
+
+Tour: [https://www.ncbi.nlm.nih.gov/](https://www.ncbi.nlm.nih.gov/) and [ftp://ftp.ncbi.nlm.nih.gov/](ftp://ftp.ncbi.nlm.nih.gov/)
+
+# Fast(er) Altorithms
+
+There are many approaches to classify large amounts of DNA sequence data in more efficient ways that maintain or improve upon the accuracy of BLAST. In general these methods involve generating complex data structures from the reference data that are relatively efficient to search through. We will test two programs that implement current strategies: Centrifuge and Kraken(2). 
+
+For the following examples your instructor has prepared appropriate database files as these can take significant computational time and are not possible to assemble during class time.
+
+We will re-analyze the MATK eDNA data from the rBLAST segment. Look for differences in efficiency (time and space) between these programs and BLAST. Also, note any differences in the output and how the results are evaluated. To do this you should run the command 'top' on the server command prompt and watch what is happening and how long it takes.
+
+For reference: The BLAST search on the same barcode11 file took ~4 hours and 12GB of RAM to complete.
+
+## Centrifuge
+
+[Kim, D., Song, L., Breitwieser, F.P. and Salzberg, S.L., 2016. Centrifuge: rapid and sensitive classification of metagenomic sequences. Genome research, 26(12), pp.1721-1729.](https://genome.cshlp.org/content/26/12/1721.short)
+
+Uses a combination of the Burrows-Wheeler transform (a sequence compression and mapping technique) and an indexing scheme to produce a quick-to-search, but highly complex reference database.
+
+```{bash}
+targdata=/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
+
+
+centdb=/usr/share/data/centrifuge/centref
+
+centrifuge -p 1 -q -x $centdb -U $targdata -S out.centclass --report-file creport.tab --out-fmt tab
+
+head creport.tab
+```
+
+## Kraken(2)
+
+[Wood, D.E. and Salzberg, S.L., 2014. Kraken: ultrafast metagenomic sequence classification using exact alignments. Genome biology, 15(3), p.R46.](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-3-r46)
+
+Uses a kmer classification algorithm that breaks the reference data into chunks of sequence (kmers). The kmers are then sorted into a tree-like data structure so that they can be easily and efficiently searched.
+
+```{bash}
+kdb=/usr/share/data/krakendb/nt-custom/
+targdata=/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
+
+kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab --fastq-input $targdata > kraken.out
+
+```
+
+
+# Reading: The Subway Microbiome
+
+For discussion this week read: http://dx.doi.org/10.1016/j.cels.2015.01.001
+
+Pick one of the figures and write a post about it on the [#discussion](https://introbioinformatics.slack.com/messages/CN3DX55M3) channel. Include what you do understand about the data and analysis presented. Also discuss what is unclear or difficult to decipher.
+
+THEN, find another microbiome study and link it to the discussion with a short explanation of what it presents.
+
+# Next time: 
+
++ Constructing Kraken databases
++ Mystery Metagenomic Data
++ Visualize classification output
+
+
+
+
+
+
+

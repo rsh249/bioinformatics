@@ -1,5 +1,5 @@
 ---
-title: "More R"
+title: "rBLAST"
 author: "Prof. Harbert & Jordan Callahan"
 date: Meeting 4
 output: 
