@@ -58,6 +58,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./metagenomics.html'> Meeting 9: Metagenomics
 
+### <a href='./metagenomics2.html'> Meeting 10: Metagenomics 2
+
 <!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)
