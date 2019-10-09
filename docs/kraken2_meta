@@ -1,0 +1,27 @@
+# building kraken2 databases
+
+# create dir
+mkdir kraken
+cd kraken
+
+#download data
+wget ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plastid/plastid.1.1.genomic.fna.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plastid/plastid.2.1.genomic.fna.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plastid/plastid.3.1.genomic.fna.gz
+
+# unzip data
+gunzip *.fna.gz
+
+# name database
+DBNAME='plastid_custom'
+
+# initialize database
+kraken2-build --download-taxonomy --db $DBNAME
+
+#5) Add custom reference data
+kraken2-build --add-to-library plastid.1.1.genomic.fna --db $DBNAME
+kraken2-build --add-to-library plastid.2.1.genomic.fna --db $DBNAME
+kraken2-build --add-to-library plastid.3.1.genomic.fna --db $DBNAME
+
+#6) Finalize the database
+kraken2-build --build --db $DBNAME
