@@ -37,4 +37,4 @@ targdata=/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
 
 kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab --fastq-input $targdata > kraken.out
 
-
+#git test
