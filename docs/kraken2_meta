@@ -25,3 +25,16 @@ kraken2-build --add-to-library plastid.3.1.genomic.fna --db $DBNAME
 
 #6) Finalize the database
 kraken2-build --build --db $DBNAME
+
+# A little about the database sequences
+
+grep -c ">" *.fna # Print the number of sequences in each reference file. Total about 4400 chloroplast genomes!
+
+# search custom kraken database
+
+kdb=plastid_custom
+targdata=/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
+
+kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab --fastq-input $targdata > kraken.out
+
+
