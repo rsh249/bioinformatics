@@ -1,42 +1,64 @@
 ---
 title: "Multiple Sequence Alignment"
 author: "Prof. Harbert"
-date: "October 10, 2018"
-output: html_document
+date: Meeting 10
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-### Review BLAST plots
+# Algorithms for Sequence Alignment
 
-[#blast](https://bio200-bioinformatics.slack.com/messages/CD5UY3933)
-
-### Linear vs. Exponential complexity
+### Complexity
 
 *Discuss*: Which adds more complexity when comparing sequences or strings of text -- Adding length to the sequences or adding more sequences to the comparison?
 
+How many possible pairwise comparisons can be made between two DNA sequence strings of length 10?
 
+AAACGTTATC
 
-## Multiple Sequence Alignment
+CGAAACGTAA
+
+comp = (n*l)^n
+Where n is the number of sequences and l is the length.
+
+What if we add another DNA sequence?
+
+```{R}
+n = 1:1000
+l = 1:1000
+#Pairwise comparisons
+plot(l, (2*l)^2, type ='l', ylab='# comparisons', xlab='Sequence Number or Length')
+#Multiple comparisons
+points(n, ((n*10)^n), type = 'l', col='blue')
+
+```
+
+# Multiple Sequence Alignment
 
 MSA refers to the task of performing *global* alignments of nucleotide or protein sequences to assess total similarity or *Homology*. This is a fundamental task in Bioinformatics but also one of the single most challenging things to do algorithmically. It is for this reason that you should always be skeptical of MSA and any program that claims to do it well. They all fail sometimes and detecting that can be very difficult particularly when datasets are very large.
 
-Google Scholar pulls up 1.3 million hits for the search "Multiple sequence alignment algorithm":
+In a very unscientific literature search protocol Google Scholar pulls up 1.5 million hits for the search "Multiple sequence alignment algorithm":
 https://scholar.google.com/scholar?hl=en&as_sdt=0%2C22&q=multiple+sequence+alignment+algorithm&btnG=
 
-Here is a good paper that outlines some of the challenges that arise due to poor alignments in comparative genomics: https://scholar.google.com/scholar?hl=en&as_sdt=0%2C22&q=multiple+sequence+alignment+algorithm&btnG=
 
-Some papers comparing different programs for MSA:
+Some literature comparing different programs for MSA:
 
 https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0018093&type=printable
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4015676/pdf/1748-7188-9-4.pdf
-
-https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-471
-
 
 
 ### Prerequisites for MSA
@@ -47,11 +69,7 @@ In order to perform an MSA properly you need:
 + Approximately the same starting length
 + Organized in one fasta formatted file.
 
-You can query sequences through NCBI: https://www.ncbi.nlm.nih.gov/
-
-And we may revisit finding homologous sequences next week with phylotaR: https://github.com/ropensci/phylotaR
-
-But for now we will work with some mitochondrial sequences that we have set up already.
+We will work with a file of complete mitochondrial genome sequences. These sequences will be from animals so we expect that they are homologous (i.e., sharing a single ancestral mitochondrial genome sequence).
 
 
 
