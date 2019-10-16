@@ -62,6 +62,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### Metagenomics Lab
 
+### <a href='./mphylo.html'> Meeting 11: Phylogenetics
+
 <!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)
