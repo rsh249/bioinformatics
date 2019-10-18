@@ -226,6 +226,7 @@ cd ..
 Now we can (hopefully) run RAxML.
 
 ```{bash, eval=TRUE, echo=FALSE, message=FALSE}
+touch test.tree
 rm *.tree
 ```
 
@@ -242,32 +243,30 @@ The "best tree" identified in a single run of any phylogenetics software is like
 Bootstrap resampling builds trees using subsets of the aligned DNA matrix. The result being many trees that are all possible alternatives to the *best* tree. The places where these trees diverge from one another shows where the analysis is uncertain about the tree topology.
 
 To do a RAxML bootstrap we set the flag -f -x and -N: This one will do 20 iterations of the tree construction with sampled aligned sequence data.
-```{bash, eval=TRUE, echo=FALSE, message=FALSE}
+```{bash, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
 rm *.boot1
+rm *.consensus
+rm RAxML_*
 ```
 
-```{bash, eval=TRUE, results = "hide"}
+```{bash, eval=FALSE, results = "hide"}
 
-./raxml -f a -p 12345 -x 12345 -N 200 -s out.phy -m GTRCAT -n boot1
+./raxml -f a -p 12345 -x 12345 -N 20 -s out.phy -m GTRCAT -n boot1
 
 ```
 
 And we need a second call to raxml to summarize the 20 trees into one "consensus" tree.
 
-```{bash, eval=TRUE, results = "hide"}
+```{bash, eval=FALSE, results = "hide"}
 ./raxml -f b -t ref -z RAxML_bootstrap.boot1 -m GTRCAT -n consensus
 ```
-# Visualizing trees in R
+# Visualizing trees in R: ggtree
 
-## ggtree
-
-### ggtree
-
-### Plotting the *Best* tree
+## Plotting the *Best* tree
 
 ```{R, eval=TRUE}
 library(ggtree)
-best <- read.tree('RAxML_bestTree.tree')
+best <- read.tree('RAxML_bestTree.boot1')
 best
 
 ggtree(tree) + geom_tiplab() 
@@ -291,4 +290,4 @@ In general the field of phylogenetics has moved towards larger, multigene or who
 
 # Homework
 
-Using [this file]() construct a phylogenetic tree and plot it using ggtree. Post the tree to #plots channel on Slack by Monday.
+Using [this file](https://raw.githubusercontent.com/rsh249/bioinformatics/master/docs/seq.fa) construct a phylogenetic tree and plot it using ggtree. Post the tree to #plots channel on Slack by Monday along with commentary on any challenges to building this tree that come up.
