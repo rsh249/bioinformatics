@@ -234,7 +234,61 @@ rm *.tree
 cat RAxML_bestTree.tree
 ```
 
-###UNDER CONSTRUCTION BEYOND HERE
 
-Revisions coming to RAxML code and visualization.
+### Bootstrap
 
+The "best tree" identified in a single run of any phylogenetics software is likely not the only good interpretation of the data. To get an idea about how variable the near optimal trees are there is the bootstrap. 
+
+Bootstrap resampling builds trees using subsets of the aligned DNA matrix. The result being many trees that are all possible alternatives to the *best* tree. The places where these trees diverge from one another shows where the analysis is uncertain about the tree topology.
+
+To do a RAxML bootstrap we set the flag -f -x and -N: This one will do 20 iterations of the tree construction with sampled aligned sequence data.
+```{bash, eval=TRUE, echo=FALSE, message=FALSE}
+rm *.boot1
+```
+
+```{bash, eval=TRUE, results = "hide"}
+
+./raxml -f a -p 12345 -x 12345 -N 200 -s out.phy -m GTRCAT -n boot1
+
+```
+
+And we need a second call to raxml to summarize the 20 trees into one "consensus" tree.
+
+```{bash, eval=TRUE, results = "hide"}
+./raxml -f b -t ref -z RAxML_bootstrap.boot1 -m GTRCAT -n consensus
+```
+# Visualizing trees in R
+
+## ggtree
+
+### ggtree
+
+### Plotting the *Best* tree
+
+```{R, eval=TRUE}
+library(ggtree)
+best <- read.tree('RAxML_bestTree.tree')
+best
+
+ggtree(tree) + geom_tiplab() 
+```
+
+### Plotting bootstrap tree:
+
+We can add bootstrap consensus values (0 to 100) on the nodes of the *best* tree to see how well supported this hypothetical tree really is.
+
+```{R, eval=TRUE}
+library(ggtree)
+tree <- read.tree('RAxML_bipartitions.boot1')
+tree
+
+ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='red')
+```
+
+# Better phylogenies
+
+In general the field of phylogenetics has moved towards larger, multigene or whole genome datasets to attempt to better solve the tree of life. However, with larger datasets come greater computational challenges and pitfalls as analyses like the example above do not scale well to very large datasets.
+
+# Homework
+
+Using [this file]() construct a phylogenetic tree and plot it using ggtree. Post the tree to #plots channel on Slack by Monday.
