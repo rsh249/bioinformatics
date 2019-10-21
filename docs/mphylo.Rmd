@@ -244,9 +244,9 @@ Bootstrap resampling builds trees using subsets of the aligned DNA matrix. The r
 
 To do a RAxML bootstrap we set the flag -f -x and -N: This one will do 20 iterations of the tree construction with sampled aligned sequence data.
 ```{bash, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE}
-rm *.boot1
-rm *.consensus
-rm RAxML_*
+#rm *.boot1
+#rm *.consensus
+#rm RAxML_*
 ```
 
 ```{bash, eval=FALSE, results = "hide"}
@@ -268,8 +268,7 @@ And we need a second call to raxml to summarize the 20 trees into one "consensus
 library(ggtree)
 best <- read.tree('RAxML_bestTree.boot1')
 best
-
-ggtree(tree) + geom_tiplab() 
+ggtree(best) + geom_tiplab() 
 ```
 
 ### Plotting bootstrap tree:
@@ -279,8 +278,6 @@ We can add bootstrap consensus values (0 to 100) on the nodes of the *best* tree
 ```{R, eval=TRUE}
 library(ggtree)
 tree <- read.tree('RAxML_bipartitions.boot1')
-tree
-
 ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col='red')
 ```
 

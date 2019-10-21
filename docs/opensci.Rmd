@@ -1,9 +1,18 @@
 ---
 title: "Open Science and Course Project"
 author: "Prof. Harbert"
-date: "October 24, 2018"
-output: html_document
+date: Meeting 12
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -26,6 +35,7 @@ What does it mean to create "open" works and why is that important?
 knitr::include_graphics('./images/oa_chart.png')
 ```
 
+
 ### Open Source programs in Bioinformatics:
 
 In the field of Bioinformatics there has been a shift in thinking on how to publish code. It is now generally accepted that those who write code should publish it for research use free of charge. Furthermore, it is not generally enough to simply post a program where someone can download it. Rather the original code must be made publicly available for others to use, edit, and review.
@@ -43,7 +53,7 @@ WARNING: Preprints have NOT been peer reviewed for quality and soundness of scie
 
 # The Course Project
 
-Details can be found [here](https://github.com/rsh249/bioinformatics/raw/master/files/BIO200A_biorxiv_project.docx)
+Details can be found [here](https://github.com/rsh249/bioinformatics/raw/master/files/BIO331_biorxiv_project.docx)
 
 # Homework: 
 
