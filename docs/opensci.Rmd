@@ -19,9 +19,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Think back....
+## To begin
 
-On your midterm the extra credit question asked you to find out what the default kmer length was for the kmer clustering step in muscle. Does anyone have a good answer?
+One of the first steps in Muscle alignments is kmer distance clustering and building a guide tree. But what value of 'k' is used for this?
+
+```{bash, eval =FALSE, message=FALSE, warning=FALSE}
+./muscle --help
+```
 
 Muscle has been cited almost [23,000](https://scholar.google.com/scholar?cites=24007895946176608&as_sdt=40000005&sciodt=0,22&hl=en) times! The Muscle [source code](https://www.drive5.com/muscle/muscle_src_3.8.1551.tar.gz) is "open" so you *could* go read the code and find out for yourself.
 
@@ -29,9 +33,13 @@ Muscle has been cited almost [23,000](https://scholar.google.com/scholar?cites=2
 
 What does it mean to create "open" works and why is that important?
 
+In science reproducibility is essential to progress. Today, the volume and pace of scientific progress necessitates signficant transparency in the process. Publishing research that anyone can access is important. So is writing and distributing scientific software that is free and easily implemented.
+
+*Open != Free* Open means transparency, but that does not mean that the research, document, or software is free to use in all cases.
+
 ### Open Access publications:
 
-```{r echo=FALSE, out.width='100%', fig.align='center'}
+```{r echo=FALSE, out.width='110%', fig.align='center'}
 knitr::include_graphics('./images/oa_chart.png')
 ```
 
@@ -40,16 +48,18 @@ knitr::include_graphics('./images/oa_chart.png')
 
 In the field of Bioinformatics there has been a shift in thinking on how to publish code. It is now generally accepted that those who write code should publish it for research use free of charge. Furthermore, it is not generally enough to simply post a program where someone can download it. Rather the original code must be made publicly available for others to use, edit, and review.
 
-The number one most common way to share code is on GitHub. See your [instructor's page](https://github.com/rsh249). For example, the code used to generate the course materials can be found [here](https://github.com/rsh249/bioinformatics).
+The number one most common way to share code is on GitHub. See your [instructor's repository page](https://github.com/rsh249). For example, the code used to generate the course materials can be found [here](https://github.com/rsh249/bioinformatics). However, there are many other services that are used to distribute scientific research software (e.g., [CRAN](https://cran.r-project.org/) and [Anaconda](https://www.anaconda.com/distribution/)*)
+
+*Technically Anaconda is not a repository, but accesses many open resources.
 
 
 ### Scientific Publishing: Preprints
 
-One great way to rapidly publish new science and simultaneously ensure that there is free access to your work is through publishing Preprints. These are documents that are posted to public websites that archive the work on the web. In biology the bioRxiv project is the primary repository for preprints.
+One way to rapidly publish new science and simultaneously ensure that there is free access to your work is through publishing Preprints. These are documents that are posted to public websites that archive the work in a way that is open and free. In biology the bioRxiv project is the primary repository for preprints.
 
 Let's have a look around https://www.biorxiv.org/collection/bioinformatics for recent preprints in bioinformatics. 
 
-WARNING: Preprints have NOT been peer reviewed for quality and soundness of science. Use information from preprints at your own risk. But sometimes that's necessary to keep up with cutting edge research.
+WARNING: Preprints have NOT been peer reviewed for quality and soundness of science. Use information from preprints at your own risk. However, this can be where the cutting-edge methods and research are appearing.
 
 # The Course Project
 
@@ -57,6 +67,6 @@ Details can be found [here](https://github.com/rsh249/bioinformatics/raw/master/
 
 # Homework: 
 
-Find a repository that your instructor created and try to figure out what it does. This will be varying degrees of difficult depending on how well the repository is documented. Submit answers to [#git](https://bio200-bioinformatics.slack.com/messages/CCQL816TC) and collaborate with other students who pick the same repository.
+Find a repository that your instructor created and try to figure out what it does. This will be varying degrees of difficult depending on how well the repository is documented. Submit answers to [#git](https://introbioinformatics.slack.com/messages/CPEJRK7SM) and collaborate with other students who pick the same repository to learn as much as possible about the code.
 
 
