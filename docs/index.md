@@ -66,6 +66,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./opensci.html'> Meeting 12: Open Science, bioRxiv, and course projects
 
+### <a href='./software.html'> Meeting 13: Managing Bioinformatics software with R and Anaconda
+
 <!---### "Big-Data" in Biology Presentations/Discussion
 
 ### <a href='./R_basics.html'> Introduction to R (part 1/n)
