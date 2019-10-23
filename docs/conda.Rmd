@@ -38,7 +38,7 @@ Note that these are all just command line calls. You can (and should!) put these
 
 ## SRA Tools  
 
-In support of our aims to work with raw sequencing data we will be accessing files from the NCBI Sequence Read Archive. To do that we will need to install the SRA Toolkit. We can do this with conda with:
+In support of our aim to work with raw sequencing data to perform genome assembly and analysis we will be accessing files from the NCBI Sequence Read Archive. To do that we will need to install the SRA Toolkit. We can do this with conda with:
 
 ```{bash, eval =FALSE}
 conda install -c bioconda sra-tools

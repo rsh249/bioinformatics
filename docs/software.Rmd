@@ -1,0 +1,175 @@
+---
+title: "Software Management"
+author: "Prof. Harbert"
+date: Meeting 13
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Installing Software
+
+## R 
+
+R software is distributed as code packages. These are (usually) coherent units of R functions that are set to do some job or type of analysis (e.g., 'ggplot2' for plotting and making figures).
+
+Many (>15,000) R packages are distributed in the CRAN (Comprehensive R Archive Network) [repository](https://cran.r-project.org/). These packages can be installed with the typical:
+
+```{R, eval = F}
+install.packages('ggplot2')
+```
+
+Often, for research code, R packages will be distributed via GitHub. These can be installed using the R 'devtools' package.
+
+```{R, eval =F}
+library(devtools)
+install_github('rsh249/cRacle')
+```
+
+It is also plausible that you might run into an R packages that is distributed some other way and MUST be installed from the *source* files. 
+
+Example?
+
+```{bash, eval=F}
+#? Find one
+
+```
+
+
+## Anaconda
+
+
+The Anaconda package manager (or 'conda' in shorthand) is an extremely useful software management tool in Bioinformatics and beyond. General instructions to install the "Miniconda" version are maintained [here]( https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
+
+These are roughly as follows (For Linux systems):
+
+```{bash, eval = F}
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+bash Miniconda3-latest-Linux-x86_64.sh
+
+nano .profile
+```
+
+With the .profile file open add the following to the last line:
+
+```{bash, eval=F}
+PATH=$PATH:$HOME/miniconda3/bin
+```
+Then test the install with:
+
+```{bash, eval=F}
+conda -V
+
+which conda #should print /home/username/miniconda3/bin/conda 
+
+
+```
+
+
+We will use the popular "bioconda" channel to download and install a variety of Bioinformatics software today and for the rest of the course. Conda takes a little effort to get set up and manage, but makes things like installing a program (e.g., raxml or muscle) much easier and more portable than copying source files and/or using *git* and *make* commands.
+
+Anaconda does have two notable downsides: 1) The software and all associated files get stored in your user's Anaconda directories. These can get extremely bloated with temporary files and dependent software because it is not managed through regular system updates. 2) Also, conda spends inordinate amounts of time on every install "Solving the environment". In this step it is working to determine what versions of software are currently available so that it can decide what needs to be installed, but it is not an efficient search.
+
+Install example: If you wanted to install muscle so that it would be available from anywhere on your machine (in the Bash environmental "PATH") you could use conda as:
+
+```{bash, eval = FALSE}
+conda install -c bioconda muscle
+```
+
+Then try it out by typing:
+
+```{bash, eval=FALSE}
+muscle -version
+```
+
+## SRA Tools  
+
+In support of our aim to work with raw sequencing data to perform genome assembly and analysis we will be accessing files from the NCBI Sequence Read Archive. To do that we will need to install the SRA Toolkit. We can do this with conda with:
+
+```{bash, eval =FALSE}
+conda install -c bioconda sra-tools
+```
+
+SRA Tools provides a number of utilities for uploading, downloading, and processing sequence data. We will primarily use it for downloading.
+
+## Download Raw sequence data
+
+Use sra-tools utility fastq-dump to download a fastq file for a sequencing project.
+
+```{bash, eval=FALSE}
+
+fastq-dump -A "SRR7694205"
+
+#check the contents of the file
+head SRR7694205.fastq
+
+#check the file size
+du -h
+
+```
+
+
+## Entrez-Direct: Searching other NCBI databases
+
+Entrez-Direct provides a nubmer of tools for searching other NCBI databases (including Pubmed as well as the data portals for nucleotide, protein sequence). We will use conda to install as:
+
+```{bash, eval=FALSE}
+
+conda install -c bioconda entrez-direct
+
+```
+
+```{bash, eval=FALSE}
+
+esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > ref.fa
+
+head ref.fa
+
+blastn -db /usr/share/data/ncbi/nt/nt.fa -query data/min.fna -evalue 1e-50 -outfmt 6
+```
+
+Then in rBLAST check the identity of this sequence:
+
+```{R, eval = F}
+library(taxonomizr)
+library(rBLAST)
+library(ggplot2)
+dna <- readDNAStringSet('ref.fa', format='fasta')
+bl <- blast(db="/usr/share/data/ncbi/nt/nt.fa")
+cl <- predict(bl, dna, BLAST_args = '-num_threads 10 -evalue 1e-100')
+taxaNodes<-read.nodes.sql("/usr/share/data/taxonomizr/nodes.dmp")
+taxaNames<-read.names.sql("/usr/share/data/taxonomizr/names.dmp")
+
+ids<-accessionToTaxa(as.character(cl$SubjectID), '/usr/share/data/taxonomizr/accessionTaxa.sql')
+#taxlist displays the taxonomic names from each ID #
+taxlist=getTaxonomy(ids, taxaNodes, taxaNames)
+unique(taxlist)
+```
+
+## Homework: Other software to Install
+
+We will be working with these packages later. For homework try installing each of these programs and report any errors to [#Slack](https://introbioinformatics.slack.com/messages/CMJ7DPBRB) discussion. Test the installation by typing the name of each program: e.g., 'muscle', 'unicycler'.
+
+Run one line at a time and pay attention to the output:
+
+```{bash, eval=FALSE}
+
+conda install -c bioconda fastqc
+conda install -c bioconda bwa
+conda install -c bioconda samtools
+conda install -c bioconda unicycler
+conda install -c bioconda nanoplots
+conda install -c bioconda raxml
+conda install -c bioconda muscle 
+
+```
