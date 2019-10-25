@@ -60,13 +60,17 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./metagenomics2.html'> Meeting 10: Metagenomics 2
 
-### Metagenomics Lab
+### Lab 4: Metagenomics Lab
 
 ### <a href='./mphylo.html'> Meeting 11: Phylogenetics
 
 ### <a href='./opensci.html'> Meeting 12: Open Science, bioRxiv, and course projects
 
 ### <a href='./software.html'> Meeting 13: Managing Bioinformatics software with R and Anaconda
+
+### <a href='./assembly.html'> Lab 5: Introduction to Genome Assembly
+
+
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 
