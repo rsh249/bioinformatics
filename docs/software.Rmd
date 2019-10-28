@@ -168,7 +168,7 @@ conda install -c bioconda fastqc
 conda install -c bioconda bwa
 conda install -c bioconda samtools
 conda install -c bioconda unicycler
-conda install -c bioconda nanoplots
+conda install -c bioconda nanoplot
 conda install -c bioconda raxml
 conda install -c bioconda muscle 
 
