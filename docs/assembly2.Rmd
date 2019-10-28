@@ -1,0 +1,193 @@
+---
+title: "Viewing your Genome Assembly"
+author: "Prof. Harbert"
+date: "Meeting 14"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python('/path/to/python') #EDIT
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+[home](https://rsh249.github.io/bioinformatics)
+
+# Overview 
+
+Today we will look at the genome assemblies we attempted last time with Abyss. 
+
+With remaining time this lesson will put together a reproducible Bash script to perform and visualize our genome assembly.
+
+
+# First Look: Genome Assembly
+
+Once you have contigs the  challenge becomes viewing the assembly and understanding how well this characterizes the genome.
+
+Today we will be exploring some of the tools for visualizing and improving upon our Nanopore assemblies.
+
+## Quast: Genome stats and visualization
+
+One very useful tool for examining genome statistics is Quast. This helps visualize how much and which parts of the genome our contigs cover.
+
+Conda install Quast:
+
+```{bash, eval=F}
+conda install -c bioconda quast
+```
+
+If not already done, download the Zika reference genome and then run Quast to visualize the contigs we generated last time with Abyss.
+
+```{bash, eval=F}
+#get reference genome:
+esearch -db nucleotide -query "NC_012532.1" | efetch -format fasta > ref.fa
+
+head ref.fa
+
+```
+
+Then pass the reference sequence, the assembled contigs file, and the raw read data to the Quast program:
+
+```{bash, eval=F}
+
+### Check a reference
+refdata=ref.fa
+assembly=zika1-contigs.fa
+reads1=SRR7694205_1.fastq
+reads2=SRR7694205_2.fastq
+
+quast.py $assembly -R $refdata --pe1 $reads1 --pe2 $reads2 -o quast_zika 
+
+
+```
+
+Look at the files in the 'quast_zika' folder. Including 'report.html', 'icarus_viewers/contig_size_viewer.html'
+
+How *good* is this assembly? Hint: It's not. Probably because most of this sequence data is not from the viral genome. Also, the short-read data can be difficult to assemble into large fragments when data are sparse.
+
+# Scripting: Putting together reproducible analyses
+
+Anything that you can run by typing at the Unix command prompt (i.e., *most* bioinformatics software) can, and should, be written in a Bash script. This way you will be able to manage complex commands and workflows without worrying about mis-typing a command or getting things out of order. Also, you can automate your analysis; as soon as one part is done the next will start to run.
+
+## Setting up your script
+
+Create a new file using 'nano'
+
+```{bash, eval=F}
+nano bash_assemble
+```
+
+In the nano prompt type:
+
+```{bash, eval=F}
+#!/bin/bash
+#This is a comment
+echo "This is a test"
+```
+
+And then type "Ctrl+o" to save changes and "Ctrl+x" to exit. (You can type just "Ctrl+x" and answere "Y" when asked to save)
+
+Then to RUN the script:
+
+```{bash, eval=F}
+bash bash_assemble
+```
+
+You should see output that says "This is a test"
+
+We can now add any Unix command to the bash script and they will all be run in sequence when we run the script.
+
+For example open the script and modify to be:
+
+```{bash, eval=F}
+#!/bin/bash
+#This is a comment
+echo "This is a test"
+ls -lh
+```
+
+Run the script again. What is the output?
+
+## Script Organization
+
+A good script is designed to be re-used. It does not matter how efficient your code is or if it is formatted formally. What makes a document like this useful to yourself and others is whether it can be understood. This means that you need to clearly provide the details of how to use the script and what it is doing along the way.
+
+Open your script again and add comment lines (Start each line with '#') to the top with the following information about your project:
+
++ Your name
++ Current Term/Year
++ Citation of software you are using (at least version #s)
++ Source of data (ID number and/or URL)
++ Pre-requisite programs
+
+## Setting Variables
+
+A good starting point of any script is to set up bash variables with the path to your data (and eventually any reference data).
+
+You set a bash variable like this: (try it on the command line first)
+
+```{bash, eval=F}
+var='value'
+```
+
+And call as:
+
+```{bash, eval=F}
+echo $var
+```
+
+Add the path to your data (e.g., '/usr/share/.....') to the top of the script
+
+```{bash, eval=F}
+datapath='~/sra'
+#then check it with:
+echo $datapath
+#and try and use it in a command:
+ls -lh $datapath
+```
+
+## Testing
+
+As you work on your script and add commands it is usually a good idea to test frequently.
+
+Recall that you run a script as:
+
+```{bash, eval=F}
+bash bash_assemble
+```
+
+## Adding programs
+
+Add variables to the reads files and run Abyss. 
+
+```{bash, eval=F}
+reads1=SRR7694205_1.fastq
+reads2=SRR7694205_2.fastq
+
+abyss-pe name=zika1 k=75 in='$reads1 $reads2' np=8 
+
+
+```
+
+
+# Homework 
+
+Modify the bash script to also:
++ Download the reads files
++ Run fastqc on the reads files
++ Download the reference genome
++ Run the Quast assessment after running Abyss
+
+Post these bash scripts to your Git repositories and then add a code snippet post to Slack [#general](https://introbioinformatics.slack.com/messages/CMJ7DPBRB). We will review some of these for Wednesday.
+
+[home](https://rsh249.github.io/bioinformatics)
+

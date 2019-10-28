@@ -70,6 +70,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./assembly.html'> Lab 5: Introduction to Genome Assembly
 
+### <a href='./assembly2.html'> Meeting 14: More Assembly + Bash Scripting for reproducibility
 
 
 <!---### "Big-Data" in Biology Presentations/Discussion
