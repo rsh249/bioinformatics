@@ -71,7 +71,7 @@ Running Unicycler: Illumina Only
 
 ```{bash, eval=F, message=F, cache=T}
 #Illumina Assembly 
-unicycler  -1 $shortread\_1.fastq -2 $shortread\_2.fastq -o unicycler_short --threads $nthreads
+unicycler  -1 $shortraw\_1.fastq -2 $shortraw\_2.fastq -o unicycler_short --threads $nthreads
 ```
 
 
@@ -79,17 +79,17 @@ Running Unicycler: Nanopore long reads only
 
 ```{bash, eval=F, message=F, cache=T}
 #Long read assembly
-unicycler -l $nanoraw.fastq -o unicycler_hybrid --threads $nthreads
+unicycler -l $nanoraw.fastq -o unicycler_long --threads $nthreads
 ```
 
 Running Unicycler: Hybrid assembly (Short + Long to resolve tangled graph)
 
 ```{bash, eval=F, message=F, cache=T}
 #Hybrid Assembly 
-unicycler -1 $shortread\_1.fastq -2 $shortread\_2.fastq -l $nanoraw.fastq -o unicycler_hybrid --threads $nthreads
+unicycler -1 $shortraw\_1.fastq -2 $shortraw\_2.fastq -l $nanoraw.fastq -o unicycler_hybrid --threads $nthreads
 ```
 
 # Homework
 
-The above assemblies will take several hours to run. Work through each line in this document, or better yet, add these lines to a bash script and run the whole analysis at once. In either case, verify that the analyses complete and check the output folders specified by Unicycler for contigs files. The lab this week will be visualizing these assemblies and looking for evidence that the long reads and hybrid assembly better resolve the graph related complexities of the assembled genome.
+The above assemblies will take several hours to run. Work through each line in this document, or better yet, add these lines to a bash script and run the whole analysis at once. In either case, verify that the analyses complete and check the output folders specified by Unicycler for contigs files. The lab this week will be visualizing these assemblies in Quast and looking for evidence that the long reads and hybrid assembly better resolve the graph related complexities of the assembled genome.
 

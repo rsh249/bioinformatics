@@ -332,17 +332,17 @@ div.tocify {
 <p>The Unicycler GitHub <a href="https://github.com/rrwick/Unicycler#background">README</a> has an EXCELLENT demonstration of how it deals with de Bruijn graph complexities.</p>
 <p>Running Unicycler: Illumina Only</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#Illumina Assembly </span>
-<span class="ex">unicycler</span>  -1 <span class="va">$shortread</span>\_1.fastq -2 <span class="va">$shortread</span>\_2.fastq -o unicycler_short --threads <span class="va">$nthreads</span></code></pre></div>
+<span class="ex">unicycler</span>  -1 <span class="va">$shortraw</span>\_1.fastq -2 <span class="va">$shortraw</span>\_2.fastq -o unicycler_short --threads <span class="va">$nthreads</span></code></pre></div>
 <p>Running Unicycler: Nanopore long reads only</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#Long read assembly</span>
-<span class="ex">unicycler</span> -l <span class="va">$nanoraw</span>.fastq -o unicycler_hybrid --threads <span class="va">$nthreads</span></code></pre></div>
+<span class="ex">unicycler</span> -l <span class="va">$nanoraw</span>.fastq -o unicycler_long --threads <span class="va">$nthreads</span></code></pre></div>
 <p>Running Unicycler: Hybrid assembly (Short + Long to resolve tangled graph)</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#Hybrid Assembly </span>
-<span class="ex">unicycler</span> -1 <span class="va">$shortread</span>\_1.fastq -2 <span class="va">$shortread</span>\_2.fastq -l <span class="va">$nanoraw</span>.fastq -o unicycler_hybrid --threads <span class="va">$nthreads</span></code></pre></div>
+<span class="ex">unicycler</span> -1 <span class="va">$shortraw</span>\_1.fastq -2 <span class="va">$shortraw</span>\_2.fastq -l <span class="va">$nanoraw</span>.fastq -o unicycler_hybrid --threads <span class="va">$nthreads</span></code></pre></div>
 </div>
 <div id="homework" class="section level1">
 <h1>Homework</h1>
-<p>The above assemblies will take several hours to run. Work through each line in this document, or better yet, add these lines to a bash script and run the whole analysis at once. In either case, verify that the analyses complete and check the output folders specified by Unicycler for contigs files. The lab this week will be visualizing these assemblies and looking for evidence that the long reads and hybrid assembly better resolve the graph related complexities of the assembled genome.</p>
+<p>The above assemblies will take several hours to run. Work through each line in this document, or better yet, add these lines to a bash script and run the whole analysis at once. In either case, verify that the analyses complete and check the output folders specified by Unicycler for contigs files. The lab this week will be visualizing these assemblies in Quast and looking for evidence that the long reads and hybrid assembly better resolve the graph related complexities of the assembled genome.</p>
 </div>
 
 
