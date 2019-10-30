@@ -1,0 +1,95 @@
+---
+title: "Bacterial Genomes and Hybrid Long Read Assembly"
+author: "Prof. Harbert & Alex Baryiames"
+date: "Meeting 15"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(root.dir = '~/BIO331/hybrid')
+```
+
+# Scaling Up
+
+Assembling the zika virus genome was  a good warm-up to get familiar with some of the tools for working with whole genome sequence data. Now we will scale up our analyses and try some new software for building bacterial genomes.
+
+Recall that the virus assembly that we started with ended up with many contig sequences, none long enough to cover the entire genome, and lot's of contamination. The likely non-viral sequence reads are probably responsible for creating a difficult to resolve de Bruijn graph in Abyss, resulting in many contig sequences, when we really want one. One way to deal with problems like this using modern sequencing technology is to sequence long-read data in addition to the traditional (and efficient) short-read Illumina data. Today we will look at how long-read data impacts the assembly of a larger (bacterial) genome.
+
+
+# New data:
+
+Raw bacterial whole genome data from Illumina and Nanopore sequencing experiments: 
+
+https://www.ncbi.nlm.nih.gov/sra/?term=SAMEA3357010
+
+
+```{bash, eval=F, message=F, cache=T}
+
+nanoraw="SRR5665597"
+shortraw="ERR1023775"
+nthreads=64
+
+fastq-dump $nanoraw --split-3
+fastq-dump $shortraw --split-3
+
+```
+
+
+The ERR1023775 data is the *short-read* dataset. Check the data quality with fastqc.
+
+```{bash, eval = F, message=F, cache=T}
+fastqc $shortraw* #run fastqc for both forward (1) and reverse (2) reads files
+```
+
+The SRR5665597 data is from a Nanopore sequencing experiment. To examine these data for quality use [NanoPlots](https://github.com/wdecoster/NanoPlot) as fastqc makes assumptions about the data being in short-read formats.
+
+```{bash, eval=F, message=F, cache=T}
+NanoPlot --fastq $nanoraw.fastq --outdir Nanoplots
+```
+
+
+How do these data look?
+
+
+# Unicycler
+
+Unicycler is a program that is specifically designed for the assembly of bacterial genomes from short-read (Illumina) and/or long read (Nanopore/PacBio) raw data. 
+
+The Unicycler GitHub [README](https://github.com/rrwick/Unicycler#background) has an EXCELLENT demonstration of how it deals with de Bruijn graph complexities.
+
+Running Unicycler: Illumina Only
+
+```{bash, eval=F, message=F, cache=T}
+#Illumina Assembly 
+unicycler  -1 $shortread\_1.fastq -2 $shortread\_2.fastq -o unicycler_short --threads $nthreads
+```
+
+
+Running Unicycler: Nanopore long reads only
+
+```{bash, eval=F, message=F, cache=T}
+#Long read assembly
+unicycler -l $nanoraw.fastq -o unicycler_hybrid --threads $nthreads
+```
+
+Running Unicycler: Hybrid assembly (Short + Long to resolve tangled graph)
+
+```{bash, eval=F, message=F, cache=T}
+#Hybrid Assembly 
+unicycler -1 $shortread\_1.fastq -2 $shortread\_2.fastq -l $nanoraw.fastq -o unicycler_hybrid --threads $nthreads
+```
+
+# Homework
+
+The above assemblies will take several hours to run. Work through each line in this document, or better yet, add these lines to a bash script and run the whole analysis at once. In either case, verify that the analyses complete and check the output folders specified by Unicycler for contigs files. The lab this week will be visualizing these assemblies and looking for evidence that the long reads and hybrid assembly better resolve the graph related complexities of the assembled genome.
+

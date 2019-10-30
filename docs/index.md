@@ -72,6 +72,9 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./assembly2.html'> Meeting 14: More Assembly + Bash Scripting for reproducibility
 
+### <a href='./assembly3.html'> Meeting 15: Bacterial Genome + Hybrid Assembly
+
+
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 
