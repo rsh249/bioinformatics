@@ -32,6 +32,11 @@ At this point you should have a bash script that performs the assembly workflow.
 
 IF you do not have this script you can find a working version [here](https://raw.githubusercontent.com/rsh249/bioinformatics/master/assembly3_bash).
 
+Today, we will attempt to add two more steps to the analysis:
+
++ Visualize assemblies with *Quast*
++ Predict possible protein sequences with *Prodigal*
+
 # Viewing Assemblies
 
 Use Quast genome viewer to look at the assemblies for each of these vs. a reference.
