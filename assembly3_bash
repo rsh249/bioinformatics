@@ -1,19 +1,20 @@
 #!/bin/bash
-
+# 11/1/2019
+# This is a script to perform Unicycler assemblies of bacterial genomes.
 
 nanoraw=SRR5665597
 shortraw=ERR1023775
 nthreads=64
 
-#fastq-dump $nanoraw --split-3
-#fastq-dump $shortraw --split-3
+fastq-dump $nanoraw --split-3
+fastq-dump $shortraw --split-3
 
-#fastqc $shortraw* #run fastqc for both forward (1) and reverse (2) reads files
+fastqc $shortraw* #run fastqc for both forward (1) and reverse (2) reads files
 
 #NanoPlot --fastq $nanoraw.fastq --outdir Nanoplots
 
 #shortreads only
-#unicycler  -1 $shortraw\_1.fastq -2 $shortraw\_2.fastq -o unicycler_short --threads $nthreads
+unicycler  -1 $shortraw\_1.fastq -2 $shortraw\_2.fastq -o unicycler_short --threads $nthreads
 
 
 #longreads only
@@ -21,4 +22,6 @@ unicycler -l $nanoraw.fastq -o unicycler_long --threads $nthreads
 
 #Hybrid Assembly 
 unicycler -1 $shortraw\_1.fastq -2 $shortraw\_2.fastq -l $nanoraw.fastq -o unicycler_hybrid --threads $nthreads
+
+
 exit
