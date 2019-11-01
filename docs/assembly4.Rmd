@@ -94,7 +94,7 @@ prodigal.linux -i $hybrid -o prodigal.hybrid -a proteinhyb.faa
 Add the Quast and Prodigal commands to the assembly script you are developing. Then, modify the script to assemble from new data using another *Klebsiella pneumoniae* dataset. 
 
 Use:
-Short read data -- 'SRR5665591'
+Short read data -- 'SRR5665579'
 Long read data -- 'SRR5665591'
 
 IMPORTANT: You must create a new analysis directory for this. If you do not then this will overwrite your other assemblies AND if anything fails in the new analysis you may not be able to tell as all the right files will still exist.
