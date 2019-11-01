@@ -1,0 +1,101 @@
+---
+title: "Genome Assembly QC + Gene Prediction"
+author: "Prof. Harbert"
+date: "Meeting 14"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Unicycler Recap
+
+At this point your Unicycler assembly of the bacterial genome should have produced folders for each of the three assemblies: shortread only, longread only, and hybrid (short+long).
+
+At this point you should have a bash script that performs the assembly workflow. This should roughly consist of the following steps:
+
++ Download data files using *fastq-dump*
++ QC raw data using *fastqc* and *NanoPlot*
++ Perform shortread assembly with *Unicycler*
++ Perform longread assembly with *Unicycler*
++ Perform hybrid assembly with *Unicycler*
+
+IF you do not have this script you can find a working version [here](https://raw.githubusercontent.com/rsh249/bioinformatics/master/assembly3_bash).
+
+# Viewing Assemblies
+
+Use Quast genome viewer to look at the assemblies for each of these vs. a reference.
+
+If environmental variables for paths to files are not set please run the following:
+
+```{bash, eval=F}
+nanoraw=SRR5665597
+shortraw=ERR1023775
+nthreads=12
+```
+
+Then download the reference and run Quast for the three assemblies.
+
+```{bash, eval=F}
+#download reference assembly for Klebsiella pneumoniae
+esearch -db nucleotide -query "NC_016845.1" | efetch -format fasta > ref.fa
+refdata=ref.fa
+short=unicycler_short/assembly.fasta
+long=unicycler_long/assembly.fasta
+hybrid=unicycler_hybrid/assembly.fasta
+
+quast.py $short -R $refdata --pe1 $shortraw\_1.fastq --pe2 $shortraw\_2.fastq -o quast_short --threads $nthreads
+
+quast.py $long -R $refdata --nanopore $nanoraw* -o quast_long --threads $nthreads
+
+quast.py $hybrid -R $refdata --pe1 $shortraw\_1.fastq --pe2 $shortraw\_2.fastq --nanopore $nanoraw* -o quast_hybrid --threads $nthreads
+
+```
+
+For help interpreting Quast output check out the manual. In particular look at the notes on [misassemblies]
+
+# Predicting coding sequences:
+
+If there is a reference assembly for your genome or a related organism's genome then you can often map the assembly to a known genome to find putative genes in a new assembly. However, when no reference is available there are bioinformatics tools available to predict putative coding sequences that can then be evaluated individually to determine whether they are likely genes or not.
+
+The workflow for finding genes *de novo* is (roughly): 1) Look for possible coding sequences, 2) Predict mRNA, 3) Translate to possible protein sequences, and 4) Identify protein identity by looking for similar sequences in known proteins.
+
+There are many software tools to predict gene sequences. A good primer on some of these programs [here](https://www.biobam.com/genefinding/). 
+
+Below is an example with Prodigal, a tool from scientists at the Oak Ridge National Laboratory.
+
+```{bash, eval=F}
+
+prodigal.linux -i $short -o prodigal.short -a proteinshort.faa
+
+prodigal.linux -i $long -o prodigal.long -a proteinlong.faa
+
+prodigal.linux -i $hybrid -o prodigal.hybrid -a proteinhyb.faa
+
+```
+
+# Homework
+
+Add the Quast and Prodigal commands to the assembly script you are developing. Then, modify the script to assemble from new data using another *Klebsiella pneumoniae* dataset. 
+
+Use:
+Short read data -- 'SRR5665591'
+Long read data -- 'SRR5665591'
+
+IMPORTANT: You must create a new analysis directory for this. If you do not then this will overwrite your other assemblies AND if anything fails in the new analysis you may not be able to tell as all the right files will still exist.
+
+POST: To slack [#general](https://introbioinformatics.slack.com/messages/CMJ7DPBRB) -- BLAST one of your predicted protein sequences using the NCBI web portal for [Protein BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome). Post whether the predicted protein sequence has any matches and what those proteins are (what gene, function, organism).
+
+DUE: Monday @ 4:00PM -- Email your instructor with the absolute path to your assembly folder (e.g., '/home/username/BIO331/hybrid_assembly_hw)
+
+[home](https://rsh249.github.io/bioinformatics)
