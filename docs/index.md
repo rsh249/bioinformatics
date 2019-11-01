@@ -74,6 +74,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./assembly3.html'> Meeting 15: Bacterial Genome + Hybrid Assembly
 
+### <a href='./assembly4.html'> Lab 6: Assembly Viewing + Gene Prediction
+
 
 
 <!---### "Big-Data" in Biology Presentations/Discussion
