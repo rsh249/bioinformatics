@@ -4,7 +4,7 @@
 
 nanoraw=SRR5665597
 shortraw=ERR1023775
-nthreads=64
+nthreads=12
 
 fastq-dump $nanoraw --split-3
 fastq-dump $shortraw --split-3
