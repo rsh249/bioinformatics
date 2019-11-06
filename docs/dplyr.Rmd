@@ -1,0 +1,47 @@
+---
+title: "R: Data manipulation with dplyr"
+author: "Prof. Harbert"
+date: "Lab 6"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# dplyr
+
+The R package 'dplyr' provides useful tools for working with tabular (data frame or matrix) data including sorting, filtering, grouping, and merging functions. These tools can make data cleaning processes much easier to develop and the code easier to read.
+
+Today's material will use data from a mammal survey in Arizona. The Portal Project data is available by Git repository for [surveys](https://raw.githubusercontent.com/rsh249/semester-biology/master/data/Portal-surveys.csv), [plots](https://raw.githubusercontent.com/rsh249/semester-biology/master/data/Portal-plots.csv), and [species](https://raw.githubusercontent.com/rsh249/semester-biology/master/data/Portal-species.csv). (Copy and paste these to read.csv() commands when needed)
+
+```{r}
+surveys = read.csv('https://raw.githubusercontent.com/rsh249/semester-biology/master/data/Portal-surveys.csv')
+plots = read.csv('https://raw.githubusercontent.com/rsh249/semester-biology/master/data/Portal-plots.csv')
+species = read.csv('https://raw.githubusercontent.com/rsh249/semester-biology/master/data/Portal-species.csv')
+```
+
+# Lecture materials
+
+[Lecture notes for today can be accessed from the BIO316 website](https://rsh249.github.io/semester-biology/materials/dplyr/)
+
+[More resources and related content is available from the BIO316 website as well](https://rsh249.github.io/semester-biology/assignments/r-data/)
+
+# Homework: Exam 2
+
+Exam 2 will be available by midnight tonight and is due on eLearn by 11:59PM on Sunday (November 10, 2019). There is no formal class meeting on Friday, but exam consultations with your instructor can be arranged by appointment.
+
+
+
+
+
+
+[home](https://rsh249.github.io/bioinformatics/)

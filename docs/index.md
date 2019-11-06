@@ -76,6 +76,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./assembly4.html'> Lab 6: Assembly Viewing + Gene Prediction
 
+### <a href='./dplyr.html'> Meeting 16: R and Data Manipulation with 'dplyr'
 
 
 <!---### "Big-Data" in Biology Presentations/Discussion
