@@ -2,8 +2,8 @@
 # 11/1/2019
 # This is a script to perform Unicycler assemblies of bacterial genomes.
 
-nanoraw=SRR7908033
-shortraw=ERR2102163
+nanoraw=SRR7477814
+shortraw=SRR7184397
 nthreads=12
 
 fastq-dump $nanoraw --split-3

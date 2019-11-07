@@ -1,10 +1,13 @@
 curl https://raw.githubusercontent.com/rsh249/bioinformatics/master/data/vert_mito_trim.fa > vert_mito_trim.fa
 
+nthreads=12
+bootiter=200
+
 #RAxML has been installed at system level as 'raxmlHPC'
 
-muscle -in vert_mito_trim.fa -phyiout out.phy -maxiters 4
+muscle -in vert_mito_trim.fa -out out.fa -maxiters 4
 
-raxmlHPC -f a -p 12345 -x 12345 -N 200 -T 20 -s out.phy -m GTRCAT -n hw
+raxmlHPC -f a -p 12345 -x 12345 -N $bootiter -T $nthreads -s out.fa -m GTRCAT -n hw
 raxmlHPC -f b -t ref -z RAxML_bootstrap.hw -m GTRCAT -n consensus
 
-Rscript -e 'library(ggtree); tree <- read.tree('RAxML_bipartitions.boot1'); ggtree(tree) + geom_tiplab() + geom_nodelab(size=5, col="red"); ggsave('tree.png');'
+Rscript -e 'library(ggtree); tree <- read.tree("RAxML_bipartitions.hw"); ggtree(tree) + geom_tiplab(size=2) + geom_nodelab(size=5, col="red"); ggsave("tree.png", width=7.25, height=6);'

@@ -1,0 +1,5 @@
+kdb=/usr/share/data/krakendb/nt-custom/
+forward=/usr/share/data/BIO331/metagenomics/SRR3952312_1.fastq
+reverse=/usr/share/data/BIO331/metagenomics/SRR3952312_2.fastq
+
+kraken2 --db $kdb  --threads 12 --use-names --report kreport.tab --paired $forward $reverse > kraken.out
