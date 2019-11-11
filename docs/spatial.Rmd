@@ -1,44 +1,93 @@
 ---
 title: "Spatial Data in R"
 author: "Prof. Harbert"
-date: "November 12, 2018"
-output: html_document
+date: "Lab 6"
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Installing necessary packages
+# FIRST: New Git Repository
 
-For the next few lessons you will need:
+To keep organized today we will start a fresh Git Repository that we will develop in for the next few weeks while working through spatial bioinformatics analyses. 
 
-```{r, eval=FALSE}
-install.packages('dismo') 
-install.packages('raster')
-install.packages('spocc')
-install.packages('ENMeval')
+Step 1: Create new Git repository on GitHub website.
 
-#And maybe
+Step 2: Create new project in RStudio + Version control with new repo
 
-devtools::install_github('rsh249/vegdistmod')
+Step 3: 
+
+```{bash}
+mkdir newrepo
+cd newrepo
+
+mkdir tmp #For stuff you do NOT want to commit to Git (e.g., climate dataa)
+mkdir data # for data you do want to keep
+mkdir R # for code
+mkdir figures # for images and results files
+echo "BIO331 Course Repository for Spatial Bioinformatics Unit" > README.md
 
 
 ```
 
-### Review data sources
+Use the 'data' folder to save data files. Use the 'R' folder to hold your R scripts. Update the README.md file to describe what each file in your repository is for. Your repository contents will be graded at the end of this unit so be sure to perform regular commit/push operations to keep your progress up to date.
+
+
+# Species Distribution Modeling
+
+As with virtually everything else the volume of data available to address biodiversity and ecology research questions is rapidly being collected and mobilized in massive databases. These large data aggregation projects pool data from hundreds or thousands of institutional collections and the work of many thousands of people collecting specimens and observational data on the occurrence of organisms. 
+
+Primary biodiversity data in the form of geographic point locality information and taxonomic identifications form the basis for modeling studies that seek to identify suitable habitat (often based on climate) for the species. These models have applications in current conservation practice to identify valuable habitat, but may also be projected into future climate to predict the potential impact of climate change on a species.
+
+We will explore some data sources for GIS and Species Distribution Modeling (SDM) that are available in R. Then we will apply best practices to the machine learning algorithm Maxent to build predictions of species distributions.
+
+READING: https://www.sciencedirect.com/science/article/pii/S1470160X18307635#f0010
+
+
+
+## R Packages: *running list*
+
+For the next few lessons you will need: (UPDATE: These have all been installed locally)
+
+```{r, eval=FALSE}
+install.packages('dismo') # Species Distribution Modeling tools
+install.packages('raster') # R tools for GIS raster files
+install.packages('spocc') # Access species occurrence data from GBIF/iNaturalist
+install.packages('ENMeval') # Tuning SDMs
+install.packages('mapr') # Quick mapping tools
+
+```
+
+## Data Sources
 
 We will be getting data for distribution modeling from:
 
 + [WorldClim](https://www.worldclim.org)
 + [GBIF](https://www.gbif.org)
 + [iNaturalist](https://www.inaturalist.org)
++ ???
 
-# Geographic data: Continuous surfaces -- > Raster data objects
+# Environmental Data: Continuous surfaces -- > Raster data objects
 
 Geographic data that are continuous across your study area can be represented as a gridded image-like data type known as a raster. These are basically really big 2 dimensional tables but with special attributes that help align the values in the matrix across the curved surface of Earth.
 
-Our primary raster data will be climate. We will get that from the WorldClim project.
+Important Terms:
+
+*Resolution* == The size of individual pixels in the raster grid. (alternate: The spatial area covered by each datapoint in the grid)
+*Extent* == The minimum and maximum longitude and latitude covered by a raster object
+*Projection* == The scheme used to translate 2D x,y/lat,long coordinates into 3D points on a spheroid earth.
+*Layer* == The data tables in a raster object. Each raster may consist of one layer or a stack of many layers
+
+Our primary raster data will be climate from the WorldClim project.
 
 ### Downloading climate data: WorldClim
 
@@ -46,16 +95,21 @@ We can download climate data for land masses except Antarctica using the 'raster
 
 ```{r}
 library(raster)
-clim = getData('worldclim', var='bio', res=5)
+
+clim = getData('worldclim', var='bio', res=5) # Download the WorldClim Bioclim data for the world at a 5 arcminute resolution.
 
 summary(clim)
 summary(clim[[1]])
-plot(clim[[1]], col= topo.colors(9))
+
+
+
+
 ```
 
 See [here](https://www.worldclim.org/bioclim) for Bioclim variable definitions.
 
-We are looking at 'bio1' above which is the mean annual temperature value in Celsius degrees * 10.
+We are looking at 'bio1' above which is the mean annual temperature (MAT) value in Celsius degrees * 10.
+
 
 ### Raster operations: Crop
 
@@ -65,15 +119,106 @@ If we want to 'zoom in' on a region of interest we can crop the raster just like
 
 #define an 'extent' object.
 #eastern US
-ext = extent(-100, -50, 20, 55)
+ext = extent(-74, -69, 40, 45)
 
 #crop
 c2 = crop(clim, ext)
-plot(c2[[1]], col=topo.colors(99))
+plot(c2[[1]]) # Basic plotting 
 
 ```
 
 
-# Next time: Vectors data, mining GBIF/iNaturalist, and ENMeval for distribution modeling.
+
+### Plot with ggplot
+
+```{r}
+library(ggplot2)
+
+c2_df = as.data.frame(c2, xy = TRUE)
+head(c2_df)
+
+ggplot() +
+  geom_raster(data = c2_df, 
+              aes(x = x, y = y, fill = bio1)) +
+  coord_quickmap()
+```
+
+#### Improving the visualization: Color palettes and themes
+
+Manual color palettes
+
+First, set the base plot to a variable. ggplot functions can modify existing plot objects so we can use this 'base' image to try out new formatting.
+
+```{R}
+
+base = ggplot() +
+  geom_raster(data = c2_df, 
+              aes(x = x, y = y, fill = bio1/10)) +
+                coord_quickmap() +
+  theme_bw() 
+
+```
+
+
+```{R}
+base + scale_fill_gradientn(colours=c('navy', 'white', 'darkred'),
+  na.value = "black")
+
+
+```
+
+Try Viridis colors
+
+```{R}
+library(viridis)
+base + scale_fill_gradientn(colours=viridis(99), 
+  na.value = "black")
+base + scale_fill_gradientn(colours=magma(99), 
+  na.value = "black")
+
+
+```
+
+Try ggsci colors. (https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html)
+
+```{r}
+library(ggsci) #for expanded colors
+ggplot() +
+  geom_raster(data = c2_df, 
+              aes(x = x, y = y, fill = bio1), colours=viridis::viridis) +
+                coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gsea() 
+```
+
+### Raster values: Histogram
+
+
+```{r}
+ggplot() +
+  geom_histogram(data = c2_df, 
+                 aes(x = bio1))
+
+
+ggplot() +
+  geom_histogram(data = c2_df, 
+                 aes(x = bio12)) #Histogram of Mean Precipitation values
+
+
+```
+
+
+# Next time: Vectors data, mining GBIF/iNaturalist, and ENMeval for distribution modeling
+
+
+# Homework: Plot MAP and Reading
+
+Using the same raster climate data create a map of the Mean Annual precipitation in New England using variable 'bio12' (MAP in mm). Does your campus receive more or less precipitation each year than NYC. **Save your code for today's class AND the MAP plot to an R script and commit it to your new repository**
+
+READING: https://www.sciencedirect.com/science/article/pii/S1470160X18307635#f0010
+
+After reading, select one Figure or table and post on [#discussion](https://introbioinformatics.slack.com/archives/CN3DX55M3) with an explanation of what it is showing.
+
+
 
 [Home](https://rsh249.github.io/bioinformatics)

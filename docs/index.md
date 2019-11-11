@@ -78,6 +78,12 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./dplyr.html'> Meeting 16: R and Data Manipulation with 'dplyr'
 
+### <a href='./spatial.html'> Meeting 17: R for geospatial analysis (or R as GIS)
+
+### Meeting 18: GBIF and geographic point-locality data
+
+### Lab 7: ENM Lab
+
 
 <!---### "Big-Data" in Biology Presentations/Discussion
 
