@@ -355,7 +355,7 @@ div.tocify {
 <h1>Environmental Data: Continuous surfaces – &gt; Raster data objects</h1>
 <p>Geographic data that are continuous across your study area can be represented as a gridded image-like data type known as a raster. These are basically really big 2 dimensional tables but with special attributes that help align the values in the matrix across the curved surface of Earth.</p>
 <p>Important Terms:</p>
-<p><em>Resolution</em> == The size of individual pixels in the raster grid. (alternate: The spatial area covered by each datapoint in the grid) <em>Extent</em> == The minimum and maximum longitude and latitude covered by a raster object <em>Projection</em> == The scheme used to translate 2D x,y/lat,long coordinates into 3D points on a spheroid earth. <em>Layer</em> == The data tables in a raster object. Each raster may consist of one layer or a stack of many layers</p>
+<p><em>Resolution</em> == The size of individual pixels in the raster grid. (alternate: The spatial area covered by each datapoint in the grid) <em>Extent</em> == The minimum and maximum longitude and latitude covered by a raster object <em>Projection</em> == The scheme used to translate 2D x,y/lat,long coordinates into 3D points on a spheroid earth. <a href="https://media.opennews.org/cache/06/37/0637aa2541b31f526ad44f7cb2db7b6c.jpg">See illustration</a> <em>Layer</em> == The data tables in a raster object. Each raster may consist of one layer or a stack of many layers</p>
 <p>Our primary raster data will be climate from the WorldClim project.</p>
 <div id="downloading-climate-data-worldclim" class="section level3">
 <h3>Downloading climate data: WorldClim</h3>
@@ -390,11 +390,11 @@ div.tocify {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(clim[[<span class="dv">1</span>]])</code></pre></div>
 <pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (1.29% of all cells)</code></pre>
 <pre><code>##         bio1
-## Min.    -270
+## Min.    -265
 ## 1st Qu.  -40
 ## Median    87
 ## 3rd Qu.  227
-## Max.     313
+## Max.     314
 ## NA's       0</code></pre>
 <p>See <a href="https://www.worldclim.org/bioclim">here</a> for Bioclim variable definitions.</p>
 <p>We are looking at ‘bio1’ above which is the mean annual temperature (MAT) value in Celsius degrees * 10.</p>

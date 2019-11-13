@@ -80,7 +80,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./spatial.html'> Meeting 17: R for geospatial analysis (or R as GIS)
 
-### Meeting 18: GBIF and geographic point-locality data
+### <a href='./primary_biodiv.html'> Meeting 18: GBIF and geographic point-locality data
 
 ### Lab 7: ENM Lab
 

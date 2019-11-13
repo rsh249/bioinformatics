@@ -84,7 +84,7 @@ Important Terms:
 
 *Resolution* == The size of individual pixels in the raster grid. (alternate: The spatial area covered by each datapoint in the grid)
 *Extent* == The minimum and maximum longitude and latitude covered by a raster object
-*Projection* == The scheme used to translate 2D x,y/lat,long coordinates into 3D points on a spheroid earth.
+*Projection* == The scheme used to translate 2D x,y/lat,long coordinates into 3D points on a spheroid earth. [See illustration](https://media.opennews.org/cache/06/37/0637aa2541b31f526ad44f7cb2db7b6c.jpg)
 *Layer* == The data tables in a raster object. Each raster may consist of one layer or a stack of many layers
 
 Our primary raster data will be climate from the WorldClim project.

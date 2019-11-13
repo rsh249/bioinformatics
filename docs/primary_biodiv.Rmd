@@ -13,11 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Primary Biodiversity Data
 
-Observations of the occurrence of a species are the fundamental unit of biodiversity data. We will explore in this unit where to look for open-access occurrence data, how to access those sources from R, and tools for visualizing point distributions of species.
+Observations of the occurrence of a species are a fundamental unit of biodiversity data. We will explore in this unit, where to look for open-access occurrence data, how to access those sources from R, and tools for visualizing point distributions of species.
 
 ### Library 'spocc'
 
-A great tool from the rOpenSci consortium (a group of developers building R capacity for open science).
+A great tool from the [rOpenSci consortium](https://ropensci.org/) (a group of developers building R capacity for open science).
 
 Package details on [GitHub](https://github.com/ropensci/spocc)
 
@@ -36,24 +36,26 @@ With spocc installed we can try a simple query of the GBIF database that we have
 
 ```{r}
 library(spocc)
-ulmus <- occ(query='Ulmus americana', from='gbif')
+spdist <- occ(query='Crotalus horridus', from='gbif')
+
+
 ```
 
-The data are returned as an "S3 class" object. Somewhere in there is a tidyverse tibble (like a table but not).
+The data are returned as an "S3 class" object. Somewhere in there is a tidyverse tibble (like a data frame table, but not).
 
 ```{r, eval=FALSE}
-print(ulmus) ## Not obvious what or where the data are
+print(spdist) ## Not obvious what or where the data are
 ```
 
 ```{r, eval=FALSE}
-View(ulmus)
+View(spdist)
 ```
 
 Maybe it's still not obvious how we get in. To view an element of the data returned we use the "$" operator and call each by name. In general it's easier to convert these to regular R data frame objects since not everything we want to do with these data is compatible with the tidyverse/spocc formatting.
 
 ```{r}
 
-df = as.data.frame(occ2df(ulmus$gbif))
+df = as.data.frame(occ2df(spdist$gbif))
 
 #Also try:
 #head(df)
@@ -62,7 +64,7 @@ df = as.data.frame(occ2df(ulmus$gbif))
 ```
 
 
-### mapr: Leaflet mapping of species distribution data.
+### mapr: Exploratory interactive mapping of species distribution data.
 
 To create interactive graphics showing species occurrence locations and some metadata we can use 'mapr'. This library uses a JavaScript library known as leaflet and Open Street Maps services (and others!) to create interactive maps that you can navigate through and click on points to pop-up metadata about each occurrence.
 
@@ -75,7 +77,7 @@ Then call map_leaflet() either on the spocc object:
 
 ```{r}
 library(mapr)
-map_leaflet(ulmus)
+map_leaflet(spdist)
 
 ```
 
@@ -111,8 +113,8 @@ Our query only returned the first 500 records because that is the default for th
 We can fix that:
 
 ```{r}
-ulmus2 <- occ(query='Ulmus americana', limit=2500)
-map_leaflet(ulmus2)
+spdist2 <- occ(query='Crotalus horridus', limit=2500)
+map_leaflet(spdist2)
 ```
 
 # Meeting up with WorldClim
@@ -129,35 +131,48 @@ wc = getData('worldclim', var='bio', res = 5)
 Plot raster with points over:
 
 ```{r}
+library(ggplot2)
 ext = extent(-125, -55, 20, 60)
-wc2 = crop(wc, ext)
-plot(wc2[[12]], col = topo.colors(99))
-points(df$longitude, df$latitude)
+wc = crop(wc, ext)
+
+wc_df = as.data.frame(wc, xy=TRUE)
+sp_df = occ2df(spdist2)
+ggplot() +
+  geom_raster(data = wc_df, aes(x = x, y = y, fill = bio1/10)) +
+  geom_point(data=sp_df, aes(x=longitude, y=latitude), col='green') +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('navy', 'white', 'darkred'),
+  na.value = "black")
+
 
 ```
 
-###Extracting climate data
+# Extracting climate data
 
 The 'raster' library has a function for referencing the climate data stored in our raster for every occurrence point. These data are the primary input to our species distribution models.
 
 ```{r}
-extr = extract(wc2, c(df$longitude, df$latitude))
+extr = extract(wc, sp_df[,c('longitude', 'latitude')])
 summary(extr)
-boxplot(extr[,'bio12'], main='Distribution of Mean Annual Precipitation for occurrence of Ulmus americana')
+extr=as.data.frame(na.omit(extr))
+
+ggplot(data=extr) +
+  geom_histogram(aes(x=bio12), bins=30) + 
+  theme_bw()
+
 ```
 
 
-### Challenge:
+### Challenge/Homework:
 
-Query iNaturalist for *Ulmus americana* records. (Hint: you may want to look at the rinat library and the get_inat_obs() function).
+Choose a species observed in the [Stonehill Biodiversity iNaturalist Project](https://www.inaturalist.org/observations?project_id=stonehill-biodiversity) Query GBIF using 'spocc' for occurrence data records. Create a ggplot based map using bio1 as a background to show the distribution of this species.
 
-# Assignments:
+Post the script and your map to your GitHub repo (you may want to create a repository for this course on your account). When that is up post a link to your repository on Slack using the [biodiversity](https://introbioinformatics.slack.com/archives/CQ5NRTR9R) channel. 
 
 ## Reading:
 
-By next class read the [ENMeval](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.12261) paper. To go with this write a ~1 page reflection on the paper and submit that by email before class.
+By Monday, read the [ENMeval](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.12261) paper. To go with this write a ~1 page reflection on the paper and submit that by email before class.
 
+[home](https://rsh249.github.io/bioinformatics)
 
-## Homework:
-
-Using spocc and mapr. Create a leaflet map of a species of interest to you. Make sure you get at least 20 unique locations where an occurrence is recorded. Record all of your commands in an Rscript. Save your leaflet map as a webpage. Post the script and your map to GitHub (you may want to create a repository for this course on your account). When that is up post a link to your repository on Slack using the [biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4) channel. 
