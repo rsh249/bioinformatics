@@ -89,6 +89,37 @@ ggplot() +
 
 ```
 
+### SAVE YOUR MAP
+
+I like the last density map (the 10th root one). To save any plot in R:
+
+```{r}
+dplot = ggplot() +
+  geom_raster(data = gk_df, aes(x = x, y = y, fill = layer^0.1)) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
+  na.value = "black")
+
+ggsave(dplot, filename = paste("figure/", taxon, "_density.png", sep=""))
+#or
+ggsave(dplot, filename = "figure/Vaccinium_density.png")
+
+#and you can change the size and resolution (dpi) if you want a higher quality figure.
+ggsave(dplot, 
+       filename = paste("figure/", taxon, "_density.png", sep=""),
+       height=7.25, width = 7.25, units='in',
+       dpi = 300)
+
+
+```
+
+To save the *DATA* you generated as a raster file (which could be reused in R later):
+
+```{R}
+writeRaster(gk, filename = paste('data/', taxon, '_density', sep=''))
+```
+
 ## Minimum Distance
 
 Alternate visualization: The minimum distance to the nearest occurrence point. Identifies undersampled areas by mapping the distance to a point in the dataset.
@@ -107,6 +138,27 @@ ggplot() +
   theme_bw() + 
   scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
   na.value = "black")
+
+
+```
+
+### Save it
+
+```{R}
+distplot = ggplot() +
+  geom_raster(data = d2_df, aes(x = x, y = y, fill = sqrt(layer))) +
+  #geom_point(data=sp_df, aes(x=longitude, y=latitude), col='green', cex=0.2) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
+  na.value = "black")
+
+ggsave(distplot, 
+       filename = paste("figure/", taxon, "_mindist.png", sep=""),
+       height=7.25, width = 7.25, units='in',
+       dpi = 300)
+
+writeRaster(gk, filename = paste('data/', taxon, '_mindist', sep=''))
 ```
 
 # Homework

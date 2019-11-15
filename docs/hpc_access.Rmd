@@ -1,0 +1,128 @@
+---
+title: "HPC Access"
+author: "Prof. Harbert"
+date: "Lab 7A"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# HPC: Boston University
+
+[Guidance portal](http://www.bu.edu/tech/support/research/)
+
+
+[Cheatsheet](http://scv.bu.edu/documents/SCC_CheatSheet.pdf)
+
+
+
+## Logging In
+
+After setting up your account password (see your email)
+
+```{bash, eval=F}
+ssh username@scc1.bu.edu
+
+```
+
+Once logged in you can interact with the terminal like normal (Try ls, mkdir, cd).
+
+
+```{bash, eval=F}
+mkdir BIO331
+cd BIO331
+
+````
+
+## The "Cluster"
+
+[
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('./images/nyu_HPC.png')
+```
+](https://devwikis.nyu.edu/display/NYUHPC/Programming+for+Biologists)
+
+[BU Cluster organization](http://www.bu.edu/tech/support/research/computing-resources/tech-summary/)
+
+CPUs are not individually powerful enough to handle large workloads from multiple users. Instead, HPCs are built by stringing together many CPU *Nodes* into a network of computers that can be accessed together.
+
+This means that we have to think about computing on these resources in terms of "jobs" instead of interactive typing at the terminal and console. To get there the code we run has to be packaged into scripts that are fully reproducible. That way code developed on your laptop (or the course RStudio server) can be moved to the HPC compute environment.
+
+The dispersed nature of HPC work also means that users have to work with queueing software that schedules jobs for us.
+
+
+
+# The "Queue"
+
+The BU cluster uses PBS style queueing software, a common job management system. 
+
+View running and queued jobs (checking on jobs or compute load):
+
+```{bash, eval=F}
+qstat
+
+```
+
+
+
+# Storage
+
+You are limited in space in your home directory. You should instead work in our class project folder where you have up to 50GB of storage.
+
+```{bash, eval=FALSE}
+cd /project/ct-shbioinf
+
+mkdir username
+cd username
+
+
+```
+
+You *should* mostly be moving scripts and small data files to the HPC with git. The simplest thing to do is to put code that you plan to run in a git repository and then move it to the HPC with the command 'git clone'. e.g.,
+
+```{bash, eval=F}
+git clone https://github.com/rsh249/bio331_geospatial
+cd bio331_geospatial
+
+#just check where you are
+pwd
+
+
+```
+
+When you make updates to this code you will want to run the following code to pull updates from the git repository.
+
+```{bash, eval=F}
+git pull 
+```
+
+# Software
+
+Since there are many users on the HPC system and each of them might need access to different softwarer (programs/versions/etc.) there are very few programs installed by default. Instead, to use a program you will either need to install it locally or use the system installed software modules (*use the modules*).
+
+```{bash, eval =F}
+#look at available modules
+module avail
+
+#load a current version of R
+module load R
+
+#Run R
+R
+
+
+```
+
+# Next steps
+
+We will develop scripts that can be run on the HPC and explore more of the tools needed to work on the server.
+
+[home](https://rsh249.github.io/bioinformatics)
+
+
+
+
