@@ -58,7 +58,7 @@ taxon = 'Vaccinium angustifolium'
 spdist <- occ(query=taxon, limit=6500)
 sp_df = occ2df(spdist)
 
-sp_df = sp_df %>% filter(longitude>=ext[1], longitude<=ext[2], latitude>=ext[3], latitude <=ext[4]) #filter points to study area
+sp_df = sp_df %>% filter(longitude>=ext[1], longitude<=ext[2], latitude>=ext[3], latitude <=ext[4]) #dplyr filter points to study area
 
 gk = gkde(wc[[1]], 
           sp_df[,c('longitude', 'latitude')], 
@@ -117,7 +117,7 @@ ggsave(dplot,
 To save the *DATA* you generated as a raster file (which could be reused in R later):
 
 ```{R}
-writeRaster(gk, filename = paste('data/', taxon, '_density', sep=''))
+writeRaster(gk, filename = paste('data/', taxon, '_density', sep=''), overwrite=TRUE)
 ```
 
 ## Minimum Distance
@@ -158,7 +158,44 @@ ggsave(distplot,
        height=7.25, width = 7.25, units='in',
        dpi = 300)
 
-writeRaster(gk, filename = paste('data/', taxon, '_mindist', sep=''))
+writeRaster(gk, filename = paste('data/', taxon, '_mindist', sep=''), overwrite=TRUE )
+```
+
+# Fixing bias: Spatial Thinning
+
+One way to reduce bias in your sample is to *thin* the data. That is, by removing points from the dataset that fall too close together we can smooth out the sampling.
+
+```{R}
+#from RSpatial
+occ2thin = poThin(
+  df = sp_df[c('longitude', 'latitude')],
+  spacing = 25,
+  dimension = nrow(sp_df),
+  lon = 'longitude',
+  lat = 'latitude'
+)
+
+sp_df = sp_df[-occ2thin,]
+
+gk = gkde(wc[[1]], 
+          sp_df[,c('longitude', 'latitude')], 
+          parallel=T, 
+          nclus = 12, 
+          dist.method='Haversine', 
+          maxram=20, 
+          bw=50)
+
+gk_df=as.data.frame(gk, xy=TRUE)
+ggplot() +
+  geom_raster(data = gk_df, aes(x = x, y = y, fill = layer)) +
+  #geom_point(data=sp_df, aes(x=longitude, y=latitude), col='green', cex=0.1) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
+  na.value = "black")
+
+
+
 ```
 
 # Homework
