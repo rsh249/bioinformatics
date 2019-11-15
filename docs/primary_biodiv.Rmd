@@ -1,7 +1,7 @@
 ---
 title: "GBIF, iNaturalist, and Primary Biodiversity Data"
 author: "Prof. Harbert"
-date: "November 14, 2018"
+date: "Meeting 18"
 output:
   html_document: default
   pdf_document: default

@@ -1,0 +1,128 @@
+---
+title: "Spatial Sampling Bias"
+author: "Prof. Harbert"
+date: "Lab 7A"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Bias in Occurrence Data
+
+Most modeling assumes random samples of data. In Biodiversity informatics that is rarely the case. Humans tend to go where it is easy for us to get and/or where we are going to go anyways. For that reason spatial occurrence data tends to be clustered towards the more commonly visited places. 
+
+Today we will explore visualization tools for examining patterns in occurrence data samples.
+
+# rasterExtras & RSpatial
+
+[rasterExtras GitHub](https://github.com/rsh249/rasterExtras)
+[rasterExtras Tutorials](https://rsh249.github.io/demo/rasterExtras.html)
+
+[RSpatial GitHub](https://github.com/oshea-patrick/RSpatial)
+
+Install the R package rasterExtras using
+
+```{R}
+
+devtools::install_github('rsh249/rasterExtras')
+devtools::install_github('oshea-patrick/RSpatial')
+
+```
+
+## Sampling Density
+
+Start with the species that you downloaded data on for homework and load the WorldClim data again.
+
+```{R}
+
+library(raster)
+library(ggplot2)
+library(rasterExtras)
+library(RSpatial)
+library(spocc)
+library(dplyr)
+
+wc = getData('worldclim', var='bio', res = 5)
+ext = extent(-125, -55, 20, 60)
+wc = crop(wc, ext)
+
+wc_df = as.data.frame(wc, xy=TRUE)
+
+taxon = 'Vaccinium angustifolium'
+
+spdist <- occ(query=taxon, limit=6500)
+sp_df = occ2df(spdist)
+
+sp_df = sp_df %>% filter(longitude>=ext[1], longitude<=ext[2], latitude>=ext[3], latitude <=ext[4]) #filter points to study area
+
+gk = gkde(wc[[1]], 
+          sp_df[,c('longitude', 'latitude')], 
+          parallel=T, 
+          nclus = 12, 
+          dist.method='Haversine', 
+          maxram=20, 
+          bw=50)
+
+gk_df=as.data.frame(gk, xy=TRUE)
+ggplot() +
+  geom_raster(data = gk_df, aes(x = x, y = y, fill = layer)) +
+  #geom_point(data=sp_df, aes(x=longitude, y=latitude), col='green', cex=0.1) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
+  na.value = "black")
+
+
+ggplot() +
+  geom_raster(data = gk_df, aes(x = x, y = y, fill = layer^0.1)) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
+  na.value = "black")
+
+
+
+```
+
+## Minimum Distance
+
+Alternate visualization: The minimum distance to the nearest occurrence point. Identifies undersampled areas by mapping the distance to a point in the dataset.
+
+
+
+```{R}
+d2pt = dist2point(wc[[1]], sp_df[,c('longitude', 'latitude')], parallel=TRUE, nclus = 12, dist.method='Haversine', maxram = 20)
+
+d2_df = as.data.frame(d2pt, xy=T)
+
+ggplot() +
+  geom_raster(data = d2_df, aes(x = x, y = y, fill = sqrt(layer))) +
+  #geom_point(data=sp_df, aes(x=longitude, y=latitude), col='green', cex=0.2) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy'),
+  na.value = "black")
+```
+
+# Homework
+
+Change the extent of your study area to focus on New England and generate density and distance to point maps for your species.
+
+In your dataset whata areas look undersampled? What patterns in the distribution do not look *biological*?
+
+HINT:
+
+```{R}
+ext = extent(-74, -69, 40, 45)
+#crop
+
+#Or filter points to study area and run gkde() and dist2point() again
+
+```
+
+[home](https://rsh249.github.io/bioinformatics)

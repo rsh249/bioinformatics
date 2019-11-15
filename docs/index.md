@@ -82,7 +82,12 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./primary_biodiv.html'> Meeting 18: GBIF and geographic point-locality data
 
-### Lab 7: ENM Lab
+### <a href='./hpc_access.html'> Lab 7A: HPC Access
+
+### <a href='./spatial_bias.html'> Lab 7B: Spatial Sampling Bias
+
+
+
 
 
 <!---### "Big-Data" in Biology Presentations/Discussion
