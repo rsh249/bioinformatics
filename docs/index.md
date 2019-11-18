@@ -86,6 +86,10 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./spatial_bias.html'> Lab 7B: Spatial Sampling Bias
 
+### <a href='./ENMeval.html'> Meeting 19: ENMeval for SDM training
+
+### Meeting 20: SDM on HPC
+
 
 
 

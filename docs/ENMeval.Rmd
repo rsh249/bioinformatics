@@ -1,7 +1,7 @@
 ---
 title: "ENMeval and Maxent for Species Distribution Modeling"
 author: "Prof. Harbert"
-date: format(Sys.time(), "%b %d, %Y")
+date: Meeting 19
 output: 
   html_document:
     theme: united
@@ -25,58 +25,93 @@ Today we will be using the common "Maxent" method to estimate the current distri
 
 # Focus activity
 
-Bring up data for your species of interest in R and plot those points over a WorldClim climate layer. If you have time, test the leaflet mapping we did last week on your species too.
+Bring up data for your species of interest in R, filter it to our the study area using dplyr, thin the data using RSpatial, and plot those points over a WorldClim climate layer using ggplot. 
 
 
-```{r}
+```{r, message=F, warning=F}
+library(raster)
+library(ggplot2)
+library(rasterExtras)
+library(RSpatial)
 library(spocc)
-spocc_download = occ(query ='Quercus virginiana', from='gbif', limit=2000);
-spocc_download
+library(dplyr)
 
-library(dismo)
-wc = getData('worldclim', var='bio', res=5)
+taxon = 'Vaccinium angustifolium'
+
+wc = getData('worldclim', var='bio', res = 5)
+ext = extent(-125, -55, 20, 60)
+wc = crop(wc, ext)
+wc_df = as.data.frame(wc, xy=TRUE) # for plotting
+
+#downloading
+spdist <- occ(query=taxon, limit=6500) # check limit for your species
+sp_df = occ2df(spdist)
+
+#filtering
+sp_df = sp_df %>% filter(longitude>=ext[1], longitude<=ext[2], latitude>=ext[3], latitude <=ext[4]) #dplyr filter points to study area
+
+#thinning
+occ2thin = poThin(
+  df = sp_df[c('longitude', 'latitude')],
+  spacing = 25, #minimum distance between points in thinned data
+  dimension = nrow(sp_df),
+  lon = 'longitude',
+  lat = 'latitude'
+)
+
+sp_df = sp_df[-occ2thin,] #thin using index returned from occ2thin
+
+#plot
+ggplot() +
+  geom_raster(data = wc_df, aes(x = x, y = y, fill = bio12)) +
+  geom_point(data=sp_df, aes(x=longitude, y=latitude), col='green', cex=0.1) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('darkred', 'grey', 'navy', 'green'),
+  na.value = "black")
+
+
 ```
 
 # ENMeval 
 
-If you have not already, run:
+Load ENMeval
+
+```{r}
+library(ENMeval)
+```
+
+If ENMeval is not installed already, run:
 
 ```{r, eval=FALSE}
 install.packages('ENMeval')
 
 ```
 
-Then:
+## Picking predictive variables
 
-```{r}
-library(ENMeval)
-library(raster)
+Selecting environmental parameters that actually impact the distribution of a species is a significant challenge to SDM methods. Here we will use bio1, bio2, bio3, bio12, and bio16. These are *not* necessarily the best combination of cliamte parameters for your species and may require some tweaking.
 
-
-##Name your occurrence data 'occdat' and convert to data frame
-occdat <- occ2df(spocc_download)
-
-##Name your climate data 'predictors'
-
-## crop to fit study area (EDIT WITH YOUR REGION)
-
-ext=extent(c(-100, -55, 20, 45))
-predictors = crop(wc, ext)
+```{R}
+predvars = c(1,2,3,12,16)
+preds = wc[[predvars]]
 
 ```
 
-ENMeval runs the Maxent SDM tool with many potential model settings, data partitioning, and model assessments. We will work through just one possible way to use these tools here.
+## Model Testing
+
+
+ENMeval runs the Maxent SDM software with many potential model settings, data partitioning, and model assessments. We will work through just one possible way to use these tools here. Depending on your use case more model testing or different model evaluation methods may be useful. 
+
+We will be testing two Maxent feature classes "Linear" (L), "Quadratic" (Q), and the hybrid (LQ) model. Higher degree model features can lead to overfitting, but ENMeval allows any combination of features from the set: "Linear" (L), "Quadratic" (Q), "Hinge" (H), "Product" (P), and "Threshold" (T). (e.g., "LQHPT" is a valid feature class). Maxent tests these model features across each set of data to build composite models with high fit to the data. The simplest model is the "Linear" feature, these are very similar mathematically to Generalized Linear Models (GLM). 
+
+ENMeval will also test a range of smoothing parameters in the Regularization Multiplier (RM) argument (values 0.5, 1, 1.5, 2). The higher the RMvalue the smoother the model prediction. Lower RMvalues are prone to overfitting.
+
 
 Setting up ENMeval works as follows:
 
 ```{r}
-##Trim and filter location data
-loc=occdat[,c('longitude', 'latitude')]
-extr = extract(predictors, loc)
-loc = loc[!is.na(extr[,1]),]
-
-
-eval = ENMevaluate(occ=as.data.frame(loc), env = predictors, method='block', parallel=FALSE, fc=c("L", "LQ"), RMvalues=seq(0.5, 2, 0.5), rasterPreds=T)
+eval = ENMevaluate(occ=sp_df[,c('longitude', 'latitude')], env = preds, method='randomkfold', kfolds=10, parallel=TRUE, numCores = 12, fc=c("L", "Q", "LQ"), RMvalues=seq(0.5, 2, 0.5), rasterPreds=T)
 ```
 
 There's a lot of moving parts in ENMevaluate. Here are a few of the highlights explained:
@@ -97,33 +132,33 @@ Look at the eval@results object for more. Pay close attention to the AICc column
 eval@results
 ```
 
-For me the best model by AICc is #2: LQ_0.5
+Which model features/RMvalues made for your best model?
 
 ```{r}
-which(eval@results$AICc == min(eval@results$AICc))
+bestmod = which(eval@results$AICc==min(eval@results$AICc))
+eval@results[bestmod,]
 ```
 
-And the best model by avg.test.AUC is #7: L_2
-
-```{r}
-which(eval@results$avg.test.AUC== max(eval@results$avg.test.AUC))
-```
-
-I'm going to keep the AICc best model for the rest of this time but an argument could be made for either (or some other "best" model measure).
-
-```{r}
-best=which(eval@results$AICc == min(eval@results$AICc))
-```
-
-# Plotting model output
+# Plotting heatmap model output
 
 ENMeval has already calculated a predicted distribution map for each model setting. We can plot the best model(s) with:
 
 Best model AICc: #2
 
 ```{r}
-plot(eval@predictions[[best]])
-points(as.data.frame(loc), pch=20, cex =0.1)
+# make prediction
+
+pr = predict(preds, eval@models[[bestmod]], type = 'cloglog')
+pr_df = as.data.frame(pr, xy=T)
+
+#heatmap
+ggplot() +
+  geom_raster(data = pr_df, aes(x = x, y = y, fill = layer)) +
+   geom_point(data=sp_df, aes(x=longitude, y=latitude), col='red', cex=0.05) +
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=viridis::viridis(99),
+  na.value = "black")
 ```
 
 # Predicting Species' Range
@@ -136,15 +171,23 @@ To do this we need access to the background points and the Maxent model objects.
 ```{r}
 
 #extract model estimated suitability for occurrence localities
-est.loc = extract(eval@predictions[[best]], as.data.frame(loc))
+est.loc = extract(pr,  eval@occ.pts)
 #extract model estimated suitability for background
-est.bg = extract(eval@predictions[[best]], eval@bg.pts)
+est.bg = extract(pr, eval@bg.pts)
 #evaluate predictive ability of model
 ev = evaluate(est.loc, est.bg)
 #detect possible thresholds 
 thr = threshold(ev)
 #plot using "equal sensitivity and specificity" criteria
-plot(eval@predictions[[best]] > thr$equal_sens_spec, col = c('lightgrey', 'black'))
+pr_thr = pr>thr$sensitivity
+pr_thr_df = as.data.frame(pr_thr, xy=TRUE)
+
+ggplot() +
+  geom_raster(data = pr_thr_df, aes(x = x, y = y, fill = layer)) +
+   geom_point(data=sp_df, aes(x=longitude, y=latitude), col='red', cex=0.2) +
+  scale_fill_manual(values = c('black', 'blue')) +
+  coord_quickmap() +
+  theme_bw() 
 
 
 ```
@@ -157,9 +200,19 @@ There are many possible ways to establish these kinds of maps. Here we work thro
 
 Create a potential distribution for your species. Record all commands in an R script and save plots to your Git repository. Post links to [#biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4)
 
-THEN, download future climate data for one modeling scenario (see ?getData). Crop to your region of interest and use the predict() function to predict your species' future distribution. Place current and future distributions into a Word document and write a ~300 word commentary on what the output suggests to you. Include the word doc in your Git repository too. Post questions to the [#biodiversity](https://bio200-bioinformatics.slack.com/messages/CE3344LE4) channel if you run into issues.
+THEN, download future climate data for one modeling scenario (see ?getData). 
 
-You can add to your mapping repository from last time if you want.
+e.g., : 
+
+```{R, eval = F}
+future = getData('CMIP5', var='bio', res=5, rcp = 85, model='AC', year=70, path='tmp/')
+```
+
+Crop to your region of interest and use the predict() (see above) function to predict your species' future distribution.  
+
+Post questions, issues, and future projected maps (both range and heatmap) with a short description of what you found to the [#biodiversity](https://introbioinformatics.slack.com/archives/CQ5NRTR9R).
+
+
 
 [Home](https://rsh249.github.io/bioinformatics/index.html)
 
