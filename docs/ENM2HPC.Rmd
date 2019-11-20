@@ -1,0 +1,159 @@
+---
+title: "ENMeval Setup on HPC"
+author: "Prof. Harbert"
+date: Meeting 20
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Update ENM Script
+
+For testing on the cluster today use [sdm1.R](https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/R/sdm1.R) provided by your instructor. Save this to your R repository's 'R' folder. 
+
+You will later be updating this script to work with higher resolution climate data and the future climate data for climate change projections.
+
+# HPC Setup
+
+To run our distribution modeling code on the cluster we first need to interact with the cluster a bit to make sure that everything is set up and working that will be needed for the analysis. This will include making sure the correct R packages are installed, copying scripts from the git repository, and setting up a script to submit the R jobs to the queue.
+
+### Log in
+
+Use 'ssh' to log in using the terminal of your choice.
+
+```{bash, eval=F}
+ssh yourusername@scc1.bu.edud
+```
+
+### Set up R packages 
+
+Since the cluster is used by many users in different fields the administrators maintain software modules that are called on the fly by users. This way modules for several versions of a program can be maintained without conflict across the system. 
+
+Load R using the command 'module load'
+
+```{bash, eval =F}
+module load R #call the system module for the current R software
+
+# Run an R environment
+R 
+```
+
+
+The cluster R environment may not have everything needed for these analyses. Test the packages that are needed for the modeling script.
+
+In the R prompt run:
+
+```{R, eval=F}
+library(raster)
+library(ggplot2)
+library(rasterExtras)
+library(RSpatial)
+library(spocc)
+library(dplyr)
+library(ENMeval)
+```
+
+Any of those that fail need to be resolved. 'raster', 'ggplot2', 'spocc', 'dplyr', and 'ENMeval' can be installed with install.packages().
+
+'rasterExtras' and 'RSpatial' need to be installed as:
+
+```{R, eval=F}
+devtools::install_github('rsh249/rasterExtras')
+devtools::install_github('oshea-patrick/RSpatial', force=TRUE)
+```
+
+### Navigate to project
+
+Project code and data should be placed in the shared course project folder. 
+
+```{bash, eval=F}
+cd /project/ct-shbioinf
+
+ls
+
+cd yourusername
+```
+
+### Clone git repo
+
+To copy your up-to-date git repository to the cluster use:
+
+```{bash, eval=F}
+git clone 'https://url.to.github.com/username/repository'
+```
+
+AFTER the initial copy, all other updates can be retreived with:
+
+```{bash, eval=F}
+cd /path/to/repository/on/cluster
+
+git pull
+
+```
+
+
+### Submitting a Job
+
+Do NOT attempt to run the R script in an interactive R session when logged in to the cluster. To work well within the cluster system we have to submit the R script as a job to the queue.
+
+To do this we need to write a qsub submission script. For our analysis this should look like: [link to instructor copy](https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/submit_sdm1)
+
+```{bash, eval = F}
+#!/bin/sh
+#
+#Number of cores requested
+#$ -pe omp 12
+
+#Give the name to the job
+#$ -N SDM_ENMeval
+
+#Send an email when the job is finished (or aborted)
+#$ -m ae
+
+#Join the error and output file
+#$ -j y
+
+
+# Set the runtime limit (default 12 hours):
+#$ -l h_rt=12:00:00
+
+# Specify your project
+#$ -P ct-shbioinf
+
+module load R/3.6.0
+
+cd /project/ct-shbioinf/rharbert/bio331-geospatial
+
+Rscript R/sdm1.R
+
+
+```
+
+
+### Retrieving figure files:
+
+You can use more git commands to retrieve the figure files that were generated. Run the following:
+
+```{bash, eval=FALSE}
+git add figures
+git commit -m 'collect figures from HPC'
+git push
+```
+
+When prompted, enter your GitHub username and password.
+
+Then in RStudio make sure to 'pull' the new version of your repository and check your local 'figures' folder.
+
+# Homework
+
+Modify the [R script provided for HPC modeling](https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/R/sdm1.R) to do the future projection assigned for homework last time. Test on the BU cluster using a qsub submission script. Report errors and successes to Slack [#general](https://introbioinformatics.slack.com/archives/CMJ7DPBRB)

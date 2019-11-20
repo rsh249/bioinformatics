@@ -194,12 +194,8 @@ summary {
 <p><a href="https://github.com/rsh249/rasterExtras">rasterExtras GitHub</a> <a href="https://rsh249.github.io/demo/rasterExtras.html">rasterExtras Tutorials</a></p>
 <p><a href="https://github.com/oshea-patrick/RSpatial">RSpatial GitHub</a></p>
 <p>Install the R package rasterExtras using</p>
-<pre class="r"><code>devtools::install_github('rsh249/rasterExtras')</code></pre>
-<pre><code>## Skipping install of 'rasterExtras' from a github remote, the SHA1 (44124f68) has not changed since last install.
-##   Use `force = TRUE` to force installation</code></pre>
-<pre class="r"><code>devtools::install_github('oshea-patrick/RSpatial')</code></pre>
-<pre><code>## Skipping install of 'RSpatial' from a github remote, the SHA1 (22a65f50) has not changed since last install.
-##   Use `force = TRUE` to force installation</code></pre>
+<pre class="r"><code>devtools::install_github('rsh249/rasterExtras')
+devtools::install_github('oshea-patrick/RSpatial')</code></pre>
 <div id="sampling-density" class="section level2">
 <h2>Sampling Density</h2>
 <p>Start with the species that you downloaded data on for homework and load the WorldClim data again.</p>
@@ -296,7 +292,7 @@ gk = gkde(wc[[1]],
 ## Maximum RAM per proc.:  1.666667 
 ## Distance Method:  Haversine 
 ## 
-## Time elapsed:  33.045</code></pre>
+## Time elapsed:  33.757</code></pre>
 <pre class="r"><code>gk_df=as.data.frame(gk, xy=TRUE)
 ggplot() +
   geom_raster(data = gk_df, aes(x = x, y = y, fill = layer)) +
@@ -357,7 +353,7 @@ ggsave(dplot,
 ## Maximum RAM per proc.:  1.666667 
 ## Distance Method:  Haversine 
 ## 
-## Time elapsed:  23.195</code></pre>
+## Time elapsed:  19.96</code></pre>
 <pre class="r"><code>d2_df = as.data.frame(d2pt, xy=T)
 
 ggplot() +
@@ -399,6 +395,7 @@ writeRaster(gk, filename = paste('data/', taxon, '_mindist', sep=''), overwrite=
 <h1>Fixing bias: Spatial Thinning</h1>
 <p>One way to reduce bias in your sample is to <em>thin</em> the data. That is, by removing points from the dataset that fall too close together we can smooth out the sampling.</p>
 <pre class="r"><code>#from RSpatial
+library(RSpatial)
 occ2thin = poThin(
   df = sp_df[c('longitude', 'latitude')],
   spacing = 25,
@@ -424,7 +421,7 @@ gk = gkde(wc[[1]],
 ## Maximum RAM per proc.:  1.666667 
 ## Distance Method:  Haversine 
 ## 
-## Time elapsed:  26.191</code></pre>
+## Time elapsed:  26.8</code></pre>
 <pre class="r"><code>gk_df=as.data.frame(gk, xy=TRUE)
 ggplot() +
   geom_raster(data = gk_df, aes(x = x, y = y, fill = layer)) +

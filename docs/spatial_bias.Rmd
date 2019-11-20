@@ -27,7 +27,7 @@ Today we will explore visualization tools for examining patterns in occurrence d
 
 Install the R package rasterExtras using
 
-```{R}
+```{R, eval=F}
 
 devtools::install_github('rsh249/rasterExtras')
 devtools::install_github('oshea-patrick/RSpatial')
@@ -167,6 +167,7 @@ One way to reduce bias in your sample is to *thin* the data. That is, by removin
 
 ```{R}
 #from RSpatial
+library(RSpatial)
 occ2thin = poThin(
   df = sp_df[c('longitude', 'latitude')],
   spacing = 25,

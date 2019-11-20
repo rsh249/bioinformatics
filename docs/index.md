@@ -88,7 +88,9 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./ENMeval.html'> Meeting 19: ENMeval for SDM training
 
-### Meeting 20: SDM on HPC
+### <a href='./ENM2HPC.html'> Meeting 20: SDM on HPC
+
+### Lab 8: Scaling up ENM on HPC
 
 
 
