@@ -32,7 +32,7 @@ To run our distribution modeling code on the cluster we first need to interact w
 Use 'ssh' to log in using the terminal of your choice.
 
 ```{bash, eval=F}
-ssh yourusername@scc1.bu.edud
+ssh yourusername@scc1.bu.edu
 ```
 
 ### Set up R packages 
