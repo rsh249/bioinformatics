@@ -90,7 +90,8 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./ENM2HPC.html'> Meeting 20: SDM on HPC
 
-### Lab 8: Scaling up ENM on HPC
+### <a href='./HPC_troubleshoot_lab.html'> Lab 8: Scaling up ENM on HPC
+
 
 
 

@@ -1,0 +1,140 @@
+---
+title: "HPC Troubleshooting"
+author: "Prof. Harbert"
+date: Lab 8
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Following up on HPC Jobs
+
+Last class you submitted jobs to the cluster. Now it is time to log back in to check on your analyses.
+
+Log in:
+
+```{bash, eval=F}
+ssh yourusername@scc1.bu.edu
+
+```
+
+Navigate to your project folder. Probably something like this:
+
+```{bash, eval=F}
+cd /project/ct-shbioinf/yourusername/biodiversity
+
+ls -lh
+
+ls -lh figures
+
+```
+
+Are there new files in the main project folder and in the figures folder?
+
+Files that start as "SDM_ENMeval." contain information about the analyses you submitted last time.
+
+In the cat command below remove the {} and replace with the job ID number at the end of your file.
+
+```{bash, eval=F}
+cat SDM_ENMeval.o{SERIES OF NUMBERS}
+
+```
+
+Does it look like your analysis finished properly?
+
+## Moving results: Update your Git Repository
+
+If you have image files in the figures folder (ending in '.png') the next step will be to copy those somewhere that they can be viewed. For this, use git commands: (enter your GitHub username and password when prompted)
+
+```{bash, eval=F}
+git add figures
+
+git commit -m 'update figures from sdm1.R'
+
+git push
+
+```
+
+
+## Updating the analysis script:
+
+IF all has gone correctly until now it is time to update the analysis script to both be more flexible and to build more robust models with ENMeval through higher level model testing.
+
+Download the new [SDM analysis](https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/R/sdm2.R)
+
+This script:
+
++ Accepts a species name from the command line when called by the submit script
+
++ Performs ENMeval with more model feature classes and more RMvalues
+
++ Performs 100 iterations of kfolds cross validation (previously was just 10)
+
++ Predicts models under two future climate scenarios (2.6 and 8.5 emissions scenarios)
+
++ Saves figure images for modern and two future scenarios
+
++ Saves raster objects to data files in the 'data/' folder.
+
+### Updating qsub script
+
+Download the [new submit script](https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/submit_sdm2).
+
+*EDIT THE TAXON NAME ON THE RScript LINE*
+
+Updates to the submit script include:
+
++ Memory management to request 16GB of memory per CPU core. This ensures that the queue puts these jobs on larger compute nodes.
+
++ Accepting species name as argment when calling RScript
+
+
+Copy the two new scripts via git to the cluster and run as:
+
+```{bash, eval=F}
+
+qsub submit_sdm2
+
+```
+
+
+# Homework
+
+Create 10 submit scripts using the new SDM script for different species in the Stonehill Biodiversity iNaturalist project. *Sign up for your species* on the Slack [#general](https://introbioinformatics.slack.com/archives/CMJ7DPBRB) channel.
+
+Species to choose from:
+
+```{R}
+
+library(rinat)
+library(stringr)
+
+
+projdata = get_inat_obs_project("stonehill-biodiversity",
+    type = "observations", raw=F)
+tNames = unique(projdata$taxon.name) %>% str_extract("[A-z]+\\s[A-z]+") 
+binomials = na.omit(tNames) %>% sort()
+
+#get full taxonomy
+library(taxonomizr)
+taxaNodes<-read.nodes.sql("/usr/share/data/taxonomizr/nodes.dmp")
+taxaNames<-read.names.sql("/usr/share/data/taxonomizr/names.dmp")
+ids<-getId(binomials, sqlFile=taxaNodes)
+#taxlist displays the taxonomic names from each ID #
+taxlist=getTaxonomy(ids, taxaNodes, taxaNames)
+
+print(taxlist[order(taxlist[,'phylum']),c('phylum', 'species')])
+
+```
+
+
+[home](https://rsh249.github.io/bioinformatics)
