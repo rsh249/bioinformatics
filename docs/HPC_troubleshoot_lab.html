@@ -337,8 +337,8 @@ div.tocify {
 <ul>
 <li><p>Accepts a species name from the command line when called by the submit script</p></li>
 <li><p>Performs ENMeval with more model feature classes and more RMvalues</p></li>
-<li><p>Performs 100 iterations of kfolds cross validation (previously was just 10)</p></li>
-<li><p>Predicts models under two future climate scenarios (2.6 and 8.5 emissions scenarios)</p></li>
+<li><p>Performs ‘block’ resampling for model testing rather than random kfolds. (block tests geographic transferability more)</p></li>
+<li><p>Predicts models under two future climate scenarios (2.6 and 8.5 emissions scenarios) under the CCSM4 model. <a href="http://worldclim.org/cmip5_2.5m">more here</a></p></li>
 <li><p>Saves figure images for modern and two future scenarios</p></li>
 <li><p>Saves raster objects to data files in the ‘data/’ folder.</p></li>
 </ul>

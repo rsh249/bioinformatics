@@ -77,9 +77,9 @@ This script:
 
 + Performs ENMeval with more model feature classes and more RMvalues
 
-+ Performs 100 iterations of kfolds cross validation (previously was just 10)
++ Performs 'block' resampling for model testing rather than random kfolds. (block tests geographic transferability more)
 
-+ Predicts models under two future climate scenarios (2.6 and 8.5 emissions scenarios)
++ Predicts models under two future climate scenarios (2.6 and 8.5 emissions scenarios) under the CCSM4 model. [more here](http://worldclim.org/cmip5_2.5m)
 
 + Saves figure images for modern and two future scenarios
 
