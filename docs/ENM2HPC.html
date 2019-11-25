@@ -361,7 +361,7 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <h3>Submitting a Job</h3>
 <p>Do NOT attempt to run the R script in an interactive R session when logged in to the cluster. To work well within the cluster system we have to submit the R script as a job to the queue.</p>
 <p>To do this we need to write a qsub submission script. For our analysis this should look like: <a href="https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/submit_sdm1">link to instructor copy</a></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/sh</span>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash -l</span>
 <span class="co">#</span>
 <span class="co">#Number of cores requested</span>
 <span class="co">#$ -pe omp 12</span>

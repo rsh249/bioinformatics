@@ -109,7 +109,7 @@ Do NOT attempt to run the R script in an interactive R session when logged in to
 To do this we need to write a qsub submission script. For our analysis this should look like: [link to instructor copy](https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/submit_sdm1)
 
 ```{bash, eval = F}
-#!/bin/sh
+#!/bin/bash -l
 #
 #Number of cores requested
 #$ -pe omp 12
