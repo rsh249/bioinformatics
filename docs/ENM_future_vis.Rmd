@@ -1,0 +1,161 @@
+---
+title: "Visualizing ENM Output"
+author: "Prof. Harbert"
+date: Meeting 21
+output: 
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Collect model output
+
+Make sure your models finished and produced data:
+
+```{bash, eval=F}
+ls -lh data
+ls -lh figures
+```
+
+Git add, commit, push
+
+```{bash, eval=F}
+git add figures
+git add data
+
+git commit -m 'collect data and figures'
+
+
+```
+
+*Be sure to sync your RStudio Git Repo now with a 'Pull'
+
+
+# Visualizing model output
+
+The analysis script generated image files (*.png) for the GBIF data points and the Maxent model output for the current distribution (continuous and range) as well as the 2.6 and 8.5 emissions scenarios for 2070.
+
+Here is the continuous Maxent model ouptut for *Pinus strobus* (White Pine):
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/figures/Pinus%20strobus_maxent.png')
+```
+
+And, here is the model prediction for 2070 under the 8.5 emissions scenario:
+
+```{r echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('https://raw.githubusercontent.com/rsh249/bio331_geospatial/master/figures/Pinus%20strobus_maxent85.png')
+```
+
+
+
+## Distribution Change
+
+The maps above show there is clear potential for distribution shifts under extreme climate change in the next 50 years. However, the pattern is not easily visualized and no quantitative values can be determined just by looking at the figures.
+
+Using R we will create visualizations showing the modeled potential change in the distributions.
+
+### Read in model data
+
+```{R, eval=T}
+library(raster)
+library(dplyr)
+taxon = "Pinus strobus"
+files = list.files('data', pattern = taxon, full.names=T)
+print(files)
+gri.files = files[grep('.gri', files)] #Only need one of the two files to read. R 'raster::stack()' finds the other.
+
+mods = stack(gri.files)
+names(mods) = c('current', '2070_2.6', '2070_8.5') ## Verify this is the same order as in gri.files object
+plot(mods)
+
+```
+
+### Shifts
+
+2070 2.6 emissions scenario (*best case*)
+
+```{R, eval = T}
+library(ggplot2)
+
+shift26 = mods[[2]] - mods[[1]] # future 2.6 scenario minus current prediction
+
+shift26_df = as.data.frame(shift26, xy=T)
+
+(base26 = ggplot() +
+  geom_raster(data = shift26_df, 
+              aes(x = x, y = y, fill = layer)) + 
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('navy', 'white', 'darkred'), na.value = "black"))
+
+#if you want to save the image as a file:
+# ggsave(base26, filename=paste('figures/', taxon, '26_shift.png', sep=''), width=6, height=6, dpi=400, units='in')
+
+
+```
+
+
+2070 8.5 emissions scenario (*worst case*)
+
+```{R, eval = T}
+library(ggplot2)
+
+shift85 = mods[[3]] - mods[[1]] # future 2.6 scenario minus current prediction
+
+shift85_df = as.data.frame(shift85, xy=T)
+
+(base85 = ggplot() +
+  geom_raster(data = shift85_df, 
+              aes(x = x, y = y, fill = layer)) + 
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('navy', 'white', 'darkred'), na.value = "black"))
+
+
+#if you want to save the image as a file:
+# ggsave(base85, filename=paste('figures/', taxon, '85_shift.png', sep=''), width=6, height=6, dpi=400, units='in')
+
+
+```
+
+
+### Zoom In
+
+To get a better idea of how this may result in local biotic changes on campus zoom in on New England to see the relative change in suitability on a local scale:
+
+```{R, eval=F}
+ext = extent(-74, -69, 40, 45)
+shift26.NE = crop(shift26, ext)
+shift26.NE_df = as.data.frame(shift26.NE, xy=T)
+
+(base26.NE = ggplot() +
+  geom_raster(data = shift26.NE_df, 
+              aes(x = x, y = y, fill = layer)) + 
+  coord_quickmap() +
+  theme_bw() + 
+  scale_fill_gradientn(colours=c('navy', 'white', 'darkred'), na.value = "black"))
+
+```
+
+
+#  Challenge/Homework
+
+Generate the distribution shift graphics for both climate scenarios and for all 10 of your species (repeat models if necessary for failed analyses). 
+
+How many of the 10 species will find the climate of the campus *more* suitable in the future? (HINT: *P. strobus* in the example code here will NOT -- look closely at the map and crop if needed). NOTE: Less suitable does not mean that a species is likely to disappear from an area, just that the climate will be less *optimal* than it is now. 
+
+Post some of your maps and the count of more suited species to [#general](https://introbioinformatics.slack.com/archives/CMJ7DPBRB)
+
+
+
+[home](https://rsh249.github.com/bioinformatics)
