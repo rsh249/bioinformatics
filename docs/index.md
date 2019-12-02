@@ -92,7 +92,7 @@ After having completed Introduction to Bioinformatics you will be able to:
 
 ### <a href='./HPC_troubleshoot_lab.html'> Lab 8: Scaling up ENM on HPC
 
-### <a href='./ENM_2HPC_future_vis.html'> Meeting 21: Visualize ENM output
+### <a href='./ENM_future_vis.html'> Meeting 21: Visualize ENM output
 
 
 
