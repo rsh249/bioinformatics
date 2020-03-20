@@ -69,7 +69,7 @@ Recall that last time we queried the entire 'nt' database using:
 kdb=/usr/share/data/krakendb/nt-custom/
 targdata=/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
 
-kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab --fastq-input $targdata > kraken.out
+kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab $targdata > kraken.out
 
 ```
 
@@ -81,7 +81,7 @@ All we need to do is substitute the path to our custom database.
 kdb=plastid_custom
 targdata=/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
 
-kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab --fastq-input $targdata > kraken.out
+kraken2 --db $kdb  --threads 1 --use-names --report kreport.tab $targdata > kraken.out
 
 ```
 

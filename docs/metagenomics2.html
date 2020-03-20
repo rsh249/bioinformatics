@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Prof. Harbert" />
@@ -80,7 +81,7 @@ code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Inf
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -137,7 +138,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -211,48 +211,9 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3,h4",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -385,13 +346,13 @@ div.tocify {
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="va">kdb=</span>/usr/share/data/krakendb/nt-custom/
 <span class="va">targdata=</span>/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
 
-<span class="ex">kraken2</span> --db <span class="va">$kdb</span>  --threads 1 --use-names --report kreport.tab --fastq-input <span class="va">$targdata</span> <span class="op">&gt;</span> kraken.out</code></pre></div>
+<span class="ex">kraken2</span> --db <span class="va">$kdb</span>  --threads 1 --use-names --report kreport.tab <span class="va">$targdata</span> <span class="op">&gt;</span> kraken.out</code></pre></div>
 <p>All we need to do is substitute the path to our custom database.</p>
 <p><em>Make sure working directory is set to the ‘kraken’ folder</em></p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="va">kdb=</span>plastid_custom
 <span class="va">targdata=</span>/usr/share/data/BIO331/MATK-1RKIM/small/barcode11.s.fastq
 
-<span class="ex">kraken2</span> --db <span class="va">$kdb</span>  --threads 1 --use-names --report kreport.tab --fastq-input <span class="va">$targdata</span> <span class="op">&gt;</span> kraken.out</code></pre></div>
+<span class="ex">kraken2</span> --db <span class="va">$kdb</span>  --threads 1 --use-names --report kreport.tab <span class="va">$targdata</span> <span class="op">&gt;</span> kraken.out</code></pre></div>
 </div>
 </div>
 <div id="visualizing-kraken-report-files" class="section level1">
@@ -462,6 +423,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
